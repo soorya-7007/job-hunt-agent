@@ -43,3 +43,56 @@ class MatchResult(BaseModel):
     score: float  # 0-100 semantic fit
     reasons: str = ""
     gaps: List[str] = Field(default_factory=list)
+
+
+# --------------------------------------------------------------------------- #
+# Phase 2 models: tailoring, the no-fabrication critic, and the tracker.
+# --------------------------------------------------------------------------- #
+class CritiqueResult(BaseModel):
+    """Verdict from the no-fabrication critic (app/agents/critic.py).
+
+    `flagged` lists claims in a tailored draft that are NOT supported by the
+    candidate's real resume. `passed` is True only when that list is empty.
+    """
+    passed: bool = True
+    flagged: List[str] = Field(default_factory=list)
+    notes: str = ""
+
+
+class TailoredResume(BaseModel):
+    """A job-specific rewrite of the candidate's summary + key bullets.
+
+    IMPORTANT: every statement here must be grounded in the real resume. The
+    critic re-reads this object against the source resume to enforce that rule.
+    """
+    job_id: str
+    job_title: str = ""
+    company: str = ""
+    summary: str = ""
+    bullets: List[str] = Field(default_factory=list)
+    keywords_covered: List[str] = Field(default_factory=list)  # JD terms reflected
+    revised: bool = False  # True if the critic triggered an automatic rewrite
+    critique: Optional[CritiqueResult] = None
+
+    def to_text(self) -> str:
+        """All human-readable text, used by the critic for fact-checking."""
+        return self.summary + "\n" + "\n".join(self.bullets)
+
+
+class Application(BaseModel):
+    """One tracked job application (mirrors the SQLite `applications` table).
+
+    Status flows: saved -> tailored -> applied -> interview -> offer -> rejected.
+    """
+    id: Optional[int] = None
+    job_id: str
+    job_title: str = ""
+    company: str = ""
+    location: str = ""
+    url: str = ""
+    fit_score: float = 0.0
+    status: str = "saved"
+    tailored_summary: str = ""
+    tailored_bullets: List[str] = Field(default_factory=list)
+    notes: str = ""
+    updated_at: Optional[str] = None
