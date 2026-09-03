@@ -18,6 +18,15 @@ class Settings:
     ADZUNA_APP_KEY = os.getenv("ADZUNA_APP_KEY", "")
     ADZUNA_COUNTRY = os.getenv("ADZUNA_COUNTRY", "in")
 
+    # Phase 3: LangSmith Observability & Tracing
+    LANGCHAIN_TRACING_V2 = os.getenv("LANGCHAIN_TRACING_V2", "false").lower() in ("true", "1", "yes")
+    LANGCHAIN_API_KEY = os.getenv("LANGCHAIN_API_KEY", "")
+    LANGCHAIN_PROJECT = os.getenv("LANGCHAIN_PROJECT", "job-hunt-agent")
+    LANGCHAIN_ENDPOINT = os.getenv("LANGCHAIN_ENDPOINT", "https://api.smith.langchain.com")
+
+    # Phase 3: Web search provider keys (optional)
+    TAVILY_API_KEY = os.getenv("TAVILY_API_KEY", "")
+
     def has_llm(self) -> bool:
         """True if some LLM provider is configured (else we use a heuristic fallback)."""
         return bool(
@@ -30,6 +39,10 @@ class Settings:
     def has_adzuna(self) -> bool:
         """True if Adzuna keys exist (else we use bundled sample jobs)."""
         return bool(self.ADZUNA_APP_ID and self.ADZUNA_APP_KEY)
+
+    def has_langsmith(self) -> bool:
+        """True if LangSmith tracing is active."""
+        return bool(self.LANGCHAIN_TRACING_V2 and self.LANGCHAIN_API_KEY)
 
 
 settings = Settings()

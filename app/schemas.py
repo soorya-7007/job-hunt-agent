@@ -96,3 +96,66 @@ class Application(BaseModel):
     tailored_bullets: List[str] = Field(default_factory=list)
     notes: str = ""
     updated_at: Optional[str] = None
+
+
+# --------------------------------------------------------------------------- #
+# Phase 3 models: Interview prep, company research, and cover letters.
+# --------------------------------------------------------------------------- #
+class InterviewQuestion(BaseModel):
+    """An anticipated interview question with guidance grounded in the candidate's real profile."""
+    question: str
+    category: str = "technical"  # technical | behavioral | background | culture
+    suggested_answer: str = ""
+    talking_points: List[str] = Field(default_factory=list)
+
+
+class InterviewPrep(BaseModel):
+    """Company research and role-specific interview preparation sheet."""
+    job_id: str
+    company: str = ""
+    role: str = ""
+    company_overview: str = ""
+    likely_questions: List[InterviewQuestion] = Field(default_factory=list)
+    key_talking_points: List[str] = Field(default_factory=list)
+    questions_to_ask_interviewer: List[str] = Field(default_factory=list)
+
+    def to_markdown(self) -> str:
+        """Render the prep sheet into structured Markdown suitable for saving/exporting."""
+        md = [
+            f"# Interview Preparation: {self.role} at {self.company}",
+            "",
+            "## 🏢 Company & Role Overview",
+            self.company_overview or "No company overview available.",
+            "",
+            "## 💡 Key Talking Points (Your Value Proposition)",
+        ]
+        for tp in self.key_talking_points:
+            md.append(f"- {tp}")
+
+        md.extend(["", "## 💬 Likely Interview Questions & Grounded Answers"])
+        for i, q in enumerate(self.likely_questions, 1):
+            md.append(f"\n### {i}. [{q.category.title()}] {q.question}")
+            if q.suggested_answer:
+                md.append(f"**Strategy / Suggested Answer:**\n{q.suggested_answer}")
+            if q.talking_points:
+                md.append("**Points to emphasize:**")
+                for pt in q.talking_points:
+                    md.append(f"- {pt}")
+
+        md.extend(["", "## ❓ Questions to Ask the Hiring Team"])
+        for qa in self.questions_to_ask_interviewer:
+            md.append(f"- {qa}")
+
+        return "\n".join(md)
+
+
+class CoverLetter(BaseModel):
+    """A tailored, honest cover letter grounded in candidate experience."""
+    job_id: str
+    company: str = ""
+    role: str = ""
+    content: str = ""
+    critique: Optional[CritiqueResult] = None
+
+    def to_text(self) -> str:
+        return self.content
