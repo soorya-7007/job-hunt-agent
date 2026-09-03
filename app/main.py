@@ -200,9 +200,22 @@ def tailor_endpoint(req: TailorRequest) -> TailorResponse:
             raise HTTPException(status_code=404, detail="Job not found for tailoring.")
         job = matched
 
+    import json
+    cache_dir = Path("data") / "cache"
+    cache_dir.mkdir(parents=True, exist_ok=True)
+    cache_file = cache_dir / f"tailored_{req.job_id}.json"
+
+    if cache_file.exists():
+        try:
+            return TailorResponse.model_validate_json(cache_file.read_text())
+        except Exception:
+            pass
+
     tailored_resume = tailor_for_job(profile, job, req.resume_text)
     cover_letter = tailoring_agent.draft_cover_letter(profile, job, req.resume_text)
-    return TailorResponse(tailored_resume=tailored_resume, cover_letter=cover_letter)
+    res = TailorResponse(tailored_resume=tailored_resume, cover_letter=cover_letter)
+    cache_file.write_text(res.model_dump_json())
+    return res
 
 
 @app.post("/api/jobs/prep", response_model=PrepResponse)
@@ -324,3 +337,7 @@ if FRONTEND_DIR.exists():
     @app.get("/chat")
     def chat_page():
         return FileResponse(FRONTEND_DIR / "chat.html")
+
+    @app.get("/apply-dummy")
+    def apply_dummy_page():
+        return FileResponse(FRONTEND_DIR / "apply-dummy.html")

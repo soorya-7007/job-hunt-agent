@@ -17,7 +17,12 @@ from app.config import settings
 def _model():
     from sentence_transformers import SentenceTransformer  # lazy, heavy import
 
-    return SentenceTransformer(settings.EMBEDDING_MODEL)
+    # Try to load completely offline first to avoid HuggingFace Hub network checks
+    try:
+        return SentenceTransformer(settings.EMBEDDING_MODEL, local_files_only=True)
+    except Exception:
+        # Fallback to downloading if not cached
+        return SentenceTransformer(settings.EMBEDDING_MODEL, local_files_only=False)
 
 
 def embed(texts: List[str]) -> np.ndarray:

@@ -364,10 +364,16 @@
 
           <div class="flex items-center justify-between pt-1 border-t border-outline-variant/20 font-label-xs">
             ${nextStage ? `
-              <button onclick="advanceApp(${app.id}, '${nextStage}')" class="text-primary hover:underline font-semibold flex items-center gap-1">
-                <span>Move to ${nextStage.charAt(0).toUpperCase() + nextStage.slice(1)}</span>
-                <span class="material-symbols-outlined text-xs">arrow_forward</span>
-              </button>
+              <div class="flex flex-col w-full gap-2 mt-2">
+                <a href="${app.url || '/apply-dummy'}" target="_blank" class="w-full justify-center text-white bg-primary hover:bg-primary-container px-3 py-1.5 rounded-lg shadow-sm font-semibold flex items-center gap-1.5 transition-colors text-sm">
+                  <span>Apply Now</span>
+                  <span class="material-symbols-outlined text-[16px]">open_in_new</span>
+                </a>
+                <button onclick="advanceApp(${app.id}, '${nextStage}')" class="w-full justify-center text-primary hover:bg-surface-variant px-3 py-1.5 rounded-lg font-semibold flex items-center gap-1.5 transition-colors border border-primary/20 text-sm">
+                  <span>Move to ${nextStage.charAt(0).toUpperCase() + nextStage.slice(1)}</span>
+                  <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+                </button>
+              </div>
             ` : '<span class="text-green-600 font-bold">Offer Accepted 🎉</span>'}
             <button onclick="deleteApp(${app.id})" class="text-outline hover:text-error" title="Delete">
               <span class="material-symbols-outlined text-base">delete</span>
