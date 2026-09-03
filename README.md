@@ -1,11 +1,24 @@
 # 🎯 AI Job-Hunt Agent
 
+![Python](https://img.shields.io/badge/Python-3.10%2B-3776AB?logo=python&logoColor=white)
+![Streamlit](https://img.shields.io/badge/UI-Streamlit-FF4B4B?logo=streamlit&logoColor=white)
+![LiteLLM](https://img.shields.io/badge/LLM-LiteLLM-412991)
+![RAG](https://img.shields.io/badge/RAG-sentence--transformers-FFD21E)
+![License](https://img.shields.io/badge/License-MIT-3DA639)
+![Status](https://img.shields.io/badge/status-Phase%201%20complete-brightgreen)
+
 An **agentic AI** system that reads your resume, discovers real job postings, and
 ranks them by fit — with honest, LLM-written reasoning and skill-gap analysis.
 Built to showcase in-demand **GenAI / LLM Engineer** skills for campus placements.
 
 > **Status:** Phase 1 (working demo). Phases 2–4 add resume tailoring, a LangGraph
 > supervisor, company prep, evaluation, and deployment. See `docs/BLUEPRINT.md`.
+
+<!-- 📸 Add a screenshot once you run the app:
+     1) streamlit run ui/streamlit_app.py
+     2) screenshot the ranked matches, save it as docs/demo.png
+     3) uncomment the next line -->
+<!-- ![Job-Hunt Agent demo](docs/demo.png) -->
 
 ---
 
@@ -16,6 +29,22 @@ Built to showcase in-demand **GenAI / LLM Engineer** skills for campus placement
 - **Responsible AI by design:** official job-board APIs only (no scraping), human-in-the-loop,
   and a no-fabrication rule for the resume-tailoring agent (Phase 2).
 - **Runs with zero API keys** out of the box, and gets smarter when you add them.
+
+---
+
+## Tech stack
+
+| Area | Tools |
+|------|-------|
+| Language | Python 3.10+ |
+| LLM access | LiteLLM — provider-agnostic (OpenAI GPT-4o-mini · Google Gemini · local Ollama) |
+| Embeddings / RAG | sentence-transformers (`all-MiniLM-L6-v2`) + NumPy cosine similarity |
+| Data validation | Pydantic v2 |
+| Job data | Adzuna API (official) with a bundled sample fallback |
+| Resume parsing | pdfplumber |
+| UI | Streamlit |
+| Testing | pytest |
+| Coming next | LangGraph · LangSmith · SQLite · Docker (Phases 2–4) |
 
 ---
 
@@ -107,3 +136,16 @@ Full detail in [`docs/BLUEPRINT.md`](docs/BLUEPRINT.md).
 This tool assists a human job seeker. It uses only official job-board APIs (never
 scrapes sites that forbid it), never auto-submits applications, and never fabricates
 skills or experience. Your resume data stays local; API keys live in `.env`.
+
+---
+
+## License
+
+Released under the [MIT License](LICENSE) © 2026 sooryansh.
+
+---
+
+## Author
+
+Built by **sooryansh** ([@soorya-7007](https://github.com/soorya-7007)) as a portfolio
+project for GenAI / LLM Engineer roles. Feedback and stars are welcome ⭐
