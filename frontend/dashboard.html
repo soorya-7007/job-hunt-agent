@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+  <title>Candidate Dashboard — JobHunt AI</title>
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin=""/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+  <style>
+    @layer base {
+      html, body { margin: 0; padding: 0; }
+      body { overscroll-behavior: none; }
+      main > :first-child { margin-top: 0 !important; }
+      main > :last-child { margin-bottom: 0 !important; }
+    }
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+  </style>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            "inverse-surface": "#213145",
+            "on-error-container": "#93000a",
+            "on-surface-variant": "#434655",
+            "on-tertiary-fixed-variant": "#005236",
+            "on-secondary-container": "#5c647a",
+            "on-primary-fixed": "#00174b",
+            "error": "#ba1a1a",
+            "inverse-on-surface": "#eaf1ff",
+            "secondary-container": "#dae2fd",
+            "surface-container-high": "#dce9ff",
+            "primary-fixed": "#dbe1ff",
+            "tertiary-container": "#007d55",
+            "on-primary": "#ffffff",
+            "on-background": "#0b1c30",
+            "outline-variant": "#c3c6d7",
+            "tertiary-fixed-dim": "#4edea3",
+            "surface-container-low": "#eff4ff",
+            "background": "#f8f9ff",
+            "on-secondary-fixed-variant": "#3f465c",
+            "surface": "#f8f9ff",
+            "on-primary-container": "#eeefff",
+            "error-container": "#ffdad6",
+            "inverse-primary": "#b4c5ff",
+            "on-tertiary": "#ffffff",
+            "primary-container": "#2563eb",
+            "on-tertiary-container": "#bdffdb",
+            "primary-fixed-dim": "#b4c5ff",
+            "secondary-fixed-dim": "#bec6e0",
+            "surface-tint": "#0053db",
+            "tertiary-fixed": "#6ffbbe",
+            "on-tertiary-fixed": "#002113",
+            "on-secondary": "#ffffff",
+            "on-error": "#ffffff",
+            "surface-variant": "#d3e4fe",
+            "surface-container-highest": "#d3e4fe",
+            "primary": "#004ac6",
+            "surface-container-lowest": "#ffffff",
+            "secondary": "#565e74",
+            "surface-bright": "#f8f9ff",
+            "outline": "#737686",
+            "secondary-fixed": "#dae2fd",
+            "on-secondary-fixed": "#131b2e",
+            "tertiary": "#006242",
+            "surface-container": "#e5eeff",
+            "on-primary-fixed-variant": "#003ea8",
+            "on-surface": "#0b1c30",
+            "surface-dim": "#cbdbf5"
+          },
+          borderRadius: { DEFAULT: "0.25rem", lg: "0.5rem", xl: "0.75rem", full: "9999px" },
+          spacing: {
+            "space-10": "2.5rem", "space-5": "1.25rem", "space-2": "0.5rem", "space-16": "4rem",
+            "space-8": "2rem", gutter: "1rem", "space-1": "0.25rem", "container-max": "80rem",
+            "space-6": "1.5rem", "space-12": "3rem", "space-3": "0.75rem", "space-4": "1rem",
+            "gutter-lg": "1.5rem"
+          },
+          fontFamily: {
+            "label-md": ["Inter"], "body-sm": ["Inter"], "headline-sm": ["Inter"],
+            "display-lg-mobile": ["Inter"], "display-lg": ["Inter"], "body-lg": ["Inter"],
+            "headline-lg": ["Inter"], "body-md": ["Inter"], "label-sm": ["Inter"],
+            "headline-md": ["Inter"], "label-xs": ["Inter"]
+          }
+        }
+      }
+    };
+  </script>
+</head>
+<body class="bg-surface font-body-md text-body-md text-on-surface antialiased min-h-screen flex flex-col justify-between">
+  <!-- Shared Top Nav Header -->
+  <header class="sticky top-0 z-50 w-full bg-surface-container-lowest/90 backdrop-blur-md border-b border-outline-variant/30 shadow-[0_1px_3px_0_rgba(15,23,42,0.05)]">
+    <div class="h-16 max-w-container-max mx-auto px-gutter-lg flex items-center justify-between gap-space-4">
+      <div class="flex items-center gap-space-8">
+        <a class="flex items-center gap-space-3" href="/">
+          <div class="w-9 h-9 rounded-lg bg-primary-container flex items-center justify-center text-white shadow-sm font-bold text-lg">🎯</div>
+          <span class="font-headline-sm text-headline-sm tracking-tight text-on-surface font-bold">JobHunt AI</span>
+        </a>
+        <nav class="hidden lg:flex items-center gap-space-6">
+          <a class="font-label-md text-label-md text-on-surface-variant hover:text-on-surface transition-colors" href="/jobs">Jobs</a>
+          <a class="font-label-md text-label-md text-primary font-bold transition-colors" href="/dashboard">Dashboard</a>
+          <a class="font-label-md text-label-md text-on-surface-variant hover:text-on-surface transition-colors" href="/profile">Profile</a>
+          <a class="font-label-md text-label-md text-primary hover:text-on-surface transition-colors flex items-center gap-1" href="/chat"><span class="material-symbols-outlined text-sm">chat</span> Assistant</a>
+        </nav>
+      </div>
+      <div class="flex items-center gap-space-4">
+        <a href="/jobs" class="h-9 px-4 rounded-lg bg-primary text-white font-label-md flex items-center gap-2 hover:bg-primary-container shadow-sm">
+          <span class="material-symbols-outlined text-base">search</span>
+          <span>Find Jobs</span>
+        </a>
+        <a href="/profile" class="flex items-center gap-space-2 pl-space-2 border-l border-outline-variant/30">
+          <div class="w-8 h-8 rounded-full bg-primary-container text-white flex items-center justify-center font-bold text-sm">S</div>
+          <span class="hidden sm:inline-block font-label-sm text-label-sm text-on-surface">Sooryansh</span>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <main class="w-full flex-1 bg-surface pt-6 pb-16">
+    <div class="max-w-container-max mx-auto px-gutter-lg space-y-8">
+      <!-- Greeting & Header Bar -->
+      <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-6 border-b border-outline-variant/30">
+        <div>
+          <div class="flex items-center gap-3">
+            <h1 class="font-display-lg text-headline-lg md:text-display-lg text-on-surface font-bold tracking-tight">Good morning, Sooryansh 👋</h1>
+            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full bg-tertiary-fixed text-on-tertiary-fixed font-label-xs font-semibold">Active Pipeline</span>
+          </div>
+          <p class="font-body-md text-on-surface-variant mt-1">Here is your live multi-agent application tracking status and actionable next steps.</p>
+        </div>
+        <div class="flex items-center gap-3">
+          <a href="/jobs" class="h-10 px-5 rounded-lg bg-primary hover:bg-primary-container text-white font-label-md flex items-center gap-2 shadow-sm transition-all">
+            <span class="material-symbols-outlined text-base">add</span>
+            <span>Discover More Roles</span>
+          </a>
+        </div>
+      </div>
+
+      <!-- Action Required Alert Banner -->
+      <div id="pendingBanner" class="p-4 bg-surface-container-lowest border-l-4 border-primary rounded-xl shadow-sm space-y-2 hidden">
+        <div class="flex items-center justify-between">
+          <span class="font-headline-sm text-primary font-bold flex items-center gap-2">
+            <span class="material-symbols-outlined">alarm</span>
+            <span>Priority Action Items (<span id="pendingCount">0</span>)</span>
+          </span>
+        </div>
+        <div id="pendingList" class="space-y-1.5 pt-1"></div>
+      </div>
+
+      <!-- 4 Bento Metric Cards -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        <!-- Metric 1: Total Applications -->
+        <div class="p-5 rounded-xl bg-surface-container-lowest shadow-sm flex flex-col justify-between">
+          <div class="flex items-center justify-between">
+            <span class="font-label-sm uppercase tracking-wider text-secondary font-semibold">Tracked Roles</span>
+            <div class="w-9 h-9 rounded-lg bg-primary-fixed flex items-center justify-center text-primary">
+              <span class="material-symbols-outlined text-xl">folder_shared</span>
+            </div>
+          </div>
+          <div class="my-3">
+            <div id="metricTotal" class="font-display-lg text-display-lg text-on-surface font-bold">0</div>
+          </div>
+          <span class="text-xs text-secondary font-medium">In SQLite persistence</span>
+        </div>
+
+        <!-- Metric 2: Tailored & Ready -->
+        <div class="p-5 rounded-xl bg-surface-container-lowest shadow-sm flex flex-col justify-between">
+          <div class="flex items-center justify-between">
+            <span class="font-label-sm uppercase tracking-wider text-secondary font-semibold">Tailored & Checked</span>
+            <div class="w-9 h-9 rounded-lg bg-tertiary-fixed flex items-center justify-center text-on-tertiary-fixed">
+              <span class="material-symbols-outlined text-xl">verified</span>
+            </div>
+          </div>
+          <div class="my-3">
+            <div id="metricTailored" class="font-display-lg text-display-lg text-on-surface font-bold">0</div>
+          </div>
+          <span class="text-xs text-tertiary font-medium">Critic verified</span>
+        </div>
+
+        <!-- Metric 3: Active In Flight -->
+        <div class="p-5 rounded-xl bg-surface-container-lowest shadow-sm flex flex-col justify-between">
+          <div class="flex items-center justify-between">
+            <span class="font-label-sm uppercase tracking-wider text-secondary font-semibold">Active Applications</span>
+            <div class="w-9 h-9 rounded-lg bg-secondary-container flex items-center justify-center text-primary">
+              <span class="material-symbols-outlined text-xl">send</span>
+            </div>
+          </div>
+          <div class="my-3">
+            <div id="metricActive" class="font-display-lg text-display-lg text-on-surface font-bold">0</div>
+          </div>
+          <span class="text-xs text-primary font-medium">Applied or in Interview</span>
+        </div>
+
+        <!-- Metric 4: High Fit Roles -->
+        <div class="p-5 rounded-xl bg-surface-container-lowest shadow-sm flex flex-col justify-between">
+          <div class="flex items-center justify-between">
+            <span class="font-label-sm uppercase tracking-wider text-secondary font-semibold">High-Fit (≥80%)</span>
+            <div class="w-9 h-9 rounded-lg bg-surface-container flex items-center justify-center text-primary">
+              <span class="material-symbols-outlined text-xl">stars</span>
+            </div>
+          </div>
+          <div class="my-3">
+            <div id="metricHighFit" class="font-display-lg text-display-lg text-on-surface font-bold">0</div>
+          </div>
+          <span class="text-xs text-secondary font-medium">Prime targets</span>
+        </div>
+      </div>
+
+      <!-- Application Pipeline Kanban Board -->
+      <section class="space-y-4">
+        <div class="flex items-center justify-between">
+          <div class="flex items-center gap-3">
+            <h2 class="font-headline-md text-headline-md text-on-surface font-bold">Application Pipeline Kanban</h2>
+            <span id="kanbanBadge" class="font-label-sm px-2.5 py-0.5 rounded-full bg-surface-container-high text-on-surface font-semibold">0 Roles</span>
+          </div>
+        </div>
+
+        <!-- 5 Columns Kanban Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-5 gap-4 items-start overflow-x-auto pb-4">
+          <!-- Col 1: Saved -->
+          <div class="bg-surface-container-low/70 p-3.5 rounded-xl flex flex-col min-w-[220px] space-y-3">
+            <div class="flex items-center justify-between px-1">
+              <span class="font-headline-sm text-sm font-bold text-on-surface flex items-center gap-2">
+                <span class="w-2.5 h-2.5 rounded-full bg-secondary"></span>
+                <span>Saved</span>
+              </span>
+              <span id="count-saved" class="font-label-xs bg-surface-container px-2 py-0.5 rounded font-bold">0</span>
+            </div>
+            <div id="cards-saved" class="space-y-2.5 min-h-[140px]"></div>
+          </div>
+
+          <!-- Col 2: Tailored -->
+          <div class="bg-surface-container-low/70 p-3.5 rounded-xl flex flex-col min-w-[220px] space-y-3">
+            <div class="flex items-center justify-between px-1">
+              <span class="font-headline-sm text-sm font-bold text-on-surface flex items-center gap-2">
+                <span class="w-2.5 h-2.5 rounded-full bg-primary-container"></span>
+                <span>Tailored</span>
+              </span>
+              <span id="count-tailored" class="font-label-xs bg-surface-container px-2 py-0.5 rounded font-bold">0</span>
+            </div>
+            <div id="cards-tailored" class="space-y-2.5 min-h-[140px]"></div>
+          </div>
+
+          <!-- Col 3: Applied -->
+          <div class="bg-surface-container-low/70 p-3.5 rounded-xl flex flex-col min-w-[220px] space-y-3">
+            <div class="flex items-center justify-between px-1">
+              <span class="font-headline-sm text-sm font-bold text-on-surface flex items-center gap-2">
+                <span class="w-2.5 h-2.5 rounded-full bg-primary"></span>
+                <span>Applied</span>
+              </span>
+              <span id="count-applied" class="font-label-xs bg-surface-container px-2 py-0.5 rounded font-bold">0</span>
+            </div>
+            <div id="cards-applied" class="space-y-2.5 min-h-[140px]"></div>
+          </div>
+
+          <!-- Col 4: Interview -->
+          <div class="bg-surface-container-low/70 p-3.5 rounded-xl flex flex-col min-w-[220px] space-y-3">
+            <div class="flex items-center justify-between px-1">
+              <span class="font-headline-sm text-sm font-bold text-on-surface flex items-center gap-2">
+                <span class="w-2.5 h-2.5 rounded-full bg-tertiary"></span>
+                <span>Interview</span>
+              </span>
+              <span id="count-interview" class="font-label-xs bg-surface-container px-2 py-0.5 rounded font-bold">0</span>
+            </div>
+            <div id="cards-interview" class="space-y-2.5 min-h-[140px]"></div>
+          </div>
+
+          <!-- Col 5: Offer -->
+          <div class="bg-surface-container-low/70 p-3.5 rounded-xl flex flex-col min-w-[220px] space-y-3">
+            <div class="flex items-center justify-between px-1">
+              <span class="font-headline-sm text-sm font-bold text-on-surface flex items-center gap-2">
+                <span class="w-2.5 h-2.5 rounded-full bg-green-500"></span>
+                <span>Offer</span>
+              </span>
+              <span id="count-offer" class="font-label-xs bg-surface-container px-2 py-0.5 rounded font-bold">0</span>
+            </div>
+            <div id="cards-offer" class="space-y-2.5 min-h-[140px]"></div>
+          </div>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <script src="/static/js/api.js"></script>
+  <script>
+    const STAGES = ['saved', 'tailored', 'applied', 'interview', 'offer', 'rejected'];
+
+    window.addEventListener('DOMContentLoaded', async () => {
+      await loadDashboard();
+    });
+
+    async function loadDashboard() {
+      try {
+        const [dash, apps] = await Promise.all([
+          API.getDashboard(),
+          API.getApplications()
+        ]);
+
+        // Render Metrics
+        document.getElementById('metricTotal').textContent = dash.summary.total;
+        document.getElementById('metricTailored').textContent = dash.summary.by_status.tailored || 0;
+        document.getElementById('metricActive').textContent = dash.summary.active_applications || 0;
+        document.getElementById('metricHighFit').textContent = dash.summary.high_fit_count || 0;
+        document.getElementById('kanbanBadge').textContent = `${apps.length} Active Roles`;
+
+        // Render Pending Action Alert Banner
+        const banner = document.getElementById('pendingBanner');
+        const list = document.getElementById('pendingList');
+        list.innerHTML = '';
+        if (dash.pending_actions && dash.pending_actions.length > 0) {
+          banner.classList.remove('hidden');
+          document.getElementById('pendingCount').textContent = dash.pending_actions.length;
+          dash.pending_actions.forEach(a => {
+            const item = document.createElement('div');
+            item.className = 'flex items-center justify-between text-sm py-1 border-b border-outline-variant/20 last:border-0';
+            item.innerHTML = `
+              <span>• <strong>${a.job_title}</strong> at ${a.company} — <span class="text-secondary">${a.action}</span></span>
+              <span class="px-2 py-0.5 rounded text-xs font-bold uppercase ${a.priority === 'urgent' ? 'bg-error text-white' : 'bg-secondary-container text-primary'}">${a.priority}</span>
+            `;
+            list.appendChild(item);
+          });
+        } else {
+          banner.classList.add('hidden');
+        }
+
+        // Render Kanban
+        renderKanban(apps);
+      } catch (err) {
+        console.error('Dashboard error:', err);
+      }
+    }
+
+    function renderKanban(apps) {
+      const counts = { saved: 0, tailored: 0, applied: 0, interview: 0, offer: 0 };
+      ['saved', 'tailored', 'applied', 'interview', 'offer'].forEach(st => {
+        document.getElementById(`cards-${st}`).innerHTML = '';
+      });
+
+      apps.forEach(app => {
+        const stage = app.status in counts ? app.status : 'saved';
+        counts[stage]++;
+
+        const container = document.getElementById(`cards-${stage}`);
+        if (!container) return;
+
+        const card = document.createElement('div');
+        card.className = 'p-3 bg-surface-container-lowest rounded-xl shadow-sm hover:shadow-md transition-all space-y-2.5 border border-outline-variant/20';
+
+        const nextStageIdx = STAGES.indexOf(stage) + 1;
+        const nextStage = nextStageIdx < STAGES.length - 1 ? STAGES[nextStageIdx] : null;
+
+        card.innerHTML = `
+          <div class="flex items-start justify-between gap-2">
+            <div class="min-w-0">
+              <span class="font-label-xs text-secondary block truncate">${app.company}</span>
+              <h4 class="font-headline-sm text-sm font-bold text-on-surface truncate">${app.job_title}</h4>
+            </div>
+            <span class="font-label-xs text-tertiary font-bold">${app.fit_score}%</span>
+          </div>
+
+          <div class="flex items-center justify-between pt-1 border-t border-outline-variant/20 font-label-xs">
+            ${nextStage ? `
+              <button onclick="advanceApp(${app.id}, '${nextStage}')" class="text-primary hover:underline font-semibold flex items-center gap-1">
+                <span>Move to ${nextStage.charAt(0).toUpperCase() + nextStage.slice(1)}</span>
+                <span class="material-symbols-outlined text-xs">arrow_forward</span>
+              </button>
+            ` : '<span class="text-green-600 font-bold">Offer Accepted 🎉</span>'}
+            <button onclick="deleteApp(${app.id})" class="text-outline hover:text-error" title="Delete">
+              <span class="material-symbols-outlined text-base">delete</span>
+            </button>
+          </div>
+        `;
+        container.appendChild(card);
+      });
+
+      Object.keys(counts).forEach(st => {
+        document.getElementById(`count-${st}`).textContent = counts[st];
+      });
+    }
+
+    async function advanceApp(id, nextStage) {
+      try {
+        await API.updateStage(id, nextStage);
+        await loadDashboard();
+      } catch (err) {
+        alert('Could not advance stage: ' + err.message);
+      }
+    }
+
+    async function deleteApp(id) {
+      if (!confirm('Remove this application from tracker?')) return;
+      try {
+        await API.deleteApplication(id);
+        await loadDashboard();
+      } catch (err) {
+        alert('Delete failed: ' + err.message);
+      }
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+  <title>Candidate Profile — JobHunt AI</title>
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin=""/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+  <style>
+    @layer base {
+      html, body { margin: 0; padding: 0; }
+      body { overscroll-behavior: none; }
+      main > :first-child { margin-top: 0 !important; }
+      main > :last-child { margin-bottom: 0 !important; }
+    }
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+  </style>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            "inverse-surface": "#213145",
+            "on-error-container": "#93000a",
+            "on-surface-variant": "#434655",
+            "on-tertiary-fixed-variant": "#005236",
+            "on-secondary-container": "#5c647a",
+            "on-primary-fixed": "#00174b",
+            "error": "#ba1a1a",
+            "inverse-on-surface": "#eaf1ff",
+            "secondary-container": "#dae2fd",
+            "surface-container-high": "#dce9ff",
+            "primary-fixed": "#dbe1ff",
+            "tertiary-container": "#007d55",
+            "on-primary": "#ffffff",
+            "on-background": "#0b1c30",
+            "outline-variant": "#c3c6d7",
+            "tertiary-fixed-dim": "#4edea3",
+            "surface-container-low": "#eff4ff",
+            "background": "#f8f9ff",
+            "on-secondary-fixed-variant": "#3f465c",
+            "surface": "#f8f9ff",
+            "on-primary-container": "#eeefff",
+            "error-container": "#ffdad6",
+            "inverse-primary": "#b4c5ff",
+            "on-tertiary": "#ffffff",
+            "primary-container": "#2563eb",
+            "on-tertiary-container": "#bdffdb",
+            "primary-fixed-dim": "#b4c5ff",
+            "secondary-fixed-dim": "#bec6e0",
+            "surface-tint": "#0053db",
+            "tertiary-fixed": "#6ffbbe",
+            "on-tertiary-fixed": "#002113",
+            "on-secondary": "#ffffff",
+            "on-error": "#ffffff",
+            "surface-variant": "#d3e4fe",
+            "surface-container-highest": "#d3e4fe",
+            "primary": "#004ac6",
+            "surface-container-lowest": "#ffffff",
+            "secondary": "#565e74",
+            "surface-bright": "#f8f9ff",
+            "outline": "#737686",
+            "secondary-fixed": "#dae2fd",
+            "on-secondary-fixed": "#131b2e",
+            "tertiary": "#006242",
+            "surface-container": "#e5eeff",
+            "on-primary-fixed-variant": "#003ea8",
+            "on-surface": "#0b1c30",
+            "surface-dim": "#cbdbf5"
+          },
+          borderRadius: { DEFAULT: "0.25rem", lg: "0.5rem", xl: "0.75rem", full: "9999px" },
+          spacing: {
+            "space-10": "2.5rem", "space-5": "1.25rem", "space-2": "0.5rem", "space-16": "4rem",
+            "space-8": "2rem", gutter: "1rem", "space-1": "0.25rem", "container-max": "80rem",
+            "space-6": "1.5rem", "space-12": "3rem", "space-3": "0.75rem", "space-4": "1rem",
+            "gutter-lg": "1.5rem"
+          },
+          fontFamily: {
+            "label-md": ["Inter"], "body-sm": ["Inter"], "headline-sm": ["Inter"],
+            "display-lg-mobile": ["Inter"], "display-lg": ["Inter"], "body-lg": ["Inter"],
+            "headline-lg": ["Inter"], "body-md": ["Inter"], "label-sm": ["Inter"],
+            "headline-md": ["Inter"], "label-xs": ["Inter"]
+          }
+        }
+      }
+    };
+  </script>
+</head>
+<body class="bg-surface font-body-md text-body-md text-on-surface antialiased min-h-screen flex flex-col justify-between">
+  <!-- Shared Top Nav Header -->
+  <header class="sticky top-0 z-50 w-full bg-surface-container-lowest/90 backdrop-blur-md border-b border-outline-variant/30 shadow-[0_1px_3px_0_rgba(15,23,42,0.05)]">
+    <div class="h-16 max-w-container-max mx-auto px-gutter-lg flex items-center justify-between gap-space-4">
+      <div class="flex items-center gap-space-8">
+        <a class="flex items-center gap-space-3" href="/">
+          <div class="w-9 h-9 rounded-lg bg-primary-container flex items-center justify-center text-white shadow-sm font-bold text-lg">🎯</div>
+          <span class="font-headline-sm text-headline-sm tracking-tight text-on-surface font-bold">JobHunt AI</span>
+        </a>
+        <nav class="hidden lg:flex items-center gap-space-6">
+          <a class="font-label-md text-label-md text-on-surface-variant hover:text-on-surface transition-colors" href="/jobs">Jobs</a>
+          <a class="font-label-md text-label-md text-on-surface-variant hover:text-on-surface transition-colors" href="/dashboard">Dashboard</a>
+          <a class="font-label-md text-label-md text-primary font-bold transition-colors" href="/profile">Profile</a>
+          <a class="font-label-md text-label-md text-primary hover:text-on-surface transition-colors flex items-center gap-1" href="/chat"><span class="material-symbols-outlined text-sm">chat</span> Assistant</a>
+        </nav>
+      </div>
+      <div class="flex items-center gap-space-4">
+        <a href="/jobs" class="h-9 px-4 rounded-lg bg-primary text-white font-label-md flex items-center gap-2 hover:bg-primary-container shadow-sm">
+          <span class="material-symbols-outlined text-base">search</span>
+          <span>Find Jobs</span>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <main class="w-full flex-1 bg-surface pt-6 pb-16">
+    <div class="max-w-container-max mx-auto px-gutter-lg space-y-6">
+      <!-- Profile Header Card with Banner Motif -->
+      <div class="relative w-full rounded-xl bg-surface-container-lowest shadow-sm overflow-hidden border border-outline-variant/30">
+        <div class="relative h-36 w-full bg-gradient-to-r from-primary via-primary-container to-surface-tint">
+          <div class="absolute inset-0 opacity-20 bg-[radial-gradient(#ffffff_1px,transparent_1px)] [background-size:16px_16px]"></div>
+          <div class="absolute top-4 right-6 flex items-center gap-2 px-3 py-1 rounded-full bg-inverse-surface/40 backdrop-blur-md text-inverse-on-surface">
+            <span class="inline-block w-2 h-2 rounded-full bg-tertiary-fixed animate-pulse"></span>
+            <span class="font-label-xs font-semibold tracking-wide uppercase">Open to Opportunities</span>
+          </div>
+        </div>
+        <div class="px-8 pb-8 pt-0">
+          <div class="flex flex-col lg:flex-row items-start lg:items-end justify-between gap-6 -mt-12 relative z-10">
+            <div class="flex flex-col sm:flex-row items-start sm:items-end gap-5">
+              <div class="w-24 h-24 rounded-2xl p-1 bg-surface-container-lowest shadow-md flex items-center justify-center font-bold text-3xl text-primary bg-primary-fixed">
+                S
+              </div>
+              <div class="flex flex-col gap-1">
+                <div class="flex items-center gap-2">
+                  <h1 id="profileName" class="font-headline-lg text-on-surface font-bold tracking-tight">Sooryansh Singh</h1>
+                  <span class="material-symbols-outlined text-primary text-xl" style="font-variation-settings: 'FILL' 1;" title="Verified Profile">verified</span>
+                </div>
+                <p id="profileTitle" class="font-body-md text-on-surface-variant font-medium">
+                  Software Engineer • Python • Backend • GenAI Agents
+                </p>
+                <div class="flex flex-wrap items-center gap-x-4 gap-y-1 text-secondary text-xs pt-1">
+                  <span class="inline-flex items-center gap-1">
+                    <span class="material-symbols-outlined text-sm">location_on</span>
+                    <span id="profileLoc">Remote / Bangalore</span>
+                  </span>
+                  <span class="inline-flex items-center gap-1">
+                    <span class="material-symbols-outlined text-sm">mail</span>
+                    <span id="profileEmail">sooryansh@example.com</span>
+                  </span>
+                </div>
+              </div>
+            </div>
+            <div class="flex items-center gap-3">
+              <a href="/jobs" class="px-5 py-2.5 rounded-lg bg-primary text-white hover:bg-primary-container font-label-md flex items-center gap-2 shadow-sm transition-all">
+                <span class="material-symbols-outlined text-base">search</span>
+                <span>Match Jobs with Profile</span>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Main 2-Column Surface -->
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+        <!-- Left Column: Bio, Skills, Experience (8 cols) -->
+        <div class="lg:col-span-8 space-y-6">
+          <!-- Summary -->
+          <section class="bg-surface-container-lowest rounded-xl p-6 shadow-sm border border-outline-variant/30 space-y-3">
+            <div class="flex items-center justify-between">
+              <h2 class="font-headline-sm text-on-surface font-bold flex items-center gap-2">
+                <span class="material-symbols-outlined text-primary text-xl">person</span>
+                <span>Professional Summary</span>
+              </h2>
+            </div>
+            <p id="profileSummary" class="font-body-md text-on-surface-variant leading-relaxed">
+              Experienced Python and Backend engineer with strong background in distributed microservices, REST APIs with FastAPI, Docker containerization, and generative AI agent orchestration with LangGraph and vector search.
+            </p>
+          </section>
+
+          <!-- Verified Skills -->
+          <section class="bg-surface-container-lowest rounded-xl p-6 shadow-sm border border-outline-variant/30 space-y-4">
+            <h2 class="font-headline-sm text-on-surface font-bold flex items-center gap-2">
+              <span class="material-symbols-outlined text-primary text-xl">psychology</span>
+              <span>Verified Technical Skills</span>
+            </h2>
+            <div id="skillsPills" class="flex flex-wrap gap-2">
+              <span class="px-3 py-1 bg-primary-fixed text-on-primary-fixed font-semibold rounded-lg text-sm">Python</span>
+              <span class="px-3 py-1 bg-primary-fixed text-on-primary-fixed font-semibold rounded-lg text-sm">FastAPI</span>
+              <span class="px-3 py-1 bg-primary-fixed text-on-primary-fixed font-semibold rounded-lg text-sm">Docker</span>
+              <span class="px-3 py-1 bg-primary-fixed text-on-primary-fixed font-semibold rounded-lg text-sm">LangGraph</span>
+              <span class="px-3 py-1 bg-surface-container text-secondary rounded-lg text-sm">SQL / SQLite</span>
+              <span class="px-3 py-1 bg-surface-container text-secondary rounded-lg text-sm">Pydantic</span>
+              <span class="px-3 py-1 bg-surface-container text-secondary rounded-lg text-sm">Vector Embeddings</span>
+            </div>
+          </section>
+        </div>
+
+        <!-- Right Column: Resume Intake Dropzone & Preferences (4 cols) -->
+        <div class="lg:col-span-4 space-y-6">
+          <!-- Resume Upload Dropzone -->
+          <section class="bg-surface-container-lowest rounded-xl p-6 shadow-sm border border-outline-variant/30 space-y-4">
+            <h2 class="font-headline-sm text-on-surface font-bold flex items-center gap-2">
+              <span class="material-symbols-outlined text-primary text-xl">upload_file</span>
+              <span>Upload Resume (AI Parse)</span>
+            </h2>
+            <p class="text-xs text-secondary">Upload your PDF or TXT resume to let the Profile Agent extract skills, experience, and role preferences.</p>
+
+            <form id="uploadResumeForm" class="space-y-4">
+              <div id="dropzone" class="border-2 border-dashed border-outline-variant hover:border-primary rounded-xl p-6 text-center cursor-pointer transition-colors bg-surface-container-low/50">
+                <input id="resumeFileInput" type="file" accept=".pdf,.txt" class="hidden"/>
+                <span class="material-symbols-outlined text-primary text-3xl mb-1">cloud_upload</span>
+                <p id="fileNameDisplay" class="font-label-sm text-on-surface font-semibold">Choose PDF or TXT</p>
+                <p class="text-xs text-secondary mt-0.5">Drag & drop or click</p>
+              </div>
+
+              <div class="space-y-2">
+                <label class="text-xs uppercase font-semibold text-secondary">Target Roles (comma separated)</label>
+                <input id="targetRolesInput" type="text" value="GenAI Engineer, Backend Developer" class="w-full p-2.5 bg-surface-container-low rounded-lg text-sm text-on-surface focus:outline-none"/>
+              </div>
+
+              <button id="btnUpload" type="submit" class="w-full py-2.5 bg-primary hover:bg-primary-container text-white font-headline-sm rounded-lg transition-all shadow-sm">
+                <span id="btnUploadText">Parse with Profile Agent</span>
+              </button>
+            </form>
+          </section>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script src="/static/js/api.js"></script>
+  <script>
+    window.addEventListener('DOMContentLoaded', () => {
+      const p = State.getProfile();
+      if (p) {
+        if (p.name) document.getElementById('profileName').textContent = p.name;
+        if (p.summary) document.getElementById('profileSummary').textContent = p.summary;
+        if (p.skills && p.skills.length > 0) {
+          const container = document.getElementById('skillsPills');
+          container.innerHTML = '';
+          p.skills.forEach(s => {
+            const pill = document.createElement('span');
+            pill.className = 'px-3 py-1 bg-primary-fixed text-on-primary-fixed font-semibold rounded-lg text-sm';
+            pill.textContent = s;
+            container.appendChild(pill);
+          });
+        }
+      }
+    });
+
+    const dropzone = document.getElementById('dropzone');
+    const fileInput = document.getElementById('resumeFileInput');
+
+    dropzone.addEventListener('click', () => fileInput.click());
+    fileInput.addEventListener('change', () => {
+      if (fileInput.files.length > 0) {
+        document.getElementById('fileNameDisplay').textContent = fileInput.files[0].name;
+      }
+    });
+
+    document.getElementById('uploadResumeForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      if (!fileInput.files.length) {
+        alert('Please choose a PDF or TXT resume file to upload.');
+        return;
+      }
+
+      const btn = document.getElementById('btnUploadText');
+      btn.textContent = 'Parsing Resume…';
+      try {
+        const roles = document.getElementById('targetRolesInput').value;
+        const res = await API.uploadResume(fileInput.files[0], { target_roles: roles });
+        alert('Resume parsed successfully! Updating profile…');
+        location.reload();
+      } catch (err) {
+        alert('Upload parse failed: ' + err.message);
+      } finally {
+        btn.textContent = 'Parse with Profile Agent';
+      }
+    });
+  </script>
+</body>
+</html>
