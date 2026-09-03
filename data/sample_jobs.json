@@ -1,0 +1,68 @@
+[
+  {
+    "id": "sample-1",
+    "source": "sample",
+    "title": "Junior GenAI Engineer",
+    "company": "Nimbus AI",
+    "location": "Remote (India)",
+    "description": "Build LLM-powered features using Python, RAG pipelines, and vector databases (Chroma). Experience with LangChain, prompt engineering, and FastAPI preferred.",
+    "url": "https://example.com/jobs/sample-1",
+    "salary": "8,00,000 - 14,00,000",
+    "created": "2026-08-20"
+  },
+  {
+    "id": "sample-2",
+    "source": "sample",
+    "title": "Machine Learning Engineer",
+    "company": "DataForge",
+    "location": "Bengaluru, India",
+    "description": "Train and deploy ML models with PyTorch. Strong Python, SQL, Docker and AWS skills. MLOps and model monitoring experience is a plus.",
+    "url": "https://example.com/jobs/sample-2",
+    "salary": "12,00,000 - 20,00,000",
+    "created": "2026-08-18"
+  },
+  {
+    "id": "sample-3",
+    "source": "sample",
+    "title": "AI Application Developer (Agents)",
+    "company": "Corteza Labs",
+    "location": "Remote",
+    "description": "Develop agentic AI applications using LangGraph and function-calling. Integrate external tools and APIs, build multi-agent workflows, and add guardrails and evaluation.",
+    "url": "https://example.com/jobs/sample-3",
+    "salary": null,
+    "created": "2026-08-22"
+  },
+  {
+    "id": "sample-4",
+    "source": "sample",
+    "title": "Backend Engineer (Python)",
+    "company": "PayRails",
+    "location": "Hyderabad, India",
+    "description": "Design REST APIs with FastAPI and PostgreSQL. Docker, Kubernetes and cloud (GCP) experience required. Interest in LLM integrations welcome.",
+    "url": "https://example.com/jobs/sample-4",
+    "salary": "10,00,000 - 18,00,000",
+    "created": "2026-08-15"
+  },
+  {
+    "id": "sample-5",
+    "source": "sample",
+    "title": "Data Scientist",
+    "company": "InsightWorks",
+    "location": "Pune, India",
+    "description": "Analyze data with Python, pandas, and SQL. Build predictive models and dashboards, and communicate insights to stakeholders. NLP experience a bonus.",
+    "url": "https://example.com/jobs/sample-5",
+    "salary": "9,00,000 - 16,00,000",
+    "created": "2026-08-10"
+  },
+  {
+    "id": "sample-6",
+    "source": "sample",
+    "title": "NLP Engineer",
+    "company": "Lingua Systems",
+    "location": "Remote (India)",
+    "description": "Work on text classification, embeddings, and retrieval-augmented generation. Python, Hugging Face Transformers, and vector search (FAISS) required.",
+    "url": "https://example.com/jobs/sample-6",
+    "salary": "11,00,000 - 19,00,000",
+    "created": "2026-08-21"
+  }
+]
