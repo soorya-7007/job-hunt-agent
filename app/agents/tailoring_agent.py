@@ -20,7 +20,7 @@ from typing import List, Optional
 from app import llm
 from app.agents.profile_agent import SKILL_HINTS
 from app.config import settings
-from app.schemas import CandidateProfile, JobPosting, TailoredResume
+from app.schemas import CandidateProfile, CoverLetter, JobPosting, TailoredResume
 
 TAILOR_SYSTEM = (
     "You are an expert technical resume writer. Rewrite a candidate's professional "
@@ -128,4 +128,80 @@ def _tailor_heuristic(
         summary=summary,
         bullets=bullets,
         keywords_covered=overlap,
+    )
+
+
+COVER_LETTER_SYSTEM = (
+    "You are a professional career advisor. Write a concise, compelling, 3-paragraph cover "
+    "letter for a candidate targeting a specific job.\n"
+    "ABSOLUTE RULES:\n"
+    "1. Use ONLY skills, projects, and experiences found in the candidate's resume.\n"
+    "2. Never invent employers, degrees, metrics, or technologies.\n"
+    "3. Highlight real overlap between the candidate's achievements and the role's needs.\n"
+    "4. Keep the tone authentic, enthusiastic, and direct."
+)
+
+
+def draft_cover_letter(
+    profile: CandidateProfile,
+    job: JobPosting,
+    resume_text: str = "",
+) -> CoverLetter:
+    """Produce an honest, targeted cover letter for ONE job."""
+    if settings.has_llm():
+        try:
+            return _cover_letter_with_llm(profile, job, resume_text)
+        except Exception as exc:
+            print(f"[tailoring_agent] LLM cover letter failed ({exc}); using template.")
+    return _cover_letter_heuristic(profile, job, resume_text)
+
+
+def _cover_letter_with_llm(
+    profile: CandidateProfile,
+    job: JobPosting,
+    resume_text: str,
+) -> CoverLetter:
+    keywords = jd_keywords(job)
+    user = (
+        f"CANDIDATE RESUME:\n{(resume_text or profile.to_text())[:5000]}\n\n"
+        f"TARGET JOB: {job.title} at {job.company}\n"
+        f"DESCRIPTION:\n{job.description[:2500]}\n\n"
+        f"KEY SKILLS TO HIGHLIGHT: {', '.join(keywords) or 'relevant background'}\n\n"
+        "Draft a 3-paragraph tailored cover letter. Return JSON with key: content (string)."
+    )
+    data = llm.chat_json(COVER_LETTER_SYSTEM, user)
+    content = str(data.get("content", "")).strip()
+    return CoverLetter(
+        job_id=job.id,
+        company=job.company,
+        role=job.title,
+        content=content or _cover_letter_heuristic(profile, job, resume_text).content,
+    )
+
+
+def _cover_letter_heuristic(
+    profile: CandidateProfile,
+    job: JobPosting,
+    resume_text: str,
+) -> CoverLetter:
+    have = {s.lower() for s in profile.skills}
+    overlap = [k for k in jd_keywords(job) if k in have]
+    strengths = ", ".join(overlap[:4]) if overlap else ", ".join(list(have)[:4]) or "software engineering"
+
+    candidate_name = profile.name or "Candidate"
+    paragraphs = [
+        f"Dear Hiring Team at {job.company},",
+        f"I am writing to express my strong interest in the {job.title} position. "
+        f"With hands-on experience in {strengths}, I am confident in my ability to deliver immediate value to your engineering team.",
+        f"Throughout my background, I have developed solutions utilizing modern best practices and solving real problems. "
+        f"The mission and technical focus at {job.company} align closely with my expertise and career direction.",
+        f"Thank you for your time and consideration. I welcome the opportunity to discuss how my background matches the needs of {job.company}.",
+        f"Sincerely,\n{candidate_name}",
+    ]
+
+    return CoverLetter(
+        job_id=job.id,
+        company=job.company,
+        role=job.title,
+        content="\n\n".join(paragraphs),
     )

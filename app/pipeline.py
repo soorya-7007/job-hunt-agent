@@ -1,28 +1,50 @@
-"""Orchestrator (simple sequential glue).
-
-These functions are the precursor to the LangGraph supervisor you'll build in
-Phase 3. Keeping the flow linear now makes the system easy to read, run, and test.
+"""Orchestrator and Supervisor entrypoints.
 
 Phase 1 flow:  resume text --> Profile --> Discovery --> Matching
 Phase 2 flow:  (one chosen job) --> Tailoring --> Critic --> [revise once] --> you approve
+Phase 3 flow:  LangGraph supervisor state graph orchestrating Profile, Discovery,
+               Matching, Tailoring, Company-Prep, and Tracker agents with LangSmith tracing.
 """
 from __future__ import annotations
 
 from typing import List, Optional, Tuple
 
+from app.agents.company_prep_agent import generate_interview_prep
 from app.agents.critic import critique
 from app.agents.discovery_agent import discover_jobs
 from app.agents.matching_agent import match_jobs
 from app.agents.profile_agent import build_profile
 from app.agents.tailoring_agent import tailor_resume
-from app.schemas import CandidateProfile, JobPosting, MatchResult, TailoredResume
+from app.orchestrator.graph import build_supervisor_graph, run_search_workflow
+from app.schemas import (
+    CandidateProfile,
+    InterviewPrep,
+    JobPosting,
+    MatchResult,
+    TailoredResume,
+)
 
 
 def run(
     resume_text: str,
     preferences: Optional[dict] = None,
     limit: int = 20,
+    use_graph: bool = True,
 ) -> Tuple[CandidateProfile, List[MatchResult]]:
+    """Execute the Profile -> Discovery -> Matching pipeline.
+
+    By default uses the LangGraph supervisor workflow, with a direct fallback.
+    """
+    if use_graph:
+        try:
+            state = run_search_workflow(resume_text, preferences, limit=limit)
+            profile = state.get("profile")
+            matches = state.get("matches", [])
+            if profile is not None:
+                return profile, matches
+        except Exception as exc:
+            print(f"[pipeline] LangGraph search workflow fallback triggered ({exc}).")
+
     profile = build_profile(resume_text, preferences)
     jobs = discover_jobs(profile, limit=limit)
     matches = match_jobs(profile, jobs)
@@ -39,8 +61,7 @@ def tailor_for_job(
 
     This is the agentic "reflection" loop: the Tailoring Agent writes a draft, the
     critic re-reads it, and if it flags any unsupported claim we ask the writer to
-    fix it (up to `max_revisions` times). The returned draft carries its final
-    critique so the UI can show you the verdict before you approve.
+    fix it (up to `max_revisions` times).
     """
     draft = tailor_resume(profile, job, resume_text)
     verdict = critique(draft, resume_text, profile)
@@ -55,4 +76,13 @@ def tailor_for_job(
 
     draft.critique = verdict
     return draft
+
+
+def prep_for_job(
+    profile: CandidateProfile,
+    job: JobPosting,
+    resume_text: str = "",
+) -> InterviewPrep:
+    """Run Company-Prep Agent: research company and generate an interview guide."""
+    return generate_interview_prep(profile, job, resume_text)
 
