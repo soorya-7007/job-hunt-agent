@@ -88,14 +88,14 @@ flowchart LR
 | **LangGraph** | Orchestration | Coordinates the 6 specialist agents using a `StateGraph` with human-in-the-loop approval gates. |
 | **FastAPI** | Backend | Serves the REST API endpoints and hosts the web frontend asynchronously. |
 | **LiteLLM** | AI/ML | Provider-agnostic LLM routing (easily swap between OpenAI, Gemini, and local Ollama models). |
-| **Sentence-Transformers** | AI/ML | Local text embeddings (`all-MiniLM-L6-v2`) used to compute cosine similarity for job ranking. |
+| **Sentence-Transformers (RAG)** | AI/ML | Local text embeddings (`all-MiniLM-L6-v2`) used to compute cosine similarity for job ranking (Retrieval-Augmented Generation). |
 | **Pydantic v2** | Validation | Defines strict data schemas to validate all LLM outputs and agent boundary contracts. |
 | **pdfplumber** | Parsing | Reliable text extraction from raw resume PDFs. |
 | **SQLite & SQLAlchemy** | Database | Persists candidate profiles and tracks application lifecycle states (Saved → Applied → Offer). |
 | **Streamlit & HTML/JS** | Frontend | Streamlit for visualizing agent internals; HTML/JS for the polished user-facing dashboard. |
 | **MCP (Model Context Protocol)** | Interop | Exposes the agent's job search capabilities directly to tools like Claude Desktop or Cursor. |
 | **Playwright** | Automation | Headless browser automation for the experimental form autofill agent. |
-| **DuckDuckGo Search** | Tooling | Live web research used by the Company-Prep agent to generate interview talking points. |
+| **DuckDuckGo Search (Web RAG)** | Tooling | Live web research used by the Company-Prep agent to fetch real-time context for interview prep generation. |
 | **Docker & Pytest** | DevOps | Docker for reproducible containerized deployments; Pytest for adversarial guardrail testing. |
 
 ---
