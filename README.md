@@ -82,10 +82,17 @@ flowchart LR
 
 ## 🛠 Tech Stack
 
-- **Backend**: Python, FastAPI, SQLAlchemy, SQLite
-- **AI/ML**: LangGraph, LiteLLM, Sentence-Transformers, DuckDuckGo Search
-- **Frontend**: Custom HTML/JS, Streamlit
-- **DevOps**: Docker, Pytest
+| Technology | Category | Purpose & How it's Used |
+|---|---|---|
+| **Python 3.10+** | Language | Core programming language driving all agent logic and backend services. |
+| **LangGraph** | Orchestration | Coordinates the 6 specialist agents using a `StateGraph` with human-in-the-loop approval gates. |
+| **FastAPI** | Backend | Serves the REST API endpoints and hosts the web frontend asynchronously. |
+| **LiteLLM** | AI/ML | Provider-agnostic LLM routing (easily swap between OpenAI, Gemini, and local Ollama models). |
+| **Sentence-Transformers** | AI/ML | Local text embeddings (`all-MiniLM-L6-v2`) used to compute cosine similarity for job ranking. |
+| **SQLite & SQLAlchemy** | Database | Persists candidate profiles and tracks application lifecycle states (Saved → Applied → Offer). |
+| **Streamlit & HTML/JS** | Frontend | Streamlit for visualizing agent internals; HTML/JS for the polished user-facing dashboard. |
+| **DuckDuckGo Search** | Tooling | Live web research used by the Company-Prep agent to generate interview talking points. |
+| **Docker & Pytest** | DevOps | Docker for reproducible containerized deployments; Pytest for adversarial guardrail testing. |
 
 ---
 
