@@ -7,17 +7,86 @@
   <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin=""/>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@500;600;700;800&display=swap" rel="stylesheet"/>
   <style>
     @layer base {
-      html, body { margin: 0; padding: 0; }
+      html, body { margin: 0; padding: 0; scroll-behavior: smooth; }
       body { overscroll-behavior: none; }
-      main > :first-child { margin-top: 0 !important; }
-      main > :last-child { margin-bottom: 0 !important; }
     }
-    ::-webkit-scrollbar { width: 6px; }
-    ::-webkit-scrollbar-track { background: transparent; }
-    ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+    ::-webkit-scrollbar { display: none; }
+    
+    /* Custom Scrollbar for Kanban */
+    .kanban-scroll::-webkit-scrollbar {
+      display: block;
+      height: 8px;
+    }
+    .kanban-scroll::-webkit-scrollbar-track {
+      background: transparent;
+    }
+    .kanban-scroll::-webkit-scrollbar-thumb {
+      background: #cbd5e1;
+      border-radius: 4px;
+    }
+    .kanban-scroll:hover::-webkit-scrollbar-thumb {
+      background: #94a3b8;
+    }
+
+    /* Custom Animations */
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+    @keyframes pulse-glow {
+      0%, 100% { opacity: 0.5; transform: scale(1); }
+      50% { opacity: 0.8; transform: scale(1.05); }
+    }
+    @keyframes gradient-x {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    .animate-float { animation: float 6s ease-in-out infinite; }
+    .animate-float-delayed { animation: float 6s ease-in-out 3s infinite; }
+    .animate-gradient { background-size: 200% 200%; animation: gradient-x 4s ease infinite; }
+    
+    /* Reveal Animation Classes */
+    .reveal {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: all 0.8s cubic-bezier(0.5, 0, 0, 1);
+    }
+    .reveal.active {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Glassmorphism utility */
+    .glass {
+      background: rgba(255, 255, 255, 0.7);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.5);
+    }
+
+    /* Interactive Button */
+    .btn-interactive {
+      position: relative;
+      overflow: hidden;
+      transition: all 0.3s ease;
+    }
+    .btn-interactive::after {
+      content: '';
+      position: absolute;
+      top: 50%; left: 50%;
+      width: 150%; height: 150%;
+      background: radial-gradient(circle, rgba(255,255,255,0.3) 0%, transparent 60%);
+      transform: translate(-50%, -50%) scale(0);
+      transition: transform 0.5s ease;
+    }
+    .btn-interactive:hover::after {
+      transform: translate(-50%, -50%) scale(1);
+    }
   </style>
   <script src="https://cdn.tailwindcss.com"></script>
   <script id="tailwind-config">
@@ -25,261 +94,223 @@
       darkMode: "class",
       theme: {
         extend: {
-          colors: {
-            "inverse-surface": "#213145",
-            "on-error-container": "#93000a",
-            "on-surface-variant": "#434655",
-            "on-tertiary-fixed-variant": "#005236",
-            "on-secondary-container": "#5c647a",
-            "on-primary-fixed": "#00174b",
-            "error": "#ba1a1a",
-            "inverse-on-surface": "#eaf1ff",
-            "secondary-container": "#dae2fd",
-            "surface-container-high": "#dce9ff",
-            "primary-fixed": "#dbe1ff",
-            "tertiary-container": "#007d55",
-            "on-primary": "#ffffff",
-            "on-background": "#0b1c30",
-            "outline-variant": "#c3c6d7",
-            "tertiary-fixed-dim": "#4edea3",
-            "surface-container-low": "#eff4ff",
-            "background": "#f8f9ff",
-            "on-secondary-fixed-variant": "#3f465c",
-            "surface": "#f8f9ff",
-            "on-primary-container": "#eeefff",
-            "error-container": "#ffdad6",
-            "inverse-primary": "#b4c5ff",
-            "on-tertiary": "#ffffff",
-            "primary-container": "#2563eb",
-            "on-tertiary-container": "#bdffdb",
-            "primary-fixed-dim": "#b4c5ff",
-            "secondary-fixed-dim": "#bec6e0",
-            "surface-tint": "#0053db",
-            "tertiary-fixed": "#6ffbbe",
-            "on-tertiary-fixed": "#002113",
-            "on-secondary": "#ffffff",
-            "on-error": "#ffffff",
-            "surface-variant": "#d3e4fe",
-            "surface-container-highest": "#d3e4fe",
-            "primary": "#004ac6",
-            "surface-container-lowest": "#ffffff",
-            "secondary": "#565e74",
-            "surface-bright": "#f8f9ff",
-            "outline": "#737686",
-            "secondary-fixed": "#dae2fd",
-            "on-secondary-fixed": "#131b2e",
-            "tertiary": "#006242",
-            "surface-container": "#e5eeff",
-            "on-primary-fixed-variant": "#003ea8",
-            "on-surface": "#0b1c30",
-            "surface-dim": "#cbdbf5"
-          },
-          borderRadius: { DEFAULT: "0.25rem", lg: "0.5rem", xl: "0.75rem", full: "9999px" },
-          spacing: {
-            "space-10": "2.5rem", "space-5": "1.25rem", "space-2": "0.5rem", "space-16": "4rem",
-            "space-8": "2rem", gutter: "1rem", "space-1": "0.25rem", "container-max": "80rem",
-            "space-6": "1.5rem", "space-12": "3rem", "space-3": "0.75rem", "space-4": "1rem",
-            "gutter-lg": "1.5rem"
-          },
           fontFamily: {
-            "label-md": ["Inter"], "body-sm": ["Inter"], "headline-sm": ["Inter"],
-            "display-lg-mobile": ["Inter"], "display-lg": ["Inter"], "body-lg": ["Inter"],
-            "headline-lg": ["Inter"], "body-md": ["Inter"], "label-sm": ["Inter"],
-            "headline-md": ["Inter"], "label-xs": ["Inter"]
+            sans: ['Inter', 'sans-serif'],
+            display: ['Outfit', 'sans-serif'],
+          },
+          colors: {
+            primary: "#004ac6",
+            "primary-container": "#2563eb",
+            "on-primary": "#ffffff",
+            tertiary: "#006242",
+            "surface": "#f8f9ff",
+            "surface-container-lowest": "#ffffff",
+            "surface-container-low": "#eff4ff",
+            "on-surface": "#0b1c30",
+            "on-surface-variant": "#434655",
           }
         }
       }
     };
   </script>
 </head>
-<body class="bg-surface font-body-md text-body-md text-on-surface antialiased min-h-screen flex flex-col justify-between">
+<body class="bg-surface font-sans text-on-surface antialiased min-h-screen flex flex-col justify-between selection:bg-primary selection:text-white">
+
   <!-- Shared Top Nav Header -->
-  <header class="sticky top-0 z-50 w-full bg-surface-container-lowest/90 backdrop-blur-md border-b border-outline-variant/30 shadow-[0_1px_3px_0_rgba(15,23,42,0.05)]">
-    <div class="h-16 max-w-container-max mx-auto px-gutter-lg flex items-center justify-between gap-space-4">
-      <div class="flex items-center gap-space-8">
-        <a class="flex items-center gap-space-3" href="/">
-          <div class="w-9 h-9 rounded-lg bg-primary-container flex items-center justify-center text-white shadow-sm font-bold text-lg">🎯</div>
-          <span class="font-headline-sm text-headline-sm tracking-tight text-on-surface font-bold">JobHunt AI</span>
+  <header class="fixed top-0 z-50 w-full glass shadow-sm transition-all duration-300" id="navbar">
+    <div class="h-16 max-w-7xl mx-auto px-6 flex items-center justify-between">
+      <div class="flex items-center gap-8">
+        <a class="flex items-center gap-3 group" href="/">
+          <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-primary to-primary-container flex items-center justify-center text-white shadow-lg group-hover:scale-110 transition-transform duration-300 font-bold text-xl">🎯</div>
+          <span class="font-display text-xl tracking-tight font-bold bg-clip-text text-transparent bg-gradient-to-r from-gray-900 to-gray-600">JobHunt AI</span>
         </a>
-        <nav class="hidden lg:flex items-center gap-space-6">
-          <a class="font-label-md text-label-md text-on-surface-variant hover:text-on-surface transition-colors" href="/jobs">Jobs</a>
-          <a class="font-label-md text-label-md text-primary font-bold transition-colors" href="/dashboard">Dashboard</a>
-          <a class="font-label-md text-label-md text-on-surface-variant hover:text-on-surface transition-colors" href="/profile">Profile</a>
-          <a class="font-label-md text-label-md text-primary hover:text-on-surface transition-colors flex items-center gap-1" href="/chat"><span class="material-symbols-outlined text-sm">chat</span> Assistant</a>
+        <nav class="hidden md:flex items-center gap-8">
+          <a class="text-sm font-medium text-gray-500 hover:text-gray-900 transition-colors" href="/jobs">Jobs</a>
+          <a class="text-sm font-semibold text-primary hover:scale-105 transition-transform" href="/dashboard">Dashboard</a>
+          <a class="text-sm font-medium text-gray-500 hover:text-gray-900 transition-colors" href="/profile">Profile</a>
+          <a class="text-sm font-medium text-gray-500 hover:text-primary-container transition-colors flex items-center gap-1 group" href="/chat">
+            <span class="material-symbols-outlined text-sm group-hover:animate-bounce">chat</span> Assistant
+          </a>
         </nav>
       </div>
-      <div class="flex items-center gap-space-4">
-        <a href="/jobs" class="h-9 px-4 rounded-lg bg-primary text-white font-label-md flex items-center gap-2 hover:bg-primary-container shadow-sm">
+      <div class="flex items-center gap-4">
+        <a href="/jobs" class="h-9 px-4 rounded-lg bg-primary text-white font-bold text-sm flex items-center gap-2 hover:bg-primary-container shadow-md hover:-translate-y-0.5 transition-all">
           <span class="material-symbols-outlined text-base">search</span>
           <span>Find Jobs</span>
         </a>
-        <a href="/profile" class="flex items-center gap-space-2 pl-space-2 border-l border-outline-variant/30">
-          <div class="w-8 h-8 rounded-full bg-primary-container text-white flex items-center justify-center font-bold text-sm">S</div>
-          <span class="hidden sm:inline-block font-label-sm text-label-sm text-on-surface">Sooryansh</span>
+        <a href="/profile" class="flex items-center gap-3 hover:bg-gray-100 p-1.5 rounded-full transition-colors cursor-pointer border-l border-gray-200 pl-4 ml-2">
+          <div class="w-9 h-9 rounded-full bg-gradient-to-tr from-primary to-purple-500 text-white flex items-center justify-center font-bold text-sm shadow-md">S</div>
         </a>
       </div>
     </div>
   </header>
 
-  <main class="w-full flex-1 bg-surface pt-6 pb-16">
-    <div class="max-w-container-max mx-auto px-gutter-lg space-y-8">
+  <main class="w-full flex-1 pt-24 pb-16 relative overflow-hidden">
+    <!-- Ambient Glow Decorator -->
+    <div class="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[500px] bg-gradient-to-tr from-blue-400/10 via-teal-400/10 to-transparent blur-[100px] pointer-events-none rounded-full -z-10" style="animation: pulse-glow 10s infinite alternate;"></div>
+
+    <div class="max-w-7xl mx-auto px-6 space-y-8">
+      
       <!-- Greeting & Header Bar -->
-      <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-6 border-b border-outline-variant/30">
+      <div class="reveal flex flex-col md:flex-row md:items-center justify-between gap-4 pb-6 border-b border-gray-200/60">
         <div>
           <div class="flex items-center gap-3">
-            <h1 class="font-display-lg text-headline-lg md:text-display-lg text-on-surface font-bold tracking-tight">Good morning, Sooryansh 👋</h1>
-            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full bg-tertiary-fixed text-on-tertiary-fixed font-label-xs font-semibold">Active Pipeline</span>
+            <h1 class="font-display text-4xl text-gray-900 font-extrabold tracking-tight">Good morning, Sooryansh 👋</h1>
+            <span class="inline-flex items-center px-3 py-1 rounded-full bg-blue-100 text-blue-700 font-bold text-xs shadow-sm">Active Pipeline</span>
           </div>
-          <p class="font-body-md text-on-surface-variant mt-1">Here is your live multi-agent application tracking status and actionable next steps.</p>
+          <p class="text-gray-500 mt-2 font-medium">Here is your live multi-agent application tracking status and actionable next steps.</p>
         </div>
         <div class="flex items-center gap-3">
-          <a href="/jobs" class="h-10 px-5 rounded-lg bg-primary hover:bg-primary-container text-white font-label-md flex items-center gap-2 shadow-sm transition-all">
+          <a href="/jobs" class="h-11 px-5 rounded-xl bg-white border border-gray-200 text-gray-700 font-bold text-sm flex items-center gap-2 shadow-sm hover:shadow-md hover:border-primary hover:text-primary transition-all">
             <span class="material-symbols-outlined text-base">add</span>
-            <span>Discover More Roles</span>
+            <span>Discover Roles</span>
           </a>
         </div>
       </div>
 
       <!-- Action Required Alert Banner -->
-      <div id="pendingBanner" class="p-4 bg-surface-container-lowest border-l-4 border-primary rounded-xl shadow-sm space-y-2 hidden">
+      <div id="pendingBanner" class="reveal p-5 bg-white border border-rose-200 border-l-4 border-l-rose-500 rounded-2xl shadow-md space-y-3 hidden" style="transition-delay: 100ms;">
         <div class="flex items-center justify-between">
-          <span class="font-headline-sm text-primary font-bold flex items-center gap-2">
-            <span class="material-symbols-outlined">alarm</span>
+          <span class="font-display text-lg text-rose-600 font-bold flex items-center gap-2">
+            <span class="material-symbols-outlined animate-pulse">alarm</span>
             <span>Priority Action Items (<span id="pendingCount">0</span>)</span>
           </span>
         </div>
-        <div id="pendingList" class="space-y-1.5 pt-1"></div>
+        <div id="pendingList" class="space-y-2 pt-1"></div>
       </div>
 
       <!-- 4 Bento Metric Cards -->
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+      <div class="reveal grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6" style="transition-delay: 200ms;">
+        
         <!-- Metric 1: Total Applications -->
-        <div class="p-5 rounded-xl bg-surface-container-lowest shadow-sm flex flex-col justify-between">
+        <div class="p-6 rounded-2xl bg-white shadow-sm hover:shadow-md border border-gray-100 flex flex-col justify-between transition-transform transform hover:-translate-y-1">
           <div class="flex items-center justify-between">
-            <span class="font-label-sm uppercase tracking-wider text-secondary font-semibold">Tracked Roles</span>
-            <div class="w-9 h-9 rounded-lg bg-primary-fixed flex items-center justify-center text-primary">
-              <span class="material-symbols-outlined text-xl">folder_shared</span>
+            <span class="text-xs uppercase tracking-wider text-gray-500 font-bold">Tracked Roles</span>
+            <div class="w-12 h-12 rounded-xl bg-blue-50 flex items-center justify-center text-blue-600">
+              <span class="material-symbols-outlined text-2xl">folder_shared</span>
             </div>
           </div>
-          <div class="my-3">
-            <div id="metricTotal" class="font-display-lg text-display-lg text-on-surface font-bold">0</div>
+          <div class="my-4">
+            <div id="metricTotal" class="font-display text-5xl text-gray-900 font-black tracking-tighter">0</div>
           </div>
-          <span class="text-xs text-secondary font-medium">In SQLite persistence</span>
+          <span class="text-xs text-gray-400 font-medium">In SQLite persistence</span>
         </div>
 
         <!-- Metric 2: Tailored & Ready -->
-        <div class="p-5 rounded-xl bg-surface-container-lowest shadow-sm flex flex-col justify-between">
+        <div class="p-6 rounded-2xl bg-white shadow-sm hover:shadow-md border border-gray-100 flex flex-col justify-between transition-transform transform hover:-translate-y-1">
           <div class="flex items-center justify-between">
-            <span class="font-label-sm uppercase tracking-wider text-secondary font-semibold">Tailored & Checked</span>
-            <div class="w-9 h-9 rounded-lg bg-tertiary-fixed flex items-center justify-center text-on-tertiary-fixed">
-              <span class="material-symbols-outlined text-xl">verified</span>
+            <span class="text-xs uppercase tracking-wider text-gray-500 font-bold">Tailored</span>
+            <div class="w-12 h-12 rounded-xl bg-purple-50 flex items-center justify-center text-purple-600">
+              <span class="material-symbols-outlined text-2xl">verified_user</span>
             </div>
           </div>
-          <div class="my-3">
-            <div id="metricTailored" class="font-display-lg text-display-lg text-on-surface font-bold">0</div>
+          <div class="my-4">
+            <div id="metricTailored" class="font-display text-5xl text-gray-900 font-black tracking-tighter">0</div>
           </div>
-          <span class="text-xs text-tertiary font-medium">Critic verified</span>
+          <span class="text-xs text-purple-500 font-bold">Critic verified</span>
         </div>
 
         <!-- Metric 3: Active In Flight -->
-        <div class="p-5 rounded-xl bg-surface-container-lowest shadow-sm flex flex-col justify-between">
+        <div class="p-6 rounded-2xl bg-white shadow-sm hover:shadow-md border border-gray-100 flex flex-col justify-between transition-transform transform hover:-translate-y-1">
           <div class="flex items-center justify-between">
-            <span class="font-label-sm uppercase tracking-wider text-secondary font-semibold">Active Applications</span>
-            <div class="w-9 h-9 rounded-lg bg-secondary-container flex items-center justify-center text-primary">
-              <span class="material-symbols-outlined text-xl">send</span>
+            <span class="text-xs uppercase tracking-wider text-gray-500 font-bold">Active Flight</span>
+            <div class="w-12 h-12 rounded-xl bg-amber-50 flex items-center justify-center text-amber-600">
+              <span class="material-symbols-outlined text-2xl">flight_takeoff</span>
             </div>
           </div>
-          <div class="my-3">
-            <div id="metricActive" class="font-display-lg text-display-lg text-on-surface font-bold">0</div>
+          <div class="my-4">
+            <div id="metricActive" class="font-display text-5xl text-gray-900 font-black tracking-tighter">0</div>
           </div>
-          <span class="text-xs text-primary font-medium">Applied or in Interview</span>
+          <span class="text-xs text-amber-600 font-bold">Applied or in Interview</span>
         </div>
 
         <!-- Metric 4: High Fit Roles -->
-        <div class="p-5 rounded-xl bg-surface-container-lowest shadow-sm flex flex-col justify-between">
+        <div class="p-6 rounded-2xl bg-white shadow-sm hover:shadow-md border border-gray-100 flex flex-col justify-between transition-transform transform hover:-translate-y-1">
           <div class="flex items-center justify-between">
-            <span class="font-label-sm uppercase tracking-wider text-secondary font-semibold">High-Fit (≥80%)</span>
-            <div class="w-9 h-9 rounded-lg bg-surface-container flex items-center justify-center text-primary">
-              <span class="material-symbols-outlined text-xl">stars</span>
+            <span class="text-xs uppercase tracking-wider text-gray-500 font-bold">High-Fit</span>
+            <div class="w-12 h-12 rounded-xl bg-emerald-50 flex items-center justify-center text-emerald-600">
+              <span class="material-symbols-outlined text-2xl">workspace_premium</span>
             </div>
           </div>
-          <div class="my-3">
-            <div id="metricHighFit" class="font-display-lg text-display-lg text-on-surface font-bold">0</div>
+          <div class="my-4">
+            <div id="metricHighFit" class="font-display text-5xl text-gray-900 font-black tracking-tighter">0</div>
           </div>
-          <span class="text-xs text-secondary font-medium">Prime targets</span>
+          <span class="text-xs text-emerald-600 font-bold">Score ≥ 80%</span>
         </div>
       </div>
 
       <!-- Application Pipeline Kanban Board -->
-      <section class="space-y-4">
+      <section class="reveal space-y-6 pt-6" style="transition-delay: 300ms;">
         <div class="flex items-center justify-between">
-          <div class="flex items-center gap-3">
-            <h2 class="font-headline-md text-headline-md text-on-surface font-bold">Application Pipeline Kanban</h2>
-            <span id="kanbanBadge" class="font-label-sm px-2.5 py-0.5 rounded-full bg-surface-container-high text-on-surface font-semibold">0 Roles</span>
+          <div class="flex items-center gap-4">
+            <h2 class="font-display text-2xl text-gray-900 font-bold">Application Pipeline</h2>
+            <span id="kanbanBadge" class="text-xs px-3 py-1 rounded-full bg-gray-100 text-gray-600 font-bold border border-gray-200">0 Roles</span>
           </div>
         </div>
 
         <!-- 5 Columns Kanban Grid -->
-        <div class="grid grid-cols-1 md:grid-cols-5 gap-4 items-start overflow-x-auto pb-4">
+        <div class="grid grid-cols-1 md:grid-cols-5 gap-6 items-start overflow-x-auto pb-6 kanban-scroll min-w-full">
+          
           <!-- Col 1: Saved -->
-          <div class="bg-surface-container-low/70 p-3.5 rounded-xl flex flex-col min-w-[220px] space-y-3">
-            <div class="flex items-center justify-between px-1">
-              <span class="font-headline-sm text-sm font-bold text-on-surface flex items-center gap-2">
-                <span class="w-2.5 h-2.5 rounded-full bg-secondary"></span>
+          <div class="bg-gray-50/50 p-4 rounded-3xl flex flex-col min-w-[280px] space-y-4 border border-gray-100 shadow-inner">
+            <div class="flex items-center justify-between px-2">
+              <span class="font-display text-sm font-bold text-gray-700 flex items-center gap-2">
+                <span class="w-3 h-3 rounded-full bg-gray-400"></span>
                 <span>Saved</span>
               </span>
-              <span id="count-saved" class="font-label-xs bg-surface-container px-2 py-0.5 rounded font-bold">0</span>
+              <span id="count-saved" class="text-xs bg-white text-gray-600 px-2 py-1 rounded-full font-bold shadow-sm border border-gray-200">0</span>
             </div>
-            <div id="cards-saved" class="space-y-2.5 min-h-[140px]"></div>
+            <div id="cards-saved" class="space-y-3 min-h-[200px]"></div>
           </div>
 
           <!-- Col 2: Tailored -->
-          <div class="bg-surface-container-low/70 p-3.5 rounded-xl flex flex-col min-w-[220px] space-y-3">
-            <div class="flex items-center justify-between px-1">
-              <span class="font-headline-sm text-sm font-bold text-on-surface flex items-center gap-2">
-                <span class="w-2.5 h-2.5 rounded-full bg-primary-container"></span>
+          <div class="bg-blue-50/30 p-4 rounded-3xl flex flex-col min-w-[280px] space-y-4 border border-blue-50 shadow-inner">
+            <div class="flex items-center justify-between px-2">
+              <span class="font-display text-sm font-bold text-gray-700 flex items-center gap-2">
+                <span class="w-3 h-3 rounded-full bg-blue-500 shadow-[0_0_8px_rgba(59,130,246,0.6)]"></span>
                 <span>Tailored</span>
               </span>
-              <span id="count-tailored" class="font-label-xs bg-surface-container px-2 py-0.5 rounded font-bold">0</span>
+              <span id="count-tailored" class="text-xs bg-white text-gray-600 px-2 py-1 rounded-full font-bold shadow-sm border border-gray-200">0</span>
             </div>
-            <div id="cards-tailored" class="space-y-2.5 min-h-[140px]"></div>
+            <div id="cards-tailored" class="space-y-3 min-h-[200px]"></div>
           </div>
 
           <!-- Col 3: Applied -->
-          <div class="bg-surface-container-low/70 p-3.5 rounded-xl flex flex-col min-w-[220px] space-y-3">
-            <div class="flex items-center justify-between px-1">
-              <span class="font-headline-sm text-sm font-bold text-on-surface flex items-center gap-2">
-                <span class="w-2.5 h-2.5 rounded-full bg-primary"></span>
+          <div class="bg-indigo-50/30 p-4 rounded-3xl flex flex-col min-w-[280px] space-y-4 border border-indigo-50 shadow-inner">
+            <div class="flex items-center justify-between px-2">
+              <span class="font-display text-sm font-bold text-gray-700 flex items-center gap-2">
+                <span class="w-3 h-3 rounded-full bg-indigo-500 shadow-[0_0_8px_rgba(99,102,241,0.6)]"></span>
                 <span>Applied</span>
               </span>
-              <span id="count-applied" class="font-label-xs bg-surface-container px-2 py-0.5 rounded font-bold">0</span>
+              <span id="count-applied" class="text-xs bg-white text-gray-600 px-2 py-1 rounded-full font-bold shadow-sm border border-gray-200">0</span>
             </div>
-            <div id="cards-applied" class="space-y-2.5 min-h-[140px]"></div>
+            <div id="cards-applied" class="space-y-3 min-h-[200px]"></div>
           </div>
 
           <!-- Col 4: Interview -->
-          <div class="bg-surface-container-low/70 p-3.5 rounded-xl flex flex-col min-w-[220px] space-y-3">
-            <div class="flex items-center justify-between px-1">
-              <span class="font-headline-sm text-sm font-bold text-on-surface flex items-center gap-2">
-                <span class="w-2.5 h-2.5 rounded-full bg-tertiary"></span>
+          <div class="bg-purple-50/30 p-4 rounded-3xl flex flex-col min-w-[280px] space-y-4 border border-purple-50 shadow-inner">
+            <div class="flex items-center justify-between px-2">
+              <span class="font-display text-sm font-bold text-gray-700 flex items-center gap-2">
+                <span class="w-3 h-3 rounded-full bg-purple-500 shadow-[0_0_8px_rgba(168,85,247,0.6)]"></span>
                 <span>Interview</span>
               </span>
-              <span id="count-interview" class="font-label-xs bg-surface-container px-2 py-0.5 rounded font-bold">0</span>
+              <span id="count-interview" class="text-xs bg-white text-gray-600 px-2 py-1 rounded-full font-bold shadow-sm border border-gray-200">0</span>
             </div>
-            <div id="cards-interview" class="space-y-2.5 min-h-[140px]"></div>
+            <div id="cards-interview" class="space-y-3 min-h-[200px]"></div>
           </div>
 
           <!-- Col 5: Offer -->
-          <div class="bg-surface-container-low/70 p-3.5 rounded-xl flex flex-col min-w-[220px] space-y-3">
-            <div class="flex items-center justify-between px-1">
-              <span class="font-headline-sm text-sm font-bold text-on-surface flex items-center gap-2">
-                <span class="w-2.5 h-2.5 rounded-full bg-green-500"></span>
+          <div class="bg-emerald-50/30 p-4 rounded-3xl flex flex-col min-w-[280px] space-y-4 border border-emerald-50 shadow-inner">
+            <div class="flex items-center justify-between px-2">
+              <span class="font-display text-sm font-bold text-gray-700 flex items-center gap-2">
+                <span class="w-3 h-3 rounded-full bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.6)]"></span>
                 <span>Offer</span>
               </span>
-              <span id="count-offer" class="font-label-xs bg-surface-container px-2 py-0.5 rounded font-bold">0</span>
+              <span id="count-offer" class="text-xs bg-white text-gray-600 px-2 py-1 rounded-full font-bold shadow-sm border border-gray-200">0</span>
             </div>
-            <div id="cards-offer" class="space-y-2.5 min-h-[140px]"></div>
+            <div id="cards-offer" class="space-y-3 min-h-[200px]"></div>
           </div>
+          
         </div>
       </section>
     </div>
@@ -287,6 +318,34 @@
 
   <script src="/static/js/api.js"></script>
   <script>
+    // Reveal Animations
+    const revealElements = document.querySelectorAll('.reveal');
+    const revealCallback = (entries, observer) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('active');
+          observer.unobserve(entry.target);
+        }
+      });
+    };
+    const revealObserver = new IntersectionObserver(revealCallback, { threshold: 0.1 });
+    revealElements.forEach(el => revealObserver.observe(el));
+    setTimeout(() => {
+      document.querySelectorAll('.reveal').forEach(el => el.classList.add('active'));
+    }, 100);
+
+    // Navbar Glassmorphism
+    window.addEventListener('scroll', () => {
+      const navbar = document.getElementById('navbar');
+      if (window.scrollY > 20) {
+        navbar.classList.add('shadow-md', 'bg-white/90');
+        navbar.classList.remove('shadow-sm', 'glass');
+      } else {
+        navbar.classList.add('shadow-sm', 'glass');
+        navbar.classList.remove('shadow-md', 'bg-white/90');
+      }
+    });
+
     const STAGES = ['saved', 'tailored', 'applied', 'interview', 'offer', 'rejected'];
 
     window.addEventListener('DOMContentLoaded', async () => {
@@ -316,10 +375,10 @@
           document.getElementById('pendingCount').textContent = dash.pending_actions.length;
           dash.pending_actions.forEach(a => {
             const item = document.createElement('div');
-            item.className = 'flex items-center justify-between text-sm py-1 border-b border-outline-variant/20 last:border-0';
+            item.className = 'flex flex-col sm:flex-row sm:items-center justify-between text-sm py-2 border-b border-rose-100 last:border-0 gap-2';
             item.innerHTML = `
-              <span>• <strong>${a.job_title}</strong> at ${a.company} — <span class="text-secondary">${a.action}</span></span>
-              <span class="px-2 py-0.5 rounded text-xs font-bold uppercase ${a.priority === 'urgent' ? 'bg-error text-white' : 'bg-secondary-container text-primary'}">${a.priority}</span>
+              <span class="text-gray-700">• <strong>${a.job_title}</strong> at ${a.company} — <span class="text-rose-600">${a.action}</span></span>
+              <span class="px-2.5 py-1 rounded-full text-[10px] font-bold uppercase shadow-sm whitespace-nowrap self-start sm:self-auto ${a.priority === 'urgent' ? 'bg-rose-500 text-white' : 'bg-rose-50 text-rose-600 border border-rose-200'}">${a.priority}</span>
             `;
             list.appendChild(item);
           });
@@ -348,36 +407,47 @@
         if (!container) return;
 
         const card = document.createElement('div');
-        card.className = 'p-3 bg-surface-container-lowest rounded-xl shadow-sm hover:shadow-md transition-all space-y-2.5 border border-outline-variant/20';
+        card.className = 'p-4 bg-white rounded-2xl shadow-sm hover:shadow-md transition-all space-y-3 border border-gray-100 cursor-grab transform hover:-translate-y-1';
 
         const nextStageIdx = STAGES.indexOf(stage) + 1;
         const nextStage = nextStageIdx < STAGES.length - 1 ? STAGES[nextStageIdx] : null;
 
+        let scoreBgClass = 'bg-gray-100 text-gray-600';
+        if (app.fit_score >= 80) scoreBgClass = 'bg-emerald-100 text-emerald-700';
+        else if (app.fit_score >= 60) scoreBgClass = 'bg-amber-100 text-amber-700';
+
         card.innerHTML = `
           <div class="flex items-start justify-between gap-2">
             <div class="min-w-0">
-              <span class="font-label-xs text-secondary block truncate">${app.company}</span>
-              <h4 class="font-headline-sm text-sm font-bold text-on-surface truncate">${app.job_title}</h4>
+              <span class="text-[10px] uppercase tracking-wider font-bold text-gray-400 block truncate">${app.company}</span>
+              <h4 class="font-display text-sm font-bold text-gray-900 truncate mt-0.5">${app.job_title}</h4>
             </div>
-            <span class="font-label-xs text-tertiary font-bold">${app.fit_score}%</span>
+            <span class="text-xs px-2 py-0.5 rounded-full font-bold ${scoreBgClass}">${app.fit_score}%</span>
           </div>
 
-          <div class="flex items-center justify-between pt-1 border-t border-outline-variant/20 font-label-xs">
+          <div class="flex flex-col gap-2 pt-2 border-t border-gray-100 mt-2">
             ${nextStage ? `
-              <div class="flex flex-col w-full gap-2 mt-2">
-                <a href="${app.url || '/apply-dummy'}" target="_blank" class="w-full justify-center text-white bg-primary hover:bg-primary-container px-3 py-1.5 rounded-lg shadow-sm font-semibold flex items-center gap-1.5 transition-colors text-sm">
-                  <span>Apply Now</span>
-                  <span class="material-symbols-outlined text-[16px]">open_in_new</span>
-                </a>
-                <button onclick="advanceApp(${app.id}, '${nextStage}')" class="w-full justify-center text-primary hover:bg-surface-variant px-3 py-1.5 rounded-lg font-semibold flex items-center gap-1.5 transition-colors border border-primary/20 text-sm">
-                  <span>Move to ${nextStage.charAt(0).toUpperCase() + nextStage.slice(1)}</span>
-                  <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+              <a href="${app.url || '/apply-dummy'}" target="_blank" class="w-full justify-center text-gray-700 bg-white border border-gray-200 hover:border-primary hover:text-primary px-3 py-1.5 rounded-xl shadow-sm font-bold flex items-center gap-1 transition-all text-xs">
+                <span>View / Apply</span>
+                <span class="material-symbols-outlined text-[14px]">open_in_new</span>
+              </a>
+              <div class="flex items-center gap-2">
+                <button onclick="advanceApp(${app.id}, '${nextStage}')" class="flex-1 justify-center text-white bg-gray-900 hover:bg-black px-3 py-1.5 rounded-xl font-bold flex items-center gap-1 transition-all shadow-sm text-xs">
+                  <span>To ${nextStage.charAt(0).toUpperCase() + nextStage.slice(1)}</span>
+                  <span class="material-symbols-outlined text-[14px]">arrow_forward</span>
+                </button>
+                <button onclick="deleteApp(${app.id})" class="px-2 py-1.5 rounded-xl text-gray-400 hover:bg-rose-50 hover:text-rose-500 transition-colors bg-white border border-gray-200 hover:border-rose-200" title="Delete">
+                  <span class="material-symbols-outlined text-[16px]">delete</span>
                 </button>
               </div>
-            ` : '<span class="text-green-600 font-bold">Offer Accepted 🎉</span>'}
-            <button onclick="deleteApp(${app.id})" class="text-outline hover:text-error" title="Delete">
-              <span class="material-symbols-outlined text-base">delete</span>
-            </button>
+            ` : `
+              <div class="flex items-center justify-between w-full">
+                <span class="text-emerald-600 font-bold text-sm bg-emerald-50 px-3 py-1 rounded-lg border border-emerald-100 flex items-center gap-1"><span class="material-symbols-outlined text-sm">celebration</span> Accepted</span>
+                <button onclick="deleteApp(${app.id})" class="text-gray-400 hover:text-rose-500 transition-colors" title="Delete">
+                  <span class="material-symbols-outlined text-[16px]">delete</span>
+                </button>
+              </div>
+            `}
           </div>
         `;
         container.appendChild(card);

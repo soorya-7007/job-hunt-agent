@@ -1,96 +1,147 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-  <meta charset="utf-8" />
-  <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
   <title>Chat Assistant — JobHunt AI</title>
-  <link
-    href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"
-    rel="stylesheet" />
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="" />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin=""/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@500;600;700;800&display=swap" rel="stylesheet"/>
+  <style>
+    @layer base {
+      html, body { margin: 0; padding: 0; scroll-behavior: smooth; }
+      body { overscroll-behavior: none; }
+    }
+    ::-webkit-scrollbar { display: none; }
+    
+    .chat-scroll::-webkit-scrollbar {
+      display: block;
+      width: 6px;
+    }
+    .chat-scroll::-webkit-scrollbar-track {
+      background: transparent;
+    }
+    .chat-scroll::-webkit-scrollbar-thumb {
+      background: #cbd5e1;
+      border-radius: 4px;
+    }
+
+    /* Custom Animations */
+    @keyframes pulse-glow {
+      0%, 100% { opacity: 0.5; transform: scale(1); }
+      50% { opacity: 0.8; transform: scale(1.05); }
+    }
+    @keyframes slide-up {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    
+    .animate-slide-up { animation: slide-up 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+
+    /* Glassmorphism utility */
+    .glass {
+      background: rgba(255, 255, 255, 0.7);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.5);
+    }
+  </style>
   <script src="https://cdn.tailwindcss.com"></script>
-  <script>
+  <script id="tailwind-config">
     tailwind.config = {
       darkMode: "class",
       theme: {
         extend: {
-          fontFamily: { sans: ["Inter", "sans-serif"] },
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+            display: ['Outfit', 'sans-serif'],
+          },
           colors: {
-            "surface-1": "#0f172a",
-            "surface-2": "#1e293b",
-            "surface-3": "#334155",
-            "accent-primary": "#3b82f6",
-            "accent-secondary": "#6366f1"
+            primary: "#004ac6",
+            "primary-container": "#2563eb",
+            "on-primary": "#ffffff",
           }
         }
       }
     };
   </script>
 </head>
+<body class="bg-gray-50 font-sans text-gray-900 antialiased h-screen flex flex-col overflow-hidden selection:bg-primary selection:text-white">
 
-<body class="bg-surface-1 text-slate-200 antialiased h-screen flex flex-col font-sans">
-
-  <!-- Navigation -->
-  <header
-    class="bg-surface-2/80 backdrop-blur-md border-b border-surface-3 flex items-center justify-between px-6 h-16 sticky top-0 z-50 shrink-0">
-    <div class="flex items-center gap-2">
-      <div
-        class="w-8 h-8 rounded-lg bg-gradient-to-br from-accent-primary to-accent-secondary flex items-center justify-center">
-        <span class="material-symbols-outlined text-white text-lg">work</span>
+  <!-- Shared Top Nav Header -->
+  <header class="fixed top-0 z-50 w-full glass shadow-sm transition-all duration-300" id="navbar">
+    <div class="h-16 max-w-7xl mx-auto px-6 flex items-center justify-between">
+      <div class="flex items-center gap-8">
+        <a class="flex items-center gap-3 group" href="/">
+          <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-primary to-primary-container flex items-center justify-center text-white shadow-lg group-hover:scale-110 transition-transform duration-300 font-bold text-xl">🎯</div>
+          <span class="font-display text-xl tracking-tight font-bold bg-clip-text text-transparent bg-gradient-to-r from-gray-900 to-gray-600">JobHunt AI</span>
+        </a>
+        <nav class="hidden md:flex items-center gap-8">
+          <a class="text-sm font-medium text-gray-500 hover:text-gray-900 transition-colors" href="/jobs">Jobs</a>
+          <a class="text-sm font-medium text-gray-500 hover:text-gray-900 transition-colors" href="/dashboard">Dashboard</a>
+          <a class="text-sm font-medium text-gray-500 hover:text-gray-900 transition-colors" href="/profile">Profile</a>
+          <a class="text-sm font-semibold text-primary flex items-center gap-1 group" href="/chat">
+            <span class="material-symbols-outlined text-sm animate-bounce">chat</span> Assistant
+          </a>
+        </nav>
       </div>
-      <span class="font-bold text-lg text-white">JobHunt AI</span>
+      <div class="flex items-center gap-4">
+        <a href="/jobs" class="h-9 px-4 rounded-lg bg-primary text-white font-bold text-sm flex items-center gap-2 hover:bg-primary-container shadow-md hover:-translate-y-0.5 transition-all">
+          <span class="material-symbols-outlined text-base">search</span>
+          <span>Find Jobs</span>
+        </a>
+      </div>
     </div>
-    <nav class="hidden md:flex items-center gap-6 text-sm font-medium">
-      <a href="/" class="text-slate-400 hover:text-white transition-colors">Home</a>
-      <a href="/jobs" class="text-slate-400 hover:text-white transition-colors">Discover</a>
-      <a href="/dashboard" class="text-slate-400 hover:text-white transition-colors">Dashboard</a>
-      <a href="/profile" class="text-slate-400 hover:text-white transition-colors">Profile</a>
-      <a href="/chat" class="text-accent-primary transition-colors flex items-center gap-1"><span
-          class="material-symbols-outlined text-sm">chat</span> Assistant</a>
-    </nav>
   </header>
 
-  <!-- Chat Area -->
-  <main class="flex-1 overflow-hidden flex flex-col max-w-4xl w-full mx-auto p-4 sm:p-6 h-full">
+  <!-- Background Ambient Glow -->
+  <div class="absolute inset-0 overflow-hidden pointer-events-none -z-10">
+    <div class="absolute top-1/4 left-1/4 w-[600px] h-[600px] bg-blue-300/20 blur-[120px] rounded-full" style="animation: pulse-glow 8s infinite alternate;"></div>
+    <div class="absolute bottom-1/4 right-1/4 w-[600px] h-[600px] bg-purple-300/20 blur-[120px] rounded-full" style="animation: pulse-glow 10s infinite alternate-reverse;"></div>
+  </div>
 
+  <!-- Chat Area -->
+  <main class="flex-1 flex flex-col max-w-4xl w-full mx-auto p-4 sm:p-6 mt-20 relative z-10 h-[calc(100vh-80px)]">
+    
     <!-- Header -->
     <div class="text-center mb-6 shrink-0">
-      <h1 class="text-2xl font-bold text-white mb-2">Job Search Assistant</h1>
-      <p class="text-slate-400 text-sm">Ask me to find jobs, e.g. "Find remote React jobs" or "Are there any data
-        engineer roles?"</p>
+      <h1 class="font-display text-3xl font-extrabold text-gray-900 mb-2 tracking-tight">Job Search Assistant</h1>
+      <p class="text-gray-500 text-sm font-medium">Ask me to find jobs, e.g. "Find remote React jobs" or "Are there any data engineer roles?"</p>
     </div>
 
-    <!-- Messages Container -->
-    <div id="chat-messages" class="flex-1 overflow-y-auto space-y-4 mb-4 pr-2 flex flex-col">
-
-      <!-- Welcome Message -->
-      <div class="flex gap-4 self-start max-w-[85%]">
-        <div class="w-8 h-8 rounded-full bg-surface-3 flex items-center justify-center shrink-0">
-          <span class="material-symbols-outlined text-accent-primary text-sm">robot_2</span>
-        </div>
-        <div class="bg-surface-2 rounded-2xl rounded-tl-sm p-4 text-sm text-slate-300 shadow-md">
-          <p>Hi there! I'm your AI job search assistant. What kind of roles are you looking for today?</p>
+    <!-- Chat Container -->
+    <div class="flex-1 bg-white/70 backdrop-blur-xl border border-white/60 shadow-xl rounded-3xl flex flex-col overflow-hidden relative">
+      
+      <!-- Messages Area -->
+      <div id="chat-messages" class="flex-1 overflow-y-auto chat-scroll p-6 space-y-6 flex flex-col">
+        <!-- Welcome Message -->
+        <div class="flex gap-4 self-start max-w-[85%] animate-slide-up">
+          <div class="w-10 h-10 rounded-2xl bg-gradient-to-br from-blue-100 to-indigo-100 border border-blue-200 flex items-center justify-center shrink-0 shadow-sm">
+            <span class="material-symbols-outlined text-primary text-lg">smart_toy</span>
+          </div>
+          <div class="bg-white border border-gray-100 rounded-2xl rounded-tl-sm p-4 text-sm text-gray-700 shadow-sm leading-relaxed">
+            <p>Hi there! 👋 I'm your AI job search assistant.</p>
+            <p class="mt-2">I can search our live database for specific roles, filter by location, or match against your uploaded profile. What kind of roles are you looking for today?</p>
+          </div>
         </div>
       </div>
 
+      <!-- Input Area -->
+      <div class="shrink-0 bg-white/90 backdrop-blur-md border-t border-gray-100 p-4">
+        <form id="chat-form" class="flex items-center gap-3 max-w-3xl mx-auto relative">
+          <div class="flex-1 relative">
+            <input type="text" id="chat-input"
+              class="w-full bg-gray-50 border border-gray-200 hover:border-gray-300 text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:bg-white text-sm px-5 py-4 rounded-2xl transition-all shadow-inner"
+              placeholder="Ask the AI agent..." autocomplete="off" />
+          </div>
+          <button type="submit" id="chat-submit"
+            class="bg-gray-900 hover:bg-black text-white w-14 h-14 rounded-2xl flex items-center justify-center transition-all shadow-md hover:shadow-lg shrink-0 disabled:opacity-50 disabled:cursor-not-allowed group">
+            <span class="material-symbols-outlined text-2xl group-hover:scale-110 transition-transform">arrow_upward</span>
+          </button>
+        </form>
+      </div>
     </div>
-
-    <!-- Input Area -->
-    <div class="shrink-0 bg-surface-2 rounded-xl border border-surface-3 p-2 shadow-lg relative">
-      <form id="chat-form" class="flex items-center gap-2">
-        <input type="text" id="chat-input"
-          class="flex-1 bg-transparent border-none text-white placeholder-slate-500 focus:outline-none focus:ring-0 text-sm px-4 py-2"
-          placeholder="Message JobHunt AI..." autocomplete="off" />
-        <button type="submit" id="chat-submit"
-          class="bg-accent-primary hover:bg-blue-500 text-white w-10 h-10 rounded-lg flex items-center justify-center transition-colors shrink-0 disabled:opacity-50">
-          <span class="material-symbols-outlined text-xl">send</span>
-        </button>
-      </form>
-    </div>
-
   </main>
 
   <script src="/static/js/api.js"></script>
@@ -103,21 +154,29 @@
     // Utility to parse simple markdown to HTML (bold and lists)
     function parseMarkdown(text) {
       let html = text.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
-      html = html.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+      html = html.replace(/\*\*(.*?)\*\*/g, '<strong class="font-bold text-gray-900">$1</strong>');
       html = html.replace(/\n/g, '<br/>');
       return html;
     }
 
     function addMessage(text, isUser = false) {
       const wrapper = document.createElement('div');
-      wrapper.className = `flex gap-4 max-w-[85%] ${isUser ? 'self-end flex-row-reverse' : 'self-start'}`;
+      wrapper.className = `flex gap-4 max-w-[85%] animate-slide-up ${isUser ? 'self-end flex-row-reverse' : 'self-start'}`;
 
       const avatar = document.createElement('div');
-      avatar.className = `w-8 h-8 rounded-full flex items-center justify-center shrink-0 ${isUser ? 'bg-accent-primary' : 'bg-surface-3'}`;
-      avatar.innerHTML = `<span class="material-symbols-outlined ${isUser ? 'text-white' : 'text-accent-primary'} text-sm">${isUser ? 'person' : 'robot_2'}</span>`;
+      avatar.className = `w-10 h-10 rounded-2xl flex items-center justify-center shrink-0 shadow-sm border ${
+        isUser 
+          ? 'bg-gray-900 border-gray-800' 
+          : 'bg-gradient-to-br from-blue-100 to-indigo-100 border-blue-200'
+      }`;
+      avatar.innerHTML = `<span class="material-symbols-outlined text-lg ${isUser ? 'text-white' : 'text-primary'}">${isUser ? 'person' : 'smart_toy'}</span>`;
 
       const bubble = document.createElement('div');
-      bubble.className = `rounded-2xl p-4 text-sm shadow-md ${isUser ? 'bg-accent-primary text-white rounded-tr-sm' : 'bg-surface-2 text-slate-300 rounded-tl-sm'}`;
+      bubble.className = `rounded-2xl p-4 text-sm shadow-sm leading-relaxed border ${
+        isUser 
+          ? 'bg-gray-900 text-white rounded-tr-sm border-gray-800' 
+          : 'bg-white text-gray-700 rounded-tl-sm border-gray-100'
+      }`;
       bubble.innerHTML = isUser ? text : parseMarkdown(text);
 
       wrapper.appendChild(avatar);
@@ -129,10 +188,15 @@
     function addLoading() {
       const wrapper = document.createElement('div');
       wrapper.id = 'chat-loading';
-      wrapper.className = 'flex gap-4 self-start max-w-[85%]';
+      wrapper.className = 'flex gap-4 self-start max-w-[85%] animate-slide-up';
       wrapper.innerHTML = `
-        <div class="w-8 h-8 rounded-full bg-surface-3 flex items-center justify-center shrink-0">
-          <span class="material-symbols-outlined text-slate-400 text-sm animate-pulse">more_horiz</span>
+        <div class="w-10 h-10 rounded-2xl bg-gradient-to-br from-blue-100 to-indigo-100 border border-blue-200 flex items-center justify-center shrink-0 shadow-sm">
+          <span class="material-symbols-outlined text-primary text-lg">smart_toy</span>
+        </div>
+        <div class="bg-white border border-gray-100 rounded-2xl rounded-tl-sm p-4 shadow-sm flex items-center gap-1.5 h-[52px]">
+          <div class="w-2 h-2 rounded-full bg-blue-400 animate-bounce" style="animation-delay: 0s"></div>
+          <div class="w-2 h-2 rounded-full bg-blue-400 animate-bounce" style="animation-delay: 0.15s"></div>
+          <div class="w-2 h-2 rounded-full bg-blue-400 animate-bounce" style="animation-delay: 0.3s"></div>
         </div>
       `;
       messages.appendChild(wrapper);
@@ -166,7 +230,11 @@
         input.focus();
       }
     });
+
+    // Make input auto-focus on load
+    window.addEventListener('DOMContentLoaded', () => {
+      input.focus();
+    });
   </script>
 </body>
-
 </html>

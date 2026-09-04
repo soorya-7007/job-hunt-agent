@@ -7,17 +7,70 @@
   <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin=""/>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@500;600;700;800&display=swap" rel="stylesheet"/>
   <style>
     @layer base {
-      html, body { margin: 0; padding: 0; }
+      html, body { margin: 0; padding: 0; scroll-behavior: smooth; }
       body { overscroll-behavior: none; }
-      main > :first-child { margin-top: 0 !important; }
-      main > :last-child { margin-bottom: 0 !important; }
     }
-    ::-webkit-scrollbar { width: 6px; }
-    ::-webkit-scrollbar-track { background: transparent; }
-    ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+    ::-webkit-scrollbar { display: none; }
+    
+    /* Custom Animations */
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+    @keyframes pulse-glow {
+      0%, 100% { opacity: 0.5; transform: scale(1); }
+      50% { opacity: 0.8; transform: scale(1.05); }
+    }
+    @keyframes gradient-x {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    .animate-float { animation: float 6s ease-in-out infinite; }
+    .animate-float-delayed { animation: float 6s ease-in-out 3s infinite; }
+    .animate-gradient { background-size: 200% 200%; animation: gradient-x 4s ease infinite; }
+    
+    /* Reveal Animation Classes */
+    .reveal {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: all 0.8s cubic-bezier(0.5, 0, 0, 1);
+    }
+    .reveal.active {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Glassmorphism utility */
+    .glass {
+      background: rgba(255, 255, 255, 0.7);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.5);
+    }
+
+    /* Interactive Button */
+    .btn-interactive {
+      position: relative;
+      overflow: hidden;
+      transition: all 0.3s ease;
+    }
+    .btn-interactive::after {
+      content: '';
+      position: absolute;
+      top: 50%; left: 50%;
+      width: 150%; height: 150%;
+      background: radial-gradient(circle, rgba(255,255,255,0.3) 0%, transparent 60%);
+      transform: translate(-50%, -50%) scale(0);
+      transition: transform 0.5s ease;
+    }
+    .btn-interactive:hover::after {
+      transform: translate(-50%, -50%) scale(1);
+    }
   </style>
   <script src="https://cdn.tailwindcss.com"></script>
   <script id="tailwind-config">
@@ -25,91 +78,47 @@
       darkMode: "class",
       theme: {
         extend: {
-          colors: {
-            "inverse-surface": "#213145",
-            "on-error-container": "#93000a",
-            "on-surface-variant": "#434655",
-            "on-tertiary-fixed-variant": "#005236",
-            "on-secondary-container": "#5c647a",
-            "on-primary-fixed": "#00174b",
-            "error": "#ba1a1a",
-            "inverse-on-surface": "#eaf1ff",
-            "secondary-container": "#dae2fd",
-            "surface-container-high": "#dce9ff",
-            "primary-fixed": "#dbe1ff",
-            "tertiary-container": "#007d55",
-            "on-primary": "#ffffff",
-            "on-background": "#0b1c30",
-            "outline-variant": "#c3c6d7",
-            "tertiary-fixed-dim": "#4edea3",
-            "surface-container-low": "#eff4ff",
-            "background": "#f8f9ff",
-            "on-secondary-fixed-variant": "#3f465c",
-            "surface": "#f8f9ff",
-            "on-primary-container": "#eeefff",
-            "error-container": "#ffdad6",
-            "inverse-primary": "#b4c5ff",
-            "on-tertiary": "#ffffff",
-            "primary-container": "#2563eb",
-            "on-tertiary-container": "#bdffdb",
-            "primary-fixed-dim": "#b4c5ff",
-            "secondary-fixed-dim": "#bec6e0",
-            "surface-tint": "#0053db",
-            "tertiary-fixed": "#6ffbbe",
-            "on-tertiary-fixed": "#002113",
-            "on-secondary": "#ffffff",
-            "on-error": "#ffffff",
-            "surface-variant": "#d3e4fe",
-            "surface-container-highest": "#d3e4fe",
-            "primary": "#004ac6",
-            "surface-container-lowest": "#ffffff",
-            "secondary": "#565e74",
-            "surface-bright": "#f8f9ff",
-            "outline": "#737686",
-            "secondary-fixed": "#dae2fd",
-            "on-secondary-fixed": "#131b2e",
-            "tertiary": "#006242",
-            "surface-container": "#e5eeff",
-            "on-primary-fixed-variant": "#003ea8",
-            "on-surface": "#0b1c30",
-            "surface-dim": "#cbdbf5"
-          },
-          borderRadius: { DEFAULT: "0.25rem", lg: "0.5rem", xl: "0.75rem", full: "9999px" },
-          spacing: {
-            "space-10": "2.5rem", "space-5": "1.25rem", "space-2": "0.5rem", "space-16": "4rem",
-            "space-8": "2rem", gutter: "1rem", "space-1": "0.25rem", "container-max": "80rem",
-            "space-6": "1.5rem", "space-12": "3rem", "space-3": "0.75rem", "space-4": "1rem",
-            "gutter-lg": "1.5rem"
-          },
           fontFamily: {
-            "label-md": ["Inter"], "body-sm": ["Inter"], "headline-sm": ["Inter"],
-            "display-lg-mobile": ["Inter"], "display-lg": ["Inter"], "body-lg": ["Inter"],
-            "headline-lg": ["Inter"], "body-md": ["Inter"], "label-sm": ["Inter"],
-            "headline-md": ["Inter"], "label-xs": ["Inter"]
+            sans: ['Inter', 'sans-serif'],
+            display: ['Outfit', 'sans-serif'],
+          },
+          colors: {
+            primary: "#004ac6",
+            "primary-container": "#2563eb",
+            "on-primary": "#ffffff",
+            tertiary: "#006242",
+            "surface": "#f8f9ff",
+            "surface-container-lowest": "#ffffff",
+            "surface-container-low": "#eff4ff",
+            "on-surface": "#0b1c30",
+            "on-surface-variant": "#434655",
           }
         }
       }
     };
   </script>
 </head>
-<body class="bg-surface font-body-md text-body-md text-on-surface antialiased min-h-screen flex flex-col justify-between">
+<body class="bg-surface font-sans text-on-surface antialiased min-h-screen flex flex-col justify-between selection:bg-primary selection:text-white">
+
   <!-- Shared Top Nav Header -->
-  <header class="sticky top-0 z-50 w-full bg-surface-container-lowest/90 backdrop-blur-md border-b border-outline-variant/30 shadow-[0_1px_3px_0_rgba(15,23,42,0.05)]">
-    <div class="h-16 max-w-container-max mx-auto px-gutter-lg flex items-center justify-between gap-space-4">
-      <div class="flex items-center gap-space-8">
-        <a class="flex items-center gap-space-3" href="/">
-          <div class="w-9 h-9 rounded-lg bg-primary-container flex items-center justify-center text-white shadow-sm font-bold text-lg">🎯</div>
-          <span class="font-headline-sm text-headline-sm tracking-tight text-on-surface font-bold">JobHunt AI</span>
+  <header class="fixed top-0 z-50 w-full glass shadow-sm transition-all duration-300" id="navbar">
+    <div class="h-16 max-w-7xl mx-auto px-6 flex items-center justify-between">
+      <div class="flex items-center gap-8">
+        <a class="flex items-center gap-3 group" href="/">
+          <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-primary to-primary-container flex items-center justify-center text-white shadow-lg group-hover:scale-110 transition-transform duration-300 font-bold text-xl">🎯</div>
+          <span class="font-display text-xl tracking-tight font-bold bg-clip-text text-transparent bg-gradient-to-r from-gray-900 to-gray-600">JobHunt AI</span>
         </a>
-        <nav class="hidden lg:flex items-center gap-space-6">
-          <a class="font-label-md text-label-md text-on-surface-variant hover:text-on-surface transition-colors" href="/jobs">Jobs</a>
-          <a class="font-label-md text-label-md text-on-surface-variant hover:text-on-surface transition-colors" href="/dashboard">Dashboard</a>
-          <a class="font-label-md text-label-md text-primary font-bold transition-colors" href="/profile">Profile</a>
-          <a class="font-label-md text-label-md text-primary hover:text-on-surface transition-colors flex items-center gap-1" href="/chat"><span class="material-symbols-outlined text-sm">chat</span> Assistant</a>
+        <nav class="hidden md:flex items-center gap-8">
+          <a class="text-sm font-medium text-gray-500 hover:text-gray-900 transition-colors" href="/jobs">Jobs</a>
+          <a class="text-sm font-medium text-gray-500 hover:text-gray-900 transition-colors" href="/dashboard">Dashboard</a>
+          <a class="text-sm font-semibold text-primary hover:scale-105 transition-transform" href="/profile">Profile</a>
+          <a class="text-sm font-medium text-gray-500 hover:text-primary-container transition-colors flex items-center gap-1 group" href="/chat">
+            <span class="material-symbols-outlined text-sm group-hover:animate-bounce">chat</span> Assistant
+          </a>
         </nav>
       </div>
-      <div class="flex items-center gap-space-4">
-        <a href="/jobs" class="h-9 px-4 rounded-lg bg-primary text-white font-label-md flex items-center gap-2 hover:bg-primary-container shadow-sm">
+      <div class="flex items-center gap-4">
+        <a href="/jobs" class="h-9 px-4 rounded-lg bg-primary text-white font-bold text-sm flex items-center gap-2 hover:bg-primary-container shadow-md hover:-translate-y-0.5 transition-all">
           <span class="material-symbols-outlined text-base">search</span>
           <span>Find Jobs</span>
         </a>
@@ -117,37 +126,41 @@
     </div>
   </header>
 
-  <main class="w-full flex-1 bg-surface pt-6 pb-16">
-    <div class="max-w-container-max mx-auto px-gutter-lg space-y-6">
+  <main class="w-full flex-1 pt-24 pb-16 relative overflow-hidden">
+    <!-- Ambient Glow Decorator -->
+    <div class="absolute top-0 right-0 w-[800px] h-[500px] bg-gradient-to-tr from-blue-400/10 via-purple-400/10 to-transparent blur-[100px] pointer-events-none rounded-full -z-10" style="animation: pulse-glow 10s infinite alternate;"></div>
+
+    <div class="max-w-7xl mx-auto px-6 space-y-6">
+      
       <!-- Profile Header Card with Banner Motif -->
-      <div class="relative w-full rounded-xl bg-surface-container-lowest shadow-sm overflow-hidden border border-outline-variant/30">
-        <div class="relative h-36 w-full bg-gradient-to-r from-primary via-primary-container to-surface-tint">
+      <div class="reveal relative w-full rounded-3xl bg-white shadow-sm hover:shadow-md overflow-hidden border border-gray-100 transition-shadow">
+        <div class="relative h-40 w-full bg-gradient-to-r from-primary via-indigo-500 to-purple-600">
           <div class="absolute inset-0 opacity-20 bg-[radial-gradient(#ffffff_1px,transparent_1px)] [background-size:16px_16px]"></div>
-          <div class="absolute top-4 right-6 flex items-center gap-2 px-3 py-1 rounded-full bg-inverse-surface/40 backdrop-blur-md text-inverse-on-surface">
-            <span class="inline-block w-2 h-2 rounded-full bg-tertiary-fixed animate-pulse"></span>
-            <span class="font-label-xs font-semibold tracking-wide uppercase">Open to Opportunities</span>
+          <div class="absolute top-5 right-6 flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/20 backdrop-blur-md text-white shadow-sm border border-white/30">
+            <span class="inline-block w-2.5 h-2.5 rounded-full bg-green-400 animate-pulse"></span>
+            <span class="text-xs font-bold tracking-widest uppercase">Open to Opportunities</span>
           </div>
         </div>
         <div class="px-8 pb-8 pt-0">
-          <div class="flex flex-col lg:flex-row items-start lg:items-end justify-between gap-6 -mt-12 relative z-10">
+          <div class="flex flex-col lg:flex-row items-start lg:items-end justify-between gap-6 -mt-14 relative z-10">
             <div class="flex flex-col sm:flex-row items-start sm:items-end gap-5">
-              <div class="w-24 h-24 rounded-2xl p-1 bg-surface-container-lowest shadow-md flex items-center justify-center font-bold text-3xl text-primary bg-primary-fixed">
+              <div class="w-28 h-28 rounded-3xl p-1 bg-white shadow-lg flex items-center justify-center font-display font-black text-4xl text-primary bg-gradient-to-br from-blue-50 to-white border border-gray-100">
                 S
               </div>
-              <div class="flex flex-col gap-1">
+              <div class="flex flex-col gap-1 pb-1">
                 <div class="flex items-center gap-2">
-                  <h1 id="profileName" class="font-headline-lg text-on-surface font-bold tracking-tight">Sooryansh Singh</h1>
-                  <span class="material-symbols-outlined text-primary text-xl" style="font-variation-settings: 'FILL' 1;" title="Verified Profile">verified</span>
+                  <h1 id="profileName" class="font-display text-3xl text-gray-900 font-extrabold tracking-tight">Sooryansh Singh</h1>
+                  <span class="material-symbols-outlined text-blue-500 text-2xl" title="Verified Profile">verified</span>
                 </div>
-                <p id="profileTitle" class="font-body-md text-on-surface-variant font-medium">
+                <p id="profileTitle" class="text-gray-500 font-semibold text-lg mt-1">
                   Software Engineer • Python • Backend • GenAI Agents
                 </p>
-                <div class="flex flex-wrap items-center gap-x-4 gap-y-1 text-secondary text-xs pt-1">
-                  <span class="inline-flex items-center gap-1">
+                <div class="flex flex-wrap items-center gap-x-5 gap-y-2 text-gray-400 text-sm pt-2 font-medium">
+                  <span class="inline-flex items-center gap-1.5">
                     <span class="material-symbols-outlined text-sm">location_on</span>
                     <span id="profileLoc">Remote / Bangalore</span>
                   </span>
-                  <span class="inline-flex items-center gap-1">
+                  <span class="inline-flex items-center gap-1.5">
                     <span class="material-symbols-outlined text-sm">mail</span>
                     <span id="profileEmail">sooryansh@example.com</span>
                   </span>
@@ -155,9 +168,9 @@
               </div>
             </div>
             <div class="flex items-center gap-3">
-              <a href="/jobs" class="px-5 py-2.5 rounded-lg bg-primary text-white hover:bg-primary-container font-label-md flex items-center gap-2 shadow-sm transition-all">
+              <a href="/jobs" class="px-6 py-3 rounded-xl bg-gradient-to-r from-primary to-indigo-600 text-white font-bold flex items-center gap-2 shadow-md hover:shadow-lg transition-all hover:-translate-y-0.5 active:scale-95 btn-interactive">
                 <span class="material-symbols-outlined text-base">search</span>
-                <span>Match Jobs with Profile</span>
+                <span>Match Jobs</span>
               </a>
             </div>
           </div>
@@ -166,64 +179,70 @@
 
       <!-- Main 2-Column Surface -->
       <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+        
         <!-- Left Column: Bio, Skills, Experience (8 cols) -->
-        <div class="lg:col-span-8 space-y-6">
+        <div class="reveal lg:col-span-8 space-y-6" style="transition-delay: 100ms;">
+          
           <!-- Summary -->
-          <section class="bg-surface-container-lowest rounded-xl p-6 shadow-sm border border-outline-variant/30 space-y-3">
-            <div class="flex items-center justify-between">
-              <h2 class="font-headline-sm text-on-surface font-bold flex items-center gap-2">
-                <span class="material-symbols-outlined text-primary text-xl">person</span>
+          <section class="bg-white rounded-2xl p-8 shadow-sm border border-gray-100 space-y-4 hover:shadow-md transition-shadow">
+            <div class="flex items-center justify-between border-b border-gray-100 pb-4">
+              <h2 class="font-display text-xl text-gray-900 font-bold flex items-center gap-2">
+                <span class="material-symbols-outlined text-primary text-2xl">person</span>
                 <span>Professional Summary</span>
               </h2>
             </div>
-            <p id="profileSummary" class="font-body-md text-on-surface-variant leading-relaxed">
+            <p id="profileSummary" class="text-gray-600 leading-relaxed text-[15px] pt-2">
               Experienced Python and Backend engineer with strong background in distributed microservices, REST APIs with FastAPI, Docker containerization, and generative AI agent orchestration with LangGraph and vector search.
             </p>
           </section>
 
           <!-- Verified Skills -->
-          <section class="bg-surface-container-lowest rounded-xl p-6 shadow-sm border border-outline-variant/30 space-y-4">
-            <h2 class="font-headline-sm text-on-surface font-bold flex items-center gap-2">
-              <span class="material-symbols-outlined text-primary text-xl">psychology</span>
+          <section class="bg-white rounded-2xl p-8 shadow-sm border border-gray-100 space-y-5 hover:shadow-md transition-shadow">
+            <h2 class="font-display text-xl text-gray-900 font-bold flex items-center gap-2 border-b border-gray-100 pb-4">
+              <span class="material-symbols-outlined text-primary text-2xl">psychology</span>
               <span>Verified Technical Skills</span>
             </h2>
-            <div id="skillsPills" class="flex flex-wrap gap-2">
-              <span class="px-3 py-1 bg-primary-fixed text-on-primary-fixed font-semibold rounded-lg text-sm">Python</span>
-              <span class="px-3 py-1 bg-primary-fixed text-on-primary-fixed font-semibold rounded-lg text-sm">FastAPI</span>
-              <span class="px-3 py-1 bg-primary-fixed text-on-primary-fixed font-semibold rounded-lg text-sm">Docker</span>
-              <span class="px-3 py-1 bg-primary-fixed text-on-primary-fixed font-semibold rounded-lg text-sm">LangGraph</span>
-              <span class="px-3 py-1 bg-surface-container text-secondary rounded-lg text-sm">SQL / SQLite</span>
-              <span class="px-3 py-1 bg-surface-container text-secondary rounded-lg text-sm">Pydantic</span>
-              <span class="px-3 py-1 bg-surface-container text-secondary rounded-lg text-sm">Vector Embeddings</span>
+            <div id="skillsPills" class="flex flex-wrap gap-2.5 pt-2">
+              <span class="px-4 py-1.5 bg-blue-50 text-blue-700 border border-blue-100 font-bold rounded-xl text-sm shadow-sm animate-float" style="animation-delay: 0.1s">Python</span>
+              <span class="px-4 py-1.5 bg-blue-50 text-blue-700 border border-blue-100 font-bold rounded-xl text-sm shadow-sm animate-float" style="animation-delay: 0.2s">FastAPI</span>
+              <span class="px-4 py-1.5 bg-blue-50 text-blue-700 border border-blue-100 font-bold rounded-xl text-sm shadow-sm animate-float" style="animation-delay: 0.3s">Docker</span>
+              <span class="px-4 py-1.5 bg-blue-50 text-blue-700 border border-blue-100 font-bold rounded-xl text-sm shadow-sm animate-float" style="animation-delay: 0.4s">LangGraph</span>
+              <span class="px-4 py-1.5 bg-gray-50 text-gray-600 border border-gray-200 font-semibold rounded-xl text-sm">SQL / SQLite</span>
+              <span class="px-4 py-1.5 bg-gray-50 text-gray-600 border border-gray-200 font-semibold rounded-xl text-sm">Pydantic</span>
+              <span class="px-4 py-1.5 bg-gray-50 text-gray-600 border border-gray-200 font-semibold rounded-xl text-sm">Vector Embeddings</span>
             </div>
           </section>
         </div>
 
         <!-- Right Column: Resume Intake Dropzone & Preferences (4 cols) -->
-        <div class="lg:col-span-4 space-y-6">
+        <div class="reveal lg:col-span-4 space-y-6" style="transition-delay: 200ms;">
+          
           <!-- Resume Upload Dropzone -->
-          <section class="bg-surface-container-lowest rounded-xl p-6 shadow-sm border border-outline-variant/30 space-y-4">
-            <h2 class="font-headline-sm text-on-surface font-bold flex items-center gap-2">
-              <span class="material-symbols-outlined text-primary text-xl">upload_file</span>
-              <span>Upload Resume (AI Parse)</span>
+          <section class="bg-white rounded-2xl p-8 shadow-sm border border-gray-100 space-y-5 hover:shadow-md transition-shadow">
+            <h2 class="font-display text-xl text-gray-900 font-bold flex items-center gap-2 border-b border-gray-100 pb-4">
+              <span class="material-symbols-outlined text-primary text-2xl">upload_file</span>
+              <span>AI Profile Sync</span>
             </h2>
-            <p class="text-xs text-secondary">Upload your PDF or TXT resume to let the Profile Agent extract skills, experience, and role preferences.</p>
+            <p class="text-[13px] text-gray-500 font-medium">Upload your latest PDF or TXT resume. The Profile Agent will automatically extract and update your skills, experience, and role preferences.</p>
 
-            <form id="uploadResumeForm" class="space-y-4">
-              <div id="dropzone" class="border-2 border-dashed border-outline-variant hover:border-primary rounded-xl p-6 text-center cursor-pointer transition-colors bg-surface-container-low/50">
+            <form id="uploadResumeForm" class="space-y-5 pt-2">
+              <div id="dropzone" class="border-2 border-dashed border-gray-300 hover:border-primary rounded-2xl p-8 text-center cursor-pointer transition-all bg-gray-50/50 hover:bg-blue-50/50 group relative overflow-hidden">
                 <input id="resumeFileInput" type="file" accept=".pdf,.txt" class="hidden"/>
-                <span class="material-symbols-outlined text-primary text-3xl mb-1">cloud_upload</span>
-                <p id="fileNameDisplay" class="font-label-sm text-on-surface font-semibold">Choose PDF or TXT</p>
-                <p class="text-xs text-secondary mt-0.5">Drag & drop or click</p>
+                <div class="w-16 h-16 bg-white rounded-full flex items-center justify-center shadow-sm border border-gray-100 mx-auto mb-3 group-hover:scale-110 group-hover:border-blue-200 transition-transform">
+                  <span class="material-symbols-outlined text-primary text-3xl">cloud_upload</span>
+                </div>
+                <p id="fileNameDisplay" class="text-sm text-gray-900 font-bold">Choose PDF or TXT</p>
+                <p class="text-[11px] uppercase tracking-wider text-gray-400 font-bold mt-1">Drag & drop or click</p>
               </div>
 
               <div class="space-y-2">
-                <label class="text-xs uppercase font-semibold text-secondary">Target Roles (comma separated)</label>
-                <input id="targetRolesInput" type="text" value="GenAI Engineer, Backend Developer" class="w-full p-2.5 bg-surface-container-low rounded-lg text-sm text-on-surface focus:outline-none"/>
+                <label class="text-[10px] uppercase tracking-wider text-gray-500 font-bold">Target Roles (comma separated)</label>
+                <input id="targetRolesInput" type="text" value="GenAI Engineer, Backend Developer" class="w-full p-3 bg-gray-50 border border-gray-200 rounded-xl text-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:bg-white font-medium transition-all"/>
               </div>
 
-              <button id="btnUpload" type="submit" class="w-full py-2.5 bg-primary hover:bg-primary-container text-white font-headline-sm rounded-lg transition-all shadow-sm">
-                <span id="btnUploadText">Parse with Profile Agent</span>
+              <button id="btnUpload" type="submit" class="w-full py-3.5 bg-gray-900 hover:bg-black text-white font-bold rounded-xl transition-all shadow-md hover:shadow-lg flex items-center justify-center gap-2">
+                <span class="material-symbols-outlined text-lg">magic_button</span>
+                <span id="btnUploadText">Parse & Update Profile</span>
               </button>
             </form>
           </section>
@@ -234,6 +253,34 @@
 
   <script src="/static/js/api.js"></script>
   <script>
+    // Reveal Animations
+    const revealElements = document.querySelectorAll('.reveal');
+    const revealCallback = (entries, observer) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('active');
+          observer.unobserve(entry.target);
+        }
+      });
+    };
+    const revealObserver = new IntersectionObserver(revealCallback, { threshold: 0.1 });
+    revealElements.forEach(el => revealObserver.observe(el));
+    setTimeout(() => {
+      document.querySelectorAll('.reveal').forEach(el => el.classList.add('active'));
+    }, 100);
+
+    // Navbar Glassmorphism
+    window.addEventListener('scroll', () => {
+      const navbar = document.getElementById('navbar');
+      if (window.scrollY > 20) {
+        navbar.classList.add('shadow-md', 'bg-white/90');
+        navbar.classList.remove('shadow-sm', 'glass');
+      } else {
+        navbar.classList.add('shadow-sm', 'glass');
+        navbar.classList.remove('shadow-md', 'bg-white/90');
+      }
+    });
+
     window.addEventListener('DOMContentLoaded', () => {
       const p = State.getProfile();
       if (p) {
@@ -242,9 +289,10 @@
         if (p.skills && p.skills.length > 0) {
           const container = document.getElementById('skillsPills');
           container.innerHTML = '';
-          p.skills.forEach(s => {
+          p.skills.forEach((s, i) => {
             const pill = document.createElement('span');
-            pill.className = 'px-3 py-1 bg-primary-fixed text-on-primary-fixed font-semibold rounded-lg text-sm';
+            pill.className = 'px-4 py-1.5 bg-blue-50 text-blue-700 border border-blue-100 font-bold rounded-xl text-sm shadow-sm animate-float';
+            pill.style.animationDelay = `${(i % 5) * 0.1}s`;
             pill.textContent = s;
             container.appendChild(pill);
           });
@@ -256,6 +304,30 @@
     const fileInput = document.getElementById('resumeFileInput');
 
     dropzone.addEventListener('click', () => fileInput.click());
+    
+    // Drag and Drop aesthetics
+    ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+      dropzone.addEventListener(eventName, preventDefaults, false);
+    });
+    function preventDefaults(e) {
+      e.preventDefault();
+      e.stopPropagation();
+    }
+    ['dragenter', 'dragover'].forEach(eventName => {
+      dropzone.addEventListener(eventName, () => dropzone.classList.add('border-primary', 'bg-blue-50/50'), false);
+    });
+    ['dragleave', 'drop'].forEach(eventName => {
+      dropzone.addEventListener(eventName, () => dropzone.classList.remove('border-primary', 'bg-blue-50/50'), false);
+    });
+    dropzone.addEventListener('drop', (e) => {
+      let dt = e.dataTransfer;
+      let files = dt.files;
+      if (files.length > 0) {
+        fileInput.files = files;
+        document.getElementById('fileNameDisplay').textContent = files[0].name;
+      }
+    });
+
     fileInput.addEventListener('change', () => {
       if (fileInput.files.length > 0) {
         document.getElementById('fileNameDisplay').textContent = fileInput.files[0].name;
@@ -270,16 +342,24 @@
       }
 
       const btn = document.getElementById('btnUploadText');
-      btn.textContent = 'Parsing Resume…';
+      const origText = btn.textContent;
+      const icon = document.querySelector('#btnUpload .material-symbols-outlined');
+      
+      btn.textContent = 'Parsing Resume...';
+      icon.textContent = 'refresh';
+      icon.classList.add('animate-spin');
+
       try {
         const roles = document.getElementById('targetRolesInput').value;
         const res = await API.uploadResume(fileInput.files[0], { target_roles: roles });
-        alert('Resume parsed successfully! Updating profile…');
+        alert('Resume parsed successfully! Updating profile...');
         location.reload();
       } catch (err) {
         alert('Upload parse failed: ' + err.message);
       } finally {
-        btn.textContent = 'Parse with Profile Agent';
+        btn.textContent = origText;
+        icon.textContent = 'magic_button';
+        icon.classList.remove('animate-spin');
       }
     });
   </script>

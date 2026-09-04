@@ -7,17 +7,70 @@
   <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin=""/>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@500;600;700;800&display=swap" rel="stylesheet"/>
   <style>
     @layer base {
-      html, body { margin: 0; padding: 0; }
+      html, body { margin: 0; padding: 0; scroll-behavior: smooth; }
       body { overscroll-behavior: none; }
-      main > :first-child { margin-top: 0 !important; }
-      main > :last-child { margin-bottom: 0 !important; }
     }
-    ::-webkit-scrollbar { width: 6px; }
-    ::-webkit-scrollbar-track { background: transparent; }
-    ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+    ::-webkit-scrollbar { display: none; }
+
+    /* Custom Animations */
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+    @keyframes pulse-glow {
+      0%, 100% { opacity: 0.5; transform: scale(1); }
+      50% { opacity: 0.8; transform: scale(1.05); }
+    }
+    @keyframes gradient-x {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    .animate-float { animation: float 6s ease-in-out infinite; }
+    .animate-float-delayed { animation: float 6s ease-in-out 3s infinite; }
+    .animate-gradient { background-size: 200% 200%; animation: gradient-x 4s ease infinite; }
+    
+    /* Reveal Animation Classes */
+    .reveal {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: all 0.8s cubic-bezier(0.5, 0, 0, 1);
+    }
+    .reveal.active {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Glassmorphism utility */
+    .glass {
+      background: rgba(255, 255, 255, 0.7);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.5);
+    }
+
+    /* Interactive Button */
+    .btn-interactive {
+      position: relative;
+      overflow: hidden;
+      transition: all 0.3s ease;
+    }
+    .btn-interactive::after {
+      content: '';
+      position: absolute;
+      top: 50%; left: 50%;
+      width: 150%; height: 150%;
+      background: radial-gradient(circle, rgba(255,255,255,0.3) 0%, transparent 60%);
+      transform: translate(-50%, -50%) scale(0);
+      transition: transform 0.5s ease;
+    }
+    .btn-interactive:hover::after {
+      transform: translate(-50%, -50%) scale(1);
+    }
   </style>
   <script src="https://cdn.tailwindcss.com"></script>
   <script id="tailwind-config">
@@ -25,128 +78,82 @@
       darkMode: "class",
       theme: {
         extend: {
-          colors: {
-            "inverse-surface": "#213145",
-            "on-error-container": "#93000a",
-            "on-surface-variant": "#434655",
-            "on-tertiary-fixed-variant": "#005236",
-            "on-secondary-container": "#5c647a",
-            "on-primary-fixed": "#00174b",
-            "error": "#ba1a1a",
-            "inverse-on-surface": "#eaf1ff",
-            "secondary-container": "#dae2fd",
-            "surface-container-high": "#dce9ff",
-            "primary-fixed": "#dbe1ff",
-            "tertiary-container": "#007d55",
-            "on-primary": "#ffffff",
-            "on-background": "#0b1c30",
-            "outline-variant": "#c3c6d7",
-            "tertiary-fixed-dim": "#4edea3",
-            "surface-container-low": "#eff4ff",
-            "background": "#f8f9ff",
-            "on-secondary-fixed-variant": "#3f465c",
-            "surface": "#f8f9ff",
-            "on-primary-container": "#eeefff",
-            "error-container": "#ffdad6",
-            "inverse-primary": "#b4c5ff",
-            "on-tertiary": "#ffffff",
-            "primary-container": "#2563eb",
-            "on-tertiary-container": "#bdffdb",
-            "primary-fixed-dim": "#b4c5ff",
-            "secondary-fixed-dim": "#bec6e0",
-            "surface-tint": "#0053db",
-            "tertiary-fixed": "#6ffbbe",
-            "on-tertiary-fixed": "#002113",
-            "on-secondary": "#ffffff",
-            "on-error": "#ffffff",
-            "surface-variant": "#d3e4fe",
-            "surface-container-highest": "#d3e4fe",
-            "primary": "#004ac6",
-            "surface-container-lowest": "#ffffff",
-            "secondary": "#565e74",
-            "surface-bright": "#f8f9ff",
-            "outline": "#737686",
-            "secondary-fixed": "#dae2fd",
-            "on-secondary-fixed": "#131b2e",
-            "tertiary": "#006242",
-            "surface-container": "#e5eeff",
-            "on-primary-fixed-variant": "#003ea8",
-            "on-surface": "#0b1c30",
-            "surface-dim": "#cbdbf5"
-          },
-          borderRadius: { DEFAULT: "0.25rem", lg: "0.5rem", xl: "0.75rem", full: "9999px" },
-          spacing: {
-            "space-10": "2.5rem", "space-5": "1.25rem", "space-2": "0.5rem", "space-16": "4rem",
-            "space-8": "2rem", gutter: "1rem", "space-1": "0.25rem", "container-max": "80rem",
-            "space-6": "1.5rem", "space-12": "3rem", "space-3": "0.75rem", "space-4": "1rem",
-            "gutter-lg": "1.5rem"
-          },
           fontFamily: {
-            "label-md": ["Inter"], "body-sm": ["Inter"], "headline-sm": ["Inter"],
-            "display-lg-mobile": ["Inter"], "display-lg": ["Inter"], "body-lg": ["Inter"],
-            "headline-lg": ["Inter"], "body-md": ["Inter"], "label-sm": ["Inter"],
-            "headline-md": ["Inter"], "label-xs": ["Inter"]
+            sans: ['Inter', 'sans-serif'],
+            display: ['Outfit', 'sans-serif'],
+          },
+          colors: {
+            primary: "#004ac6",
+            "primary-container": "#2563eb",
+            "on-primary": "#ffffff",
+            tertiary: "#006242",
+            "surface": "#f8f9ff",
+            "surface-container-lowest": "#ffffff",
+            "surface-container-low": "#eff4ff",
+            "on-surface": "#0b1c30",
+            "on-surface-variant": "#434655",
           }
         }
       }
     };
   </script>
 </head>
-<body class="bg-surface font-body-md text-body-md text-on-surface antialiased min-h-screen flex flex-col justify-between">
+<body class="bg-surface font-sans text-on-surface antialiased min-h-screen flex flex-col justify-between selection:bg-primary selection:text-white">
+
   <!-- Shared Top Nav Header -->
-  <header class="sticky top-0 z-50 w-full bg-surface-container-lowest/90 backdrop-blur-md border-b border-outline-variant/30 shadow-[0_1px_3px_0_rgba(15,23,42,0.05)]">
-    <div class="h-16 max-w-container-max mx-auto px-gutter-lg flex items-center justify-between gap-space-4">
-      <div class="flex items-center gap-space-8">
-        <a class="flex items-center gap-space-3" href="/">
-          <div class="w-9 h-9 rounded-lg bg-primary-container flex items-center justify-center text-white shadow-sm font-bold text-lg">🎯</div>
-          <span class="font-headline-sm text-headline-sm tracking-tight text-on-surface font-bold">JobHunt AI</span>
+  <header class="fixed top-0 z-50 w-full glass shadow-sm transition-all duration-300" id="navbar">
+    <div class="h-16 max-w-7xl mx-auto px-6 flex items-center justify-between">
+      <div class="flex items-center gap-8">
+        <a class="flex items-center gap-3 group" href="/">
+          <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-primary to-primary-container flex items-center justify-center text-white shadow-lg group-hover:scale-110 transition-transform duration-300 font-bold text-xl">🎯</div>
+          <span class="font-display text-xl tracking-tight font-bold bg-clip-text text-transparent bg-gradient-to-r from-gray-900 to-gray-600">JobHunt AI</span>
         </a>
-        <nav class="hidden lg:flex items-center gap-space-6">
-          <a class="font-label-md text-label-md text-primary font-bold transition-colors" href="/jobs">Jobs</a>
-          <a class="font-label-md text-label-md text-on-surface-variant hover:text-on-surface transition-colors" href="/dashboard">Dashboard</a>
-          <a class="font-label-md text-label-md text-on-surface-variant hover:text-on-surface transition-colors" href="/profile">Profile</a>
-          <a class="font-label-md text-label-md text-primary hover:text-on-surface transition-colors flex items-center gap-1" href="/chat"><span class="material-symbols-outlined text-sm">chat</span> Assistant</a>
+        <nav class="hidden md:flex items-center gap-8">
+          <a class="text-sm font-semibold text-primary hover:scale-105 transition-transform" href="/jobs">Jobs</a>
+          <a class="text-sm font-medium text-gray-500 hover:text-gray-900 transition-colors" href="/dashboard">Dashboard</a>
+          <a class="text-sm font-medium text-gray-500 hover:text-gray-900 transition-colors" href="/profile">Profile</a>
+          <a class="text-sm font-medium text-gray-500 hover:text-primary-container transition-colors flex items-center gap-1 group" href="/chat">
+            <span class="material-symbols-outlined text-sm group-hover:animate-bounce">chat</span> Assistant
+          </a>
         </nav>
       </div>
-      <div class="flex items-center gap-space-4">
-        <div id="supervisorBadge" class="hidden sm:inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-tertiary-fixed/40 text-tertiary font-label-xs font-semibold">
-          <span class="w-2 h-2 rounded-full bg-tertiary animate-pulse"></span>
-          <span>LangGraph Supervisor Ready</span>
-        </div>
-        <a href="/profile" class="flex items-center gap-space-2 pl-space-2 border-l border-outline-variant/30">
-          <div class="w-8 h-8 rounded-full bg-primary-container text-white flex items-center justify-center font-bold text-sm">S</div>
-          <span class="hidden sm:inline-block font-label-sm text-label-sm text-on-surface">Sooryansh</span>
+      <div class="flex items-center gap-4">
+        <a href="/profile" class="flex items-center gap-3 hover:bg-gray-100 p-1.5 rounded-full transition-colors cursor-pointer">
+          <div class="w-9 h-9 rounded-full bg-gradient-to-tr from-primary to-purple-500 text-white flex items-center justify-center font-bold text-sm shadow-md">S</div>
         </a>
       </div>
     </div>
   </header>
 
-  <main class="w-full flex-1 bg-surface pt-6 pb-12">
-    <div class="max-w-container-max mx-auto px-gutter-lg space-y-6">
+  <main class="w-full flex-1 pt-24 pb-12 overflow-hidden relative">
+    <!-- Ambient Glow Decorator -->
+    <div class="absolute top-0 right-0 w-[800px] h-[500px] bg-gradient-to-tr from-blue-400/20 via-purple-400/10 to-transparent blur-[100px] pointer-events-none rounded-full -z-10" style="animation: pulse-glow 10s infinite alternate;"></div>
+
+    <div class="max-w-7xl mx-auto px-6 space-y-6">
+      
       <!-- Search Banner Strip -->
-      <section class="relative overflow-hidden rounded-xl bg-surface-container-lowest shadow-sm p-space-5">
-        <div class="absolute -top-16 -right-16 w-80 h-80 rounded-full bg-primary-fixed/40 blur-3xl pointer-events-none"></div>
-        <div class="relative z-10 flex flex-col gap-space-4">
-          <form id="searchForm" class="flex flex-col lg:flex-row items-stretch bg-surface-container-low rounded-xl p-space-2 gap-space-2 shadow-inner">
-            <div class="flex-1 flex items-center gap-space-3 px-space-3 py-space-2 bg-surface-container-lowest rounded-lg">
+      <section class="reveal relative overflow-hidden rounded-2xl glass shadow-lg p-6 border border-white/60">
+        <div class="relative z-10 flex flex-col gap-4">
+          <form id="searchForm" class="flex flex-col lg:flex-row items-stretch bg-white/50 rounded-xl p-2 gap-2 shadow-inner border border-white/40">
+            <div class="flex-1 flex items-center gap-3 px-4 py-3 bg-white rounded-lg hover:ring-2 hover:ring-primary/20 transition-all focus-within:ring-2 focus-within:ring-primary/40">
               <span class="material-symbols-outlined text-primary text-xl">search</span>
               <div class="flex flex-col flex-1 min-w-0">
-                <label class="font-label-xs text-label-xs uppercase tracking-wider text-secondary">Target Role / Skills</label>
-                <input id="jobQuery" class="bg-transparent font-headline-sm text-headline-sm text-on-surface focus:outline-none placeholder:text-outline w-full" placeholder="e.g. GenAI Engineer, Python, Backend" type="text" value="GenAI Engineer"/>
+                <label class="text-[10px] uppercase tracking-wider text-gray-500 font-bold mb-0.5">Target Role / Skills</label>
+                <input id="jobQuery" class="bg-transparent font-semibold text-gray-900 focus:outline-none placeholder:text-gray-400 w-full" placeholder="e.g. GenAI Engineer, Python, Backend" type="text" value="GenAI Engineer"/>
               </div>
             </div>
-            <div class="flex-1 flex items-center gap-space-3 px-space-3 py-space-2 bg-surface-container-lowest rounded-lg">
-              <span class="material-symbols-outlined text-secondary text-xl">location_on</span>
+            <div class="flex-1 flex items-center gap-3 px-4 py-3 bg-white rounded-lg hover:ring-2 hover:ring-primary/20 transition-all focus-within:ring-2 focus-within:ring-primary/40">
+              <span class="material-symbols-outlined text-gray-400 text-xl">location_on</span>
               <div class="flex flex-col flex-1 min-w-0">
-                <label class="font-label-xs text-label-xs uppercase tracking-wider text-secondary">Location</label>
-                <input id="jobLocation" class="bg-transparent font-body-md text-body-md text-on-surface focus:outline-none placeholder:text-outline w-full" placeholder="City or Remote" type="text" value="Remote"/>
+                <label class="text-[10px] uppercase tracking-wider text-gray-500 font-bold mb-0.5">Location</label>
+                <input id="jobLocation" class="bg-transparent font-medium text-gray-900 focus:outline-none placeholder:text-gray-400 w-full" placeholder="City or Remote" type="text" value="Remote"/>
               </div>
             </div>
-            <div class="w-full lg:w-52 flex items-center gap-space-3 px-space-3 py-space-2 bg-surface-container-lowest rounded-lg cursor-pointer">
-              <span class="material-symbols-outlined text-secondary text-xl">work</span>
+            <div class="w-full lg:w-52 flex items-center gap-3 px-4 py-3 bg-white rounded-lg cursor-pointer hover:ring-2 hover:ring-primary/20 transition-all">
+              <span class="material-symbols-outlined text-gray-400 text-xl">work</span>
               <div class="flex flex-col flex-1 min-w-0">
-                <label class="font-label-xs text-label-xs uppercase tracking-wider text-secondary">Work Mode</label>
-                <select id="jobWorkMode" class="bg-transparent font-body-md text-body-md text-on-surface focus:outline-none cursor-pointer">
+                <label class="text-[10px] uppercase tracking-wider text-gray-500 font-bold mb-0.5">Work Mode</label>
+                <select id="jobWorkMode" class="bg-transparent font-medium text-gray-900 focus:outline-none cursor-pointer appearance-none w-full">
                   <option value="any">Any Mode</option>
                   <option value="remote" selected>Remote</option>
                   <option value="hybrid">Hybrid</option>
@@ -154,246 +161,299 @@
                 </select>
               </div>
             </div>
-            <button id="searchBtn" class="flex items-center justify-center gap-space-2 px-space-6 py-space-3 bg-primary hover:bg-primary-container text-on-primary rounded-lg font-headline-sm text-headline-sm transition-all shadow-sm active:scale-95" type="submit">
+            <button id="searchBtn" class="flex items-center justify-center gap-2 px-8 py-3 bg-gradient-to-r from-primary to-indigo-600 hover:from-primary-container hover:to-indigo-500 text-white rounded-lg font-bold transition-all shadow-md hover:shadow-lg active:scale-95 btn-interactive" type="submit">
               <span class="material-symbols-outlined text-lg">tune</span>
-              <span id="searchBtnText">Run Supervisor Match</span>
+              <span id="searchBtnText">Match Jobs</span>
             </button>
           </form>
 
           <!-- Search Status Bar -->
-          <div class="flex flex-wrap items-center justify-between gap-space-3 pt-space-1 px-space-1">
-            <div class="flex items-center gap-space-3">
-              <span id="resultsCount" class="font-headline-md text-headline-md text-on-surface font-bold">5</span>
-              <span class="font-body-md text-body-md text-secondary">ranked opportunities found</span>
-              <span class="inline-block w-1.5 h-1.5 rounded-full bg-outline-variant"></span>
-              <span id="topFitBadge" class="inline-flex items-center gap-space-1 font-label-sm text-label-sm text-tertiary bg-tertiary-fixed/40 px-space-2 py-0.5 rounded-full font-bold">
+          <div class="flex flex-wrap items-center justify-between gap-3 pt-2 px-2">
+            <div class="flex items-center gap-3">
+              <span id="resultsCount" class="font-display text-2xl text-gray-900 font-bold">0</span>
+              <span class="text-sm font-medium text-gray-500">ranked opportunities found</span>
+              <span class="inline-block w-1.5 h-1.5 rounded-full bg-gray-300"></span>
+              <span id="topFitBadge" class="hidden inline-flex items-center gap-1 text-xs text-emerald-700 bg-emerald-100 px-3 py-1 rounded-full font-bold shadow-sm">
                 <span class="material-symbols-outlined text-sm">bolt</span>
-                <span>Top Match: 88.5% Fit</span>
+                <span>Top Match: --% Fit</span>
               </span>
             </div>
-            <div class="flex items-center gap-2 text-on-surface-variant font-label-sm">
-              <span>Embedding Model: <code class="px-1.5 py-0.5 bg-surface-container rounded font-mono text-xs">all-MiniLM-L6-v2</code></span>
+            <div class="flex items-center gap-2 text-gray-400 text-xs font-medium">
+              <span>AI Engine: <code class="px-1.5 py-0.5 bg-gray-100 rounded text-gray-600 border border-gray-200">all-MiniLM-L6-v2</code></span>
             </div>
           </div>
         </div>
       </section>
 
       <!-- 3-Column Asymmetric Workspace -->
-      <section class="grid grid-cols-1 lg:grid-cols-12 gap-space-6 items-start">
+      <section class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+        
         <!-- COLUMN 1: Faceted Filters (3 cols) -->
-        <aside class="lg:col-span-3 space-y-space-5">
-          <div class="bg-surface-container-lowest rounded-xl shadow-sm p-space-5 space-y-space-6">
+        <aside class="reveal lg:col-span-3 space-y-5" style="transition-delay: 100ms;">
+          <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 space-y-6">
             <div class="flex items-center justify-between">
-              <div class="flex items-center gap-space-2">
+              <div class="flex items-center gap-2 text-gray-900">
                 <span class="material-symbols-outlined text-primary text-xl">filter_list</span>
-                <h2 class="font-headline-md text-headline-md text-on-surface font-bold">Filters</h2>
+                <h2 class="font-display text-lg font-bold">Filters</h2>
               </div>
-              <button onclick="resetFilters()" class="font-label-sm text-label-sm text-primary hover:underline">Reset</button>
+              <button onclick="resetFilters()" class="text-xs font-bold text-primary hover:underline">Reset</button>
             </div>
 
             <!-- Work Mode Filters -->
-            <div class="space-y-space-3">
-              <label class="font-label-sm text-label-sm text-on-surface uppercase tracking-wider block font-semibold">Work Mode</label>
+            <div class="space-y-3">
+              <label class="text-xs text-gray-500 uppercase tracking-wider block font-bold">Work Mode</label>
               <div class="flex flex-wrap gap-2">
-                <button type="button" class="filter-mode-btn px-3 py-1.5 rounded-lg font-label-sm bg-primary text-white font-semibold" data-mode="all">All</button>
-                <button type="button" class="filter-mode-btn px-3 py-1.5 rounded-lg font-label-sm bg-surface-container-low text-secondary hover:text-on-surface" data-mode="remote">Remote</button>
-                <button type="button" class="filter-mode-btn px-3 py-1.5 rounded-lg font-label-sm bg-surface-container-low text-secondary hover:text-on-surface" data-mode="hybrid">Hybrid</button>
+                <button type="button" class="px-4 py-1.5 rounded-full text-xs font-bold bg-primary text-white shadow-md hover:-translate-y-0.5 transition-transform">All</button>
+                <button type="button" class="px-4 py-1.5 rounded-full text-xs font-bold bg-gray-50 text-gray-600 border border-gray-200 hover:border-primary hover:text-primary hover:-translate-y-0.5 transition-all shadow-sm">Remote</button>
+                <button type="button" class="px-4 py-1.5 rounded-full text-xs font-bold bg-gray-50 text-gray-600 border border-gray-200 hover:border-primary hover:text-primary hover:-translate-y-0.5 transition-all shadow-sm">Hybrid</button>
               </div>
             </div>
 
             <!-- Minimum Match Score Slider -->
-            <div class="space-y-space-3">
+            <div class="space-y-3">
               <div class="flex items-center justify-between">
-                <label class="font-label-sm text-label-sm text-on-surface uppercase tracking-wider font-semibold">Min Fit Score</label>
-                <span id="scoreVal" class="font-headline-sm text-primary font-bold">50%</span>
+                <label class="text-xs text-gray-500 uppercase tracking-wider block font-bold">Min Fit Score</label>
+                <span id="scoreVal" class="text-sm text-primary font-bold">50%</span>
               </div>
-              <input id="scoreSlider" class="w-full accent-primary cursor-pointer bg-surface-container-high rounded h-1.5" max="95" min="20" type="range" value="50"/>
+              <input id="scoreSlider" class="w-full accent-primary cursor-pointer bg-gray-200 rounded-full h-1.5" max="95" min="20" type="range" value="50"/>
             </div>
 
             <!-- Tech Skills -->
-            <div class="space-y-space-3">
-              <label class="font-label-sm text-label-sm text-on-surface uppercase tracking-wider block font-semibold">Target Tech Stack</label>
+            <div class="space-y-3">
+              <label class="text-xs text-gray-500 uppercase tracking-wider block font-bold">Target Tech Stack</label>
               <div class="flex flex-wrap gap-2">
-                <span class="px-2.5 py-1 rounded-md bg-primary-fixed text-on-primary-fixed font-semibold font-label-xs text-xs">Python</span>
-                <span class="px-2.5 py-1 rounded-md bg-primary-fixed text-on-primary-fixed font-semibold font-label-xs text-xs">FastAPI</span>
-                <span class="px-2.5 py-1 rounded-md bg-primary-fixed text-on-primary-fixed font-semibold font-label-xs text-xs">Docker</span>
-                <span class="px-2.5 py-1 rounded-md bg-surface-container text-secondary font-label-xs text-xs">LangGraph</span>
-                <span class="px-2.5 py-1 rounded-md bg-surface-container text-secondary font-label-xs text-xs">SQL</span>
+                <span class="px-3 py-1 rounded-lg bg-blue-50 text-blue-700 border border-blue-100 font-semibold text-xs shadow-sm">Python</span>
+                <span class="px-3 py-1 rounded-lg bg-blue-50 text-blue-700 border border-blue-100 font-semibold text-xs shadow-sm">FastAPI</span>
+                <span class="px-3 py-1 rounded-lg bg-blue-50 text-blue-700 border border-blue-100 font-semibold text-xs shadow-sm">Docker</span>
+                <span class="px-3 py-1 rounded-lg bg-gray-50 text-gray-600 border border-gray-200 font-medium text-xs">LangGraph</span>
+                <span class="px-3 py-1 rounded-lg bg-gray-50 text-gray-600 border border-gray-200 font-medium text-xs">SQL</span>
               </div>
             </div>
           </div>
         </aside>
 
         <!-- COLUMN 2: Job Results Feed (4 cols) -->
-        <div class="lg:col-span-4 space-y-3">
-          <div id="jobFeed" class="space-y-3">
-            <!-- Dynamically populated job cards -->
-            <div class="p-12 text-center bg-surface-container-lowest rounded-xl shadow-sm border border-outline-variant/20 flex flex-col items-center justify-center min-h-[300px]">
-              <div class="w-12 h-12 border-4 border-primary/30 border-t-primary rounded-full animate-spin mb-4"></div>
-              <p class="font-headline-sm text-on-surface font-semibold">Running Supervisor Match...</p>
-              <p class="font-body-sm text-secondary mt-1">Analyzing your profile against 100+ opportunities</p>
+        <div class="reveal lg:col-span-4 space-y-3" style="transition-delay: 200ms;">
+          <div id="jobFeed" class="space-y-4">
+            <!-- Loading State -->
+            <div class="p-12 text-center bg-white rounded-2xl shadow-sm border border-gray-100 flex flex-col items-center justify-center min-h-[400px]">
+              <div class="w-12 h-12 border-4 border-primary/20 border-t-primary rounded-full animate-spin mb-4"></div>
+              <p class="font-display text-lg text-gray-900 font-bold">Matching Profiles...</p>
+              <p class="text-sm text-gray-500 mt-2">Scanning thousands of roles to find your perfect fit.</p>
             </div>
           </div>
         </div>
 
         <!-- COLUMN 3: Detailed Interactive Preview & Actions Pane (5 cols) -->
-        <div class="lg:col-span-5">
-          <div class="bg-surface-container-lowest rounded-xl shadow-md p-space-6 space-y-5 sticky top-20">
+        <div class="reveal lg:col-span-5" style="transition-delay: 300ms;">
+          <div class="bg-white rounded-2xl shadow-lg border border-gray-100 p-6 space-y-6 sticky top-24">
+            
             <!-- Selected Role Header -->
-            <div id="paneHeader" class="space-y-3 border-b border-outline-variant/30 pb-4">
+            <div id="paneHeader" class="space-y-4 border-b border-gray-100 pb-5">
               <div class="flex items-start justify-between gap-4">
                 <div>
                   <div class="flex items-center gap-2">
-                    <h4 id="paneCompany" class="font-headline-sm text-on-surface font-semibold">Nexus AI</h4>
+                    <h4 id="paneCompany" class="font-display text-lg text-gray-900 font-bold">Select a Job</h4>
                     <span class="material-symbols-outlined text-primary text-sm">verified</span>
                   </div>
-                  <h2 id="paneTitle" class="font-headline-lg text-on-surface font-bold mt-1">GenAI Engineer</h2>
-                  <p id="paneMeta" class="font-body-sm text-secondary mt-1">Remote · Full-time</p>
+                  <h2 id="paneTitle" class="font-display text-3xl text-gray-900 font-extrabold mt-1">--</h2>
+                  <p id="paneMeta" class="text-sm text-gray-500 mt-2 font-medium">-- · --</p>
                 </div>
-                <div class="text-right">
-                  <div id="paneScore" class="font-headline-lg text-tertiary font-bold">88.5%</div>
-                  <span class="font-label-xs text-secondary">Fit Score</span>
+                <div class="text-right flex flex-col items-end">
+                  <div id="paneScore" class="font-display text-4xl text-emerald-600 font-black tracking-tighter">--</div>
+                  <span class="text-[10px] uppercase font-bold text-gray-400 tracking-wider">Fit Score</span>
                 </div>
               </div>
 
               <!-- Top Action Strip -->
-              <div class="flex flex-wrap items-center gap-2 pt-2">
-                <button id="btnTailor" onclick="handleTailorClick()" class="flex-1 min-w-[140px] h-10 px-4 bg-primary hover:bg-primary-container text-on-primary font-headline-sm rounded-lg flex items-center justify-center gap-2 shadow-sm transition-transform active:scale-95">
+              <div class="flex flex-wrap items-center gap-3 pt-2">
+                <button id="btnTailor" onclick="handleTailorClick()" class="flex-1 min-w-[140px] h-11 px-4 bg-gradient-to-r from-primary to-indigo-600 hover:from-primary-container hover:to-indigo-500 text-white font-bold rounded-xl flex items-center justify-center gap-2 shadow-md hover:shadow-lg transition-all active:scale-95 btn-interactive">
                   <span class="material-symbols-outlined text-base">edit_note</span>
-                  <span id="tailorBtnLabel">Tailor Resume & Letter</span>
+                  <span id="tailorBtnLabel">Tailor Resume</span>
                 </button>
-                <button id="btnPrep" onclick="handlePrepClick()" class="h-10 px-4 bg-tertiary-container hover:bg-tertiary text-white font-headline-sm rounded-lg flex items-center justify-center gap-2 shadow-sm transition-colors">
-                  <span class="material-symbols-outlined text-base">psychology</span>
+                <button id="btnPrep" onclick="handlePrepClick()" class="h-11 px-4 bg-white border border-gray-200 hover:border-primary hover:text-primary text-gray-700 font-bold rounded-xl flex items-center justify-center gap-2 shadow-sm hover:shadow-md transition-all transform hover:-translate-y-0.5">
+                  <span class="material-symbols-outlined text-base text-purple-500">psychology</span>
                   <span id="prepBtnLabel">Interview Prep</span>
                 </button>
-                <button id="btnLearn" onclick="handleLearnClick()" class="h-10 px-4 bg-primary-container hover:bg-primary text-on-primary-container hover:text-white font-headline-sm rounded-lg flex items-center justify-center gap-2 shadow-sm transition-colors">
-                  <span class="material-symbols-outlined text-base">school</span>
-                  <span id="learnBtnLabel">Learning Path</span>
+                <button id="btnLearn" onclick="handleLearnClick()" class="h-11 px-4 bg-white border border-gray-200 hover:border-primary hover:text-primary text-gray-700 font-bold rounded-xl flex items-center justify-center gap-2 shadow-sm hover:shadow-md transition-all transform hover:-translate-y-0.5">
+                  <span class="material-symbols-outlined text-base text-amber-500">school</span>
+                  <span id="learnBtnLabel">Learn</span>
                 </button>
-                <button id="btnApply" onclick="handleApplyClick()" class="h-10 px-4 bg-secondary-container hover:bg-secondary text-white font-headline-sm rounded-lg flex items-center justify-center gap-2 shadow-sm transition-colors">
+                <button id="btnApply" onclick="handleApplyClick()" class="h-11 px-4 bg-gray-900 hover:bg-gray-800 text-white font-bold rounded-xl flex items-center justify-center gap-2 shadow-sm transition-colors">
                   <span class="material-symbols-outlined text-base">magic_button</span>
-                  <span id="applyBtnLabel">Auto-Fill Form</span>
+                  <span id="applyBtnLabel">Apply</span>
                 </button>
-                <button id="btnTrack" onclick="handleQuickTrack()" class="h-10 px-3 bg-surface-container-low hover:bg-surface-container text-on-surface rounded-lg flex items-center justify-center shadow-sm" title="Save to Tracker">
-                  <span class="material-symbols-outlined text-primary">bookmark</span>
+                <button id="btnTrack" onclick="handleQuickTrack()" class="h-11 px-4 bg-blue-50 text-blue-600 hover:bg-blue-100 rounded-xl flex items-center justify-center transition-colors" title="Save to Tracker">
+                  <span class="material-symbols-outlined text-lg">bookmark</span>
                 </button>
               </div>
             </div>
 
             <!-- Dynamic Tab / Section Switcher -->
-            <div class="flex border-b border-outline-variant/30 gap-6 font-label-md">
-              <button onclick="switchPaneTab('details')" id="tabBtnDetails" class="pb-2 text-primary border-b-2 border-primary font-bold">Role Details</button>
-              <button onclick="switchPaneTab('tailoring')" id="tabBtnTailoring" class="pb-2 text-on-surface-variant hover:text-on-surface">Tailored Drafts</button>
-              <button onclick="switchPaneTab('prep')" id="tabBtnPrep" class="pb-2 text-on-surface-variant hover:text-on-surface">Interview Sheet</button>
-              <button onclick="switchPaneTab('learn')" id="tabBtnLearn" class="pb-2 text-on-surface-variant hover:text-on-surface">Learning Path</button>
+            <div class="flex border-b border-gray-100 gap-8 text-sm">
+              <button onclick="switchPaneTab('details')" id="tabBtnDetails" class="pb-3 text-primary border-b-2 border-primary font-bold transition-colors">Role Details</button>
+              <button onclick="switchPaneTab('tailoring')" id="tabBtnTailoring" class="pb-3 text-gray-500 hover:text-gray-900 font-medium transition-colors">Tailored Drafts</button>
+              <button onclick="switchPaneTab('prep')" id="tabBtnPrep" class="pb-3 text-gray-500 hover:text-gray-900 font-medium transition-colors">Interview Guide</button>
+              <button onclick="switchPaneTab('learn')" id="tabBtnLearn" class="pb-3 text-gray-500 hover:text-gray-900 font-medium transition-colors">Path</button>
             </div>
 
             <!-- Pane Content 1: Role Details -->
-            <div id="paneDetails" class="space-y-4 max-h-[500px] overflow-y-auto pr-1">
-              <div class="p-3 bg-surface-container-low rounded-lg space-y-1">
-                <span class="font-label-xs uppercase tracking-wider text-secondary font-semibold">Semantic Match Reasoning</span>
-                <p id="paneReasons" class="font-body-sm text-on-surface">Candidate shows strong alignment with Python and API requirements.</p>
+            <div id="paneDetails" class="space-y-6 max-h-[500px] overflow-y-auto pr-2 custom-scroll">
+              <div class="p-4 bg-blue-50/50 rounded-xl border border-blue-100 space-y-2">
+                <span class="text-xs uppercase tracking-wider text-blue-600 font-bold flex items-center gap-1"><span class="material-symbols-outlined text-sm">auto_awesome</span> Semantic Match Reasoning</span>
+                <p id="paneReasons" class="text-sm text-gray-700 leading-relaxed">Waiting for selection...</p>
               </div>
-              <div id="paneGapsContainer" class="p-3 bg-surface-container-low rounded-lg space-y-1">
-                <span class="font-label-xs uppercase tracking-wider text-secondary font-semibold">Identified Skill Gaps</span>
-                <div id="paneGaps" class="flex flex-wrap gap-1.5 pt-1"></div>
+              <div id="paneGapsContainer" class="p-4 bg-orange-50/50 rounded-xl border border-orange-100 space-y-2">
+                <span class="text-xs uppercase tracking-wider text-orange-600 font-bold flex items-center gap-1"><span class="material-symbols-outlined text-sm">warning</span> Identified Skill Gaps</span>
+                <div id="paneGaps" class="flex flex-wrap gap-2 pt-1"></div>
               </div>
-              <div class="space-y-2">
-                <h4 class="font-headline-sm text-on-surface font-semibold">Job Description</h4>
-                <p id="paneDescription" class="font-body-sm text-on-surface-variant leading-relaxed whitespace-pre-line"></p>
+              <div class="space-y-3 pt-2">
+                <h4 class="font-display text-lg text-gray-900 font-bold">Job Description</h4>
+                <p id="paneDescription" class="text-sm text-gray-600 leading-relaxed whitespace-pre-line bg-gray-50 p-4 rounded-xl border border-gray-100"></p>
               </div>
             </div>
 
             <!-- Pane Content 2: Tailored Documents View -->
-            <div id="paneTailoring" class="space-y-4 max-h-[500px] overflow-y-auto pr-1 hidden">
-              <div id="tailorLoading" class="p-8 text-center text-secondary hidden">
-                <div class="animate-spin text-primary text-2xl mb-2">⟳</div>
-                <span>Drafting tailored resume bullets and cover letter (running critic reflection loop)…</span>
+            <div id="paneTailoring" class="space-y-6 max-h-[500px] overflow-y-auto pr-2 custom-scroll hidden">
+              <div id="tailorLoading" class="p-10 text-center text-gray-500 hidden flex flex-col items-center">
+                <div class="w-10 h-10 border-4 border-indigo-200 border-t-indigo-600 rounded-full animate-spin mb-4"></div>
+                <span class="font-semibold text-gray-700">Drafting tailored resume...</span>
+                <span class="text-xs mt-1">Running strict no-fabrication critic loops.</span>
               </div>
-              <div id="tailorResults" class="space-y-4">
-                <div id="criticVerdict" class="p-3 rounded-lg bg-tertiary-fixed/30 text-on-tertiary-fixed font-label-sm font-semibold flex items-center gap-2">
-                  <span class="material-symbols-outlined text-base text-tertiary">verified</span>
-                  <span>No-Fabrication Critic: All claims verified against resume.</span>
+              <div id="tailorResults" class="space-y-5 hidden">
+                <div id="criticVerdict" class="p-3 rounded-xl bg-emerald-50 border border-emerald-100 text-emerald-800 text-sm font-semibold flex items-center gap-2">
+                  <span class="material-symbols-outlined text-emerald-600">verified</span>
+                  <span>Verified: All claims strictly match source resume.</span>
                 </div>
                 <div class="space-y-2">
-                  <span class="font-label-xs uppercase tracking-wider text-secondary font-semibold">Tailored Summary</span>
-                  <p id="tailoredSummary" class="font-body-sm text-on-surface p-3 bg-surface-container-low rounded-lg"></p>
+                  <span class="text-xs uppercase tracking-wider text-gray-500 font-bold">Tailored Summary</span>
+                  <p id="tailoredSummary" class="text-sm text-gray-700 leading-relaxed p-4 bg-gray-50 border border-gray-100 rounded-xl"></p>
                 </div>
                 <div class="space-y-2">
-                  <span class="font-label-xs uppercase tracking-wider text-secondary font-semibold">Tailored Achievement Bullets</span>
-                  <ul id="tailoredBullets" class="space-y-1.5 font-body-sm text-on-surface"></ul>
+                  <span class="text-xs uppercase tracking-wider text-gray-500 font-bold">Tailored Bullets</span>
+                  <ul id="tailoredBullets" class="space-y-2 text-sm text-gray-700"></ul>
                 </div>
                 <div class="space-y-2">
-                  <span class="font-label-xs uppercase tracking-wider text-secondary font-semibold">Generated Cover Letter</span>
-                  <textarea id="tailoredCoverLetter" class="w-full h-32 p-3 bg-surface-container-low rounded-lg font-body-sm text-on-surface focus:outline-none" readonly></textarea>
+                  <span class="text-xs uppercase tracking-wider text-gray-500 font-bold">Generated Cover Letter</span>
+                  <textarea id="tailoredCoverLetter" class="w-full h-40 p-4 bg-gray-50 border border-gray-100 rounded-xl text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-primary/20 resize-none custom-scroll" readonly></textarea>
                 </div>
                 <div class="pt-2">
-                  <button onclick="approveAndTrackCurrent()" class="w-full py-2.5 bg-primary text-white font-headline-sm rounded-lg hover:bg-primary-container transition-all shadow-sm">
-                    ✅ Approve & Save to Tracker
+                  <button onclick="approveAndTrackCurrent()" class="w-full py-3.5 bg-gray-900 text-white font-bold rounded-xl hover:bg-black transition-all shadow-md hover:shadow-lg flex items-center justify-center gap-2">
+                    <span class="material-symbols-outlined">check_circle</span>
+                    Approve & Save to Tracker
                   </button>
                 </div>
               </div>
             </div>
 
             <!-- Pane Content 3: Interview Prep Guide -->
-            <div id="panePrep" class="space-y-4 max-h-[500px] overflow-y-auto pr-1 hidden">
-              <div id="prepLoading" class="p-8 text-center text-secondary hidden">
-                <div class="animate-spin text-primary text-2xl mb-2">⟳</div>
-                <span>Synthesizing company research & grounded interview Q&A…</span>
+            <div id="panePrep" class="space-y-6 max-h-[500px] overflow-y-auto pr-2 custom-scroll hidden">
+              <div id="prepLoading" class="p-10 text-center text-gray-500 hidden flex flex-col items-center">
+                <div class="w-10 h-10 border-4 border-purple-200 border-t-purple-600 rounded-full animate-spin mb-4"></div>
+                <span class="font-semibold text-gray-700">Synthesizing Prep Guide...</span>
+                <span class="text-xs mt-1">Gathering company research and grounded Q&A.</span>
               </div>
-              <div id="prepResults" class="space-y-4">
-                <div class="p-3 bg-surface-container-low rounded-lg space-y-1">
-                  <span class="font-label-xs uppercase tracking-wider text-secondary font-semibold">Company Overview</span>
-                  <p id="prepCompanyOverview" class="font-body-sm text-on-surface"></p>
+              <div id="prepResults" class="space-y-6 hidden">
+                <div class="p-4 bg-purple-50/50 rounded-xl border border-purple-100 space-y-2">
+                  <span class="text-xs uppercase tracking-wider text-purple-700 font-bold">Company Overview</span>
+                  <p id="prepCompanyOverview" class="text-sm text-gray-700 leading-relaxed"></p>
                 </div>
-                <div class="space-y-2">
-                  <span class="font-label-xs uppercase tracking-wider text-secondary font-semibold">Key Talking Points (Elevator Pitch)</span>
-                  <ul id="prepTalkingPoints" class="space-y-1 font-body-sm text-on-surface"></ul>
+                <div class="space-y-3">
+                  <span class="text-xs uppercase tracking-wider text-gray-500 font-bold">Key Talking Points (Elevator Pitch)</span>
+                  <ul id="prepTalkingPoints" class="space-y-2 text-sm text-gray-700 list-disc pl-5 marker:text-primary"></ul>
                 </div>
-                <div class="space-y-2">
-                  <span class="font-label-xs uppercase tracking-wider text-secondary font-semibold">Anticipated Questions & Grounded Answers</span>
-                  <div id="prepQuestions" class="space-y-2.5"></div>
+                <div class="space-y-3">
+                  <span class="text-xs uppercase tracking-wider text-gray-500 font-bold">Anticipated Questions & Grounded Answers</span>
+                  <div id="prepQuestions" class="space-y-3"></div>
                 </div>
-                <div class="space-y-2">
-                  <span class="font-label-xs uppercase tracking-wider text-secondary font-semibold">Questions to Ask the Hiring Team</span>
-                  <ul id="prepAskQuestions" class="space-y-1 font-body-sm text-on-surface"></ul>
+                <div class="space-y-3">
+                  <span class="text-xs uppercase tracking-wider text-gray-500 font-bold">Questions to Ask Them</span>
+                  <ul id="prepAskQuestions" class="space-y-2 text-sm text-gray-700 list-disc pl-5 marker:text-amber-500"></ul>
                 </div>
                 <div class="pt-2">
-                  <button onclick="downloadPrepMarkdown()" class="w-full py-2 bg-surface-container text-primary font-headline-sm rounded-lg hover:bg-surface-container-high transition-all">
-                    📥 Download Prep Guide (.md)
+                  <button onclick="downloadPrepMarkdown()" class="w-full py-3 bg-white border-2 border-gray-200 text-gray-700 font-bold rounded-xl hover:border-primary hover:text-primary transition-all flex items-center justify-center gap-2">
+                    <span class="material-symbols-outlined">download</span>
+                    Download Prep Guide (.md)
                   </button>
                 </div>
               </div>
             </div>
 
             <!-- Pane Content 4: Learning Path -->
-            <div id="paneLearn" class="space-y-4 max-h-[500px] overflow-y-auto pr-1 hidden">
-              <div id="learnLoading" class="p-8 text-center text-secondary hidden">
-                <div class="animate-spin text-primary text-2xl mb-2">⟳</div>
-                <span>Generating personalized learning pathway…</span>
+            <div id="paneLearn" class="space-y-6 max-h-[500px] overflow-y-auto pr-2 custom-scroll hidden">
+              <div id="learnLoading" class="p-10 text-center text-gray-500 hidden flex flex-col items-center">
+                <div class="w-10 h-10 border-4 border-amber-200 border-t-amber-600 rounded-full animate-spin mb-4"></div>
+                <span class="font-semibold text-gray-700">Generating Learning Path...</span>
+                <span class="text-xs mt-1">Creating a custom curriculum to bridge skill gaps.</span>
               </div>
               <div id="learnResults" class="space-y-4 hidden">
-                <div class="p-3 bg-surface-container-low rounded-lg space-y-1">
-                  <span class="font-label-xs uppercase tracking-wider text-secondary font-semibold">Learning Curriculum</span>
-                  <div id="learnMarkdown" class="font-body-sm text-on-surface prose prose-sm prose-invert max-w-none"></div>
+                <div class="p-5 bg-gray-50 border border-gray-100 rounded-xl space-y-2">
+                  <span class="text-xs uppercase tracking-wider text-gray-500 font-bold">Curriculum Details</span>
+                  <div id="learnMarkdown" class="text-sm text-gray-700 leading-relaxed space-y-3"></div>
                 </div>
               </div>
             </div>
+
           </div>
         </div>
       </section>
     </div>
   </main>
 
+  <!-- Custom Scrollbar specific to panes -->
+  <style>
+    .custom-scroll::-webkit-scrollbar {
+      display: block;
+      width: 6px;
+    }
+    .custom-scroll::-webkit-scrollbar-track {
+      background: transparent;
+    }
+    .custom-scroll::-webkit-scrollbar-thumb {
+      background: #e2e8f0;
+      border-radius: 4px;
+    }
+    .custom-scroll:hover::-webkit-scrollbar-thumb {
+      background: #cbd5e1;
+    }
+  </style>
+
   <script src="/static/js/api.js"></script>
   <script>
+    // Reveal Animations
+    const revealElements = document.querySelectorAll('.reveal');
+    const revealCallback = (entries, observer) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('active');
+          observer.unobserve(entry.target);
+        }
+      });
+    };
+    const revealObserver = new IntersectionObserver(revealCallback, { threshold: 0.1 });
+    revealElements.forEach(el => revealObserver.observe(el));
+    setTimeout(() => {
+      document.querySelectorAll('.reveal').forEach(el => el.classList.add('active'));
+    }, 100);
+
+    // Navbar Glassmorphism
+    window.addEventListener('scroll', () => {
+      const navbar = document.getElementById('navbar');
+      if (window.scrollY > 20) {
+        navbar.classList.add('shadow-md', 'bg-white/90');
+        navbar.classList.remove('shadow-sm', 'glass');
+      } else {
+        navbar.classList.add('shadow-sm', 'glass');
+        navbar.classList.remove('shadow-md', 'bg-white/90');
+      }
+    });
+
     let currentMatches = [];
     let selectedMatch = null;
     let currentTailoring = null;
     let currentPrep = null;
 
     window.addEventListener('DOMContentLoaded', async () => {
-      // Pull search parameters from sessionStorage if passed from landing page
       const role = sessionStorage.getItem('search_role') || 'GenAI Engineer';
       const loc = sessionStorage.getItem('search_location') || 'Remote';
       const mode = sessionStorage.getItem('search_work_mode') || 'any';
@@ -415,7 +475,7 @@
 
     async function executeSearch(role, loc, mode) {
       const btn = document.getElementById('searchBtnText');
-      btn.textContent = 'Searching…';
+      btn.textContent = 'Searching...';
       try {
         const data = await API.searchJobs({
           target_roles: [role],
@@ -430,12 +490,19 @@
           renderFeed(currentMatches);
           selectJob(0);
         } else {
-          document.getElementById('jobFeed').innerHTML = '<div class="p-8 text-center text-secondary bg-surface-container-lowest rounded-xl">No jobs matched your criteria. Try broader role terms.</div>';
+          document.getElementById('jobFeed').innerHTML = `
+            <div class="p-12 text-center bg-white rounded-2xl shadow-sm border border-gray-100">
+              <div class="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                <span class="material-symbols-outlined text-gray-400 text-3xl">search_off</span>
+              </div>
+              <p class="font-display text-lg text-gray-900 font-bold">No jobs matched your criteria.</p>
+              <p class="text-sm text-gray-500 mt-1">Try using broader search terms.</p>
+            </div>`;
         }
       } catch (err) {
-        document.getElementById('jobFeed').innerHTML = `<div class="p-4 bg-error-container text-on-error-container rounded-xl">Search error: ${err.message}</div>`;
+        document.getElementById('jobFeed').innerHTML = `<div class="p-4 bg-red-50 text-red-700 border border-red-200 rounded-xl font-medium">Search error: ${err.message}</div>`;
       } finally {
-        btn.textContent = 'Run Supervisor Match';
+        btn.textContent = 'Match Jobs';
       }
     }
 
@@ -445,31 +512,41 @@
 
       matches.forEach((m, idx) => {
         const card = document.createElement('article');
-        card.className = `job-card relative bg-surface-container-lowest rounded-xl p-space-4 shadow-sm hover:shadow-md transition-all cursor-pointer border border-outline-variant/30 ${idx === 0 ? 'ring-2 ring-primary bg-gradient-to-r from-primary-fixed/20 to-surface-container-lowest' : ''}`;
+        
+        let scoreColorClass, scoreBgClass, ringClass;
+        if (m.score >= 80) {
+          scoreColorClass = 'text-emerald-700';
+          scoreBgClass = 'bg-emerald-100';
+        } else if (m.score >= 60) {
+          scoreColorClass = 'text-amber-700';
+          scoreBgClass = 'bg-amber-100';
+        } else {
+          scoreColorClass = 'text-gray-700';
+          scoreBgClass = 'bg-gray-100';
+        }
+
+        const isFirst = idx === 0;
+        card.className = `job-card relative bg-white rounded-2xl p-5 shadow-sm hover:shadow-md hover:-translate-y-1 transition-all cursor-pointer border border-gray-100 ${isFirst ? 'ring-2 ring-primary border-transparent' : ''}`;
         card.onclick = () => selectJob(idx);
 
-        const scoreColor = m.score >= 80 ? 'bg-tertiary-fixed text-on-tertiary-fixed' : 'bg-surface-container text-secondary';
-
         card.innerHTML = `
-          <div class="flex items-start justify-between gap-3">
-            <div class="flex items-start gap-3 min-w-0">
-              <div class="w-10 h-10 rounded-xl bg-primary-container text-white flex items-center justify-center font-bold text-base flex-shrink-0">
+          <div class="flex items-start justify-between gap-4">
+            <div class="flex items-start gap-4 min-w-0">
+              <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-gray-100 to-gray-200 text-gray-700 flex items-center justify-center font-display font-bold text-xl flex-shrink-0 shadow-sm border border-white">
                 ${(m.job.company || 'J').charAt(0).toUpperCase()}
               </div>
               <div class="min-w-0">
                 <div class="flex items-center gap-1.5">
-                  <span class="font-label-sm text-on-surface font-semibold truncate">${m.job.company}</span>
-                  <span class="material-symbols-outlined text-primary text-xs">verified</span>
+                  <span class="text-sm text-gray-600 font-bold truncate">${m.job.company}</span>
+                  <span class="material-symbols-outlined text-blue-500 text-[14px]">verified</span>
                 </div>
-                <h3 class="font-headline-sm text-on-surface font-bold truncate">${m.job.title}</h3>
-                <p class="font-body-sm text-secondary">${m.job.location || 'Remote'}</p>
+                <h3 class="font-display text-lg text-gray-900 font-bold truncate leading-tight mt-0.5">${m.job.title}</h3>
+                <p class="text-xs text-gray-500 mt-1 font-medium">${m.job.location || 'Remote'}</p>
               </div>
             </div>
-            <span class="font-label-xs px-2 py-0.5 rounded font-bold ${scoreColor}">${m.score}% Match</span>
-          </div>
-          <div class="mt-3 flex items-center justify-between font-label-xs text-secondary">
-            <span>${m.job.salary || 'Competitive'}</span>
-            <span class="text-primary font-semibold">View Details →</span>
+            <div class="flex flex-col items-end">
+              <span class="text-xs px-2.5 py-1 rounded-full font-bold ${scoreBgClass} ${scoreColorClass} shadow-sm">${m.score}% Match</span>
+            </div>
           </div>
         `;
         feed.appendChild(card);
@@ -483,9 +560,9 @@
       // Update feed selection rings
       document.querySelectorAll('.job-card').forEach((el, i) => {
         if (i === idx) {
-          el.className = 'job-card relative bg-surface-container-lowest rounded-xl p-space-4 shadow-md transition-all cursor-pointer border border-primary ring-2 ring-primary bg-gradient-to-r from-primary-fixed/20 to-surface-container-lowest';
+          el.className = 'job-card relative bg-white rounded-2xl p-5 shadow-md hover:-translate-y-1 transition-all cursor-pointer border border-transparent ring-2 ring-primary';
         } else {
-          el.className = 'job-card relative bg-surface-container-lowest rounded-xl p-space-4 shadow-sm hover:shadow-md transition-all cursor-pointer border border-outline-variant/30';
+          el.className = 'job-card relative bg-white rounded-2xl p-5 shadow-sm hover:shadow-md hover:-translate-y-1 transition-all cursor-pointer border border-gray-100';
         }
       });
 
@@ -494,7 +571,7 @@
       document.getElementById('paneTitle').textContent = selectedMatch.job.title;
       document.getElementById('paneMeta').textContent = `${selectedMatch.job.location || 'Remote'} · ${selectedMatch.job.source || 'Verified Post'}`;
       document.getElementById('paneScore').textContent = `${selectedMatch.score}%`;
-      document.getElementById('paneReasons').textContent = selectedMatch.reasons || 'Direct semantic fit.';
+      document.getElementById('paneReasons').textContent = selectedMatch.reasons || 'Direct semantic fit based on resume extraction.';
       document.getElementById('paneDescription').textContent = selectedMatch.job.description || 'No detailed description available.';
 
       const gapsDiv = document.getElementById('paneGaps');
@@ -502,50 +579,42 @@
       if (selectedMatch.gaps && selectedMatch.gaps.length > 0) {
         selectedMatch.gaps.forEach(g => {
           const pill = document.createElement('span');
-          pill.className = 'px-2 py-0.5 bg-surface-container text-secondary rounded text-xs';
+          pill.className = 'px-3 py-1 bg-white border border-orange-200 text-orange-700 rounded-lg text-xs font-semibold shadow-sm';
           pill.textContent = g;
           gapsDiv.appendChild(pill);
         });
       } else {
-        gapsDiv.innerHTML = '<span class="text-xs text-tertiary font-medium">No critical gaps identified!</span>';
+        gapsDiv.innerHTML = '<span class="text-xs text-emerald-600 font-bold bg-emerald-50 px-3 py-1 rounded-lg border border-emerald-100 shadow-sm">No critical gaps identified!</span>';
       }
 
       // Reset sub-panes
       currentTailoring = null;
       currentPrep = null;
+      document.getElementById('tailorResults').classList.add('hidden');
+      document.getElementById('prepResults').classList.add('hidden');
+      document.getElementById('learnResults').classList.add('hidden');
       switchPaneTab('details');
     }
 
     function switchPaneTab(tab) {
-      document.getElementById('paneDetails').classList.add('hidden');
-      document.getElementById('paneTailoring').classList.add('hidden');
-      document.getElementById('panePrep').classList.add('hidden');
-      document.getElementById('paneLearn').classList.add('hidden');
+      ['Details', 'Tailoring', 'Prep', 'Learn'].forEach(t => {
+        const lower = t.toLowerCase();
+        document.getElementById(`pane${t}`).classList.add('hidden');
+        document.getElementById(`tabBtn${t}`).className = 'pb-3 text-gray-500 hover:text-gray-900 font-medium transition-colors';
+      });
 
-      document.getElementById('tabBtnDetails').className = 'pb-2 text-on-surface-variant hover:text-on-surface';
-      document.getElementById('tabBtnTailoring').className = 'pb-2 text-on-surface-variant hover:text-on-surface';
-      document.getElementById('tabBtnPrep').className = 'pb-2 text-on-surface-variant hover:text-on-surface';
-      document.getElementById('tabBtnLearn').className = 'pb-2 text-on-surface-variant hover:text-on-surface';
-
-      if (tab === 'details') {
-        document.getElementById('paneDetails').classList.remove('hidden');
-        document.getElementById('tabBtnDetails').className = 'pb-2 text-primary border-b-2 border-primary font-bold';
-      } else if (tab === 'tailoring') {
-        document.getElementById('paneTailoring').classList.remove('hidden');
-        document.getElementById('tabBtnTailoring').className = 'pb-2 text-primary border-b-2 border-primary font-bold';
-      } else if (tab === 'prep') {
-        document.getElementById('panePrep').classList.remove('hidden');
-        document.getElementById('tabBtnPrep').className = 'pb-2 text-primary border-b-2 border-primary font-bold';
-      } else if (tab === 'learn') {
-        document.getElementById('paneLearn').classList.remove('hidden');
-        document.getElementById('tabBtnLearn').className = 'pb-2 text-primary border-b-2 border-primary font-bold';
-      }
+      const capTab = tab.charAt(0).toUpperCase() + tab.slice(1);
+      document.getElementById(`pane${capTab}`).classList.remove('hidden');
+      document.getElementById(`tabBtn${capTab}`).className = 'pb-3 text-primary border-b-2 border-primary font-bold transition-colors';
     }
 
     async function handleTailorClick() {
       if (!selectedMatch) return;
       switchPaneTab('tailoring');
-      if (currentTailoring) return;
+      if (currentTailoring) {
+         document.getElementById('tailorResults').classList.remove('hidden');
+         return;
+      }
 
       document.getElementById('tailorLoading').classList.remove('hidden');
       document.getElementById('tailorResults').classList.add('hidden');
@@ -559,8 +628,8 @@
         bulletsList.innerHTML = '';
         (res.tailored_resume.bullets || []).forEach(b => {
           const li = document.createElement('li');
-          li.className = 'flex items-start gap-2';
-          li.innerHTML = `<span class="material-symbols-outlined text-primary text-base mt-0.5">check_circle</span><span>${b}</span>`;
+          li.className = 'flex items-start gap-3 p-3 bg-white border border-gray-100 rounded-xl shadow-sm';
+          li.innerHTML = `<span class="material-symbols-outlined text-primary text-base mt-0.5 shrink-0">check_circle</span><span>${b}</span>`;
           bulletsList.appendChild(li);
         });
 
@@ -576,7 +645,10 @@
     async function handlePrepClick() {
       if (!selectedMatch) return;
       switchPaneTab('prep');
-      if (currentPrep) return;
+      if (currentPrep) {
+         document.getElementById('prepResults').classList.remove('hidden');
+         return;
+      }
 
       document.getElementById('prepLoading').classList.remove('hidden');
       document.getElementById('prepResults').classList.add('hidden');
@@ -591,7 +663,7 @@
         tpList.innerHTML = '';
         (res.interview_prep.key_talking_points || []).forEach(tp => {
           const li = document.createElement('li');
-          li.textContent = `• ${tp}`;
+          li.textContent = tp;
           tpList.appendChild(li);
         });
 
@@ -599,13 +671,13 @@
         qContainer.innerHTML = '';
         (res.interview_prep.likely_questions || []).forEach((q, i) => {
           const card = document.createElement('div');
-          card.className = 'p-3 bg-surface-container-low rounded-lg space-y-1';
+          card.className = 'p-4 bg-white border border-gray-100 rounded-xl space-y-2 shadow-sm';
           card.innerHTML = `
             <div class="flex items-center justify-between">
-              <span class="font-label-sm font-bold text-on-surface">${i + 1}. ${q.question}</span>
-              <span class="px-1.5 py-0.5 bg-surface-container text-xs uppercase font-semibold rounded">${q.category}</span>
+              <span class="font-bold text-gray-900">${i + 1}. ${q.question}</span>
+              <span class="px-2 py-1 bg-gray-100 text-gray-600 text-[10px] uppercase font-bold rounded-full">${q.category}</span>
             </div>
-            <p class="font-body-sm text-secondary italic">Strategy: ${q.suggested_answer}</p>
+            <p class="text-sm text-gray-600 italic bg-gray-50 p-3 rounded-lg border border-gray-100">" ${q.suggested_answer} "</p>
           `;
           qContainer.appendChild(card);
         });
@@ -614,7 +686,7 @@
         askList.innerHTML = '';
         (res.interview_prep.questions_to_ask_interviewer || []).forEach(qa => {
           const li = document.createElement('li');
-          li.textContent = `❓ ${qa}`;
+          li.textContent = qa;
           askList.appendChild(li);
         });
 
@@ -672,14 +744,13 @@
       const btn = document.getElementById('btnApply');
       const label = document.getElementById('applyBtnLabel');
       
-      label.textContent = 'Filling Form...';
+      label.textContent = 'Applying...';
       btn.disabled = true;
       btn.classList.add('opacity-50', 'cursor-not-allowed');
 
       try {
         const res = await API.applyJob(selectedMatch.job.id, selectedMatch.job);
         if (res.screenshot_base64) {
-          // Open the screenshot in a new window/tab
           const newWindow = window.open();
           newWindow.document.write(`<img src="${res.screenshot_base64}" alt="Auto-filled form screenshot" style="max-width: 100%;">`);
         } else {
@@ -689,7 +760,7 @@
         console.error(err);
         alert(err.message);
       } finally {
-        label.textContent = 'Auto-Fill Form';
+        label.textContent = 'Apply';
         btn.disabled = false;
         btn.classList.remove('opacity-50', 'cursor-not-allowed');
       }
@@ -702,14 +773,16 @@
       const btnLabel = document.getElementById('learnBtnLabel');
       const oldLabel = btnLabel.textContent;
       
-      btnLabel.textContent = 'Generating...';
+      btnLabel.textContent = 'Wait...';
       document.getElementById('btnLearn').disabled = true;
       document.getElementById('learnLoading').classList.remove('hidden');
       document.getElementById('learnResults').classList.add('hidden');
 
       try {
         const res = await API.learnJob(selectedMatch.job.id, selectedMatch.gaps, selectedMatch.job);
-        document.getElementById('learnMarkdown').innerHTML = res.markdown ? res.markdown.replace(/\n/g, '<br/>').replace(/## (.*?)</g, '<strong>$1</strong><').replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>') : 'No path generated.';
+        let md = res.markdown || 'No path generated.';
+        md = md.replace(/\n/g, '<br/>').replace(/## (.*?)</g, '<h3 class="font-bold text-lg text-gray-900 mt-4 mb-2">$1</h3><').replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+        document.getElementById('learnMarkdown').innerHTML = md;
         document.getElementById('learnResults').classList.remove('hidden');
       } catch (err) {
         alert('Failed to generate learning path: ' + err.message);
