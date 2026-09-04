@@ -135,16 +135,16 @@
             <!-- Live Verified Cohort Badge -->
             <div class="inline-flex items-center gap-space-2 px-space-4 py-1.5 rounded-full bg-surface-container-low text-primary shadow-sm mb-space-6 transition-all hover:bg-surface-container cursor-default">
               <span class="inline-block w-2 h-2 rounded-full bg-tertiary animate-pulse"></span>
-              <span class="font-label-sm text-label-sm font-semibold tracking-wide uppercase">AI Multi-Agent Job Search Engine Active</span>
+              <span class="font-label-sm text-label-sm font-semibold tracking-wide uppercase">Your Intelligent Career Assistant</span>
               <span class="material-symbols-outlined text-sm">arrow_forward</span>
             </div>
             <!-- Main Headline -->
             <h1 class="font-display-lg text-display-lg max-w-4xl text-on-surface tracking-tight mb-space-4">
-              Find the right job. <span class="bg-gradient-to-r from-primary via-primary-container to-tertiary bg-clip-text text-transparent">Land it with AI.</span>
+              Find the right job. <span class="bg-gradient-to-r from-primary via-primary-container to-tertiary bg-clip-text text-transparent">Land it with ease.</span>
             </h1>
             <!-- Subheadline -->
             <p class="font-body-lg text-body-lg text-on-surface-variant max-w-2xl mb-space-10">
-              Autonomous multi-agent system powered by LangGraph: extracts your profile, discovers live tech roles, scores fit honestly, tailors resumes & cover letters, and generates role-specific interview prep.
+              Upload your resume, find the perfect roles, and automatically tailor your applications. Get honest fit scores and personalized interview prep in seconds.
             </p>
 
             <!-- Interactive Multi-Field Search Console -->
@@ -154,7 +154,7 @@
                 <span class="material-symbols-outlined text-primary text-xl mr-space-2 shrink-0">search</span>
                 <div class="flex flex-col w-full min-w-0">
                   <span class="font-label-xs text-label-xs text-on-surface-variant font-medium">Target Role or Tech Stack</span>
-                  <input class="bg-transparent text-on-surface font-body-md text-body-md focus:outline-none placeholder:text-outline w-full truncate" id="roleInput" placeholder="e.g. GenAI Engineer, Python, Backend..." type="text" value="GenAI Engineer"/>
+                  <input class="bg-transparent text-on-surface font-body-md text-body-md focus:outline-none placeholder:text-outline w-full truncate" id="roleInput" placeholder="e.g. Software Engineer, Python, Product..." type="text" value="Software Engineer"/>
                 </div>
               </div>
               <!-- Field 2: Location -->
@@ -182,7 +182,7 @@
               </div>
               <!-- Submit Button -->
               <button class="w-full lg:w-auto px-space-6 py-3.5 bg-primary-container hover:bg-primary text-on-primary rounded-lg font-label-md text-label-md flex items-center justify-center gap-space-2 shadow-md hover:shadow-lg transition-all active:scale-[0.98] shrink-0" type="submit">
-                <span>Find Jobs (Supervisor)</span>
+                <span>Search Jobs</span>
                 <span class="material-symbols-outlined text-base">arrow_forward</span>
               </button>
             </form>
@@ -190,10 +190,10 @@
             <!-- Quick Popular Filter Pills -->
             <div class="flex flex-wrap items-center justify-center gap-space-2 mt-space-6 max-w-3xl">
               <span class="font-label-xs text-label-xs text-on-surface-variant uppercase tracking-wider mr-space-1">Popular searches:</span>
-              <button onclick="quickSearch('GenAI Engineer')" class="px-space-3 py-1 bg-surface-container-low hover:bg-surface-container text-on-surface rounded-full font-label-sm text-label-sm transition-colors shadow-sm" type="button">GenAI Engineer</button>
-              <button onclick="quickSearch('Backend Developer')" class="px-space-3 py-1 bg-surface-container-low hover:bg-surface-container text-on-surface rounded-full font-label-sm text-label-sm transition-colors shadow-sm" type="button">Backend Developer</button>
-              <button onclick="quickSearch('Machine Learning')" class="px-space-3 py-1 bg-primary-fixed hover:bg-secondary-container text-on-primary-fixed font-semibold rounded-full font-label-sm text-label-sm transition-colors shadow-sm" type="button">AI / ML</button>
-              <button onclick="quickSearch('Python Engineer')" class="px-space-3 py-1 bg-surface-container-low hover:bg-surface-container text-on-surface rounded-full font-label-sm text-label-sm transition-colors shadow-sm" type="button">Python Engineer</button>
+              <button onclick="quickSearch('Software Engineer')" class="px-space-3 py-1 bg-surface-container-low hover:bg-surface-container text-on-surface rounded-full font-label-sm text-label-sm transition-colors shadow-sm" type="button">Software Engineer</button>
+              <button onclick="quickSearch('Frontend Developer')" class="px-space-3 py-1 bg-surface-container-low hover:bg-surface-container text-on-surface rounded-full font-label-sm text-label-sm transition-colors shadow-sm" type="button">Frontend Developer</button>
+              <button onclick="quickSearch('Data Scientist')" class="px-space-3 py-1 bg-primary-fixed hover:bg-secondary-container text-on-primary-fixed font-semibold rounded-full font-label-sm text-label-sm transition-colors shadow-sm" type="button">Data Scientist</button>
+              <button onclick="quickSearch('Product Manager')" class="px-space-3 py-1 bg-surface-container-low hover:bg-surface-container text-on-surface rounded-full font-label-sm text-label-sm transition-colors shadow-sm" type="button">Product Manager</button>
             </div>
           </section>
         </div>
@@ -206,8 +206,8 @@
                 <span class="material-symbols-outlined text-2xl">neurology</span>
               </div>
               <div>
-                <div class="font-headline-lg text-headline-lg text-on-surface font-bold">6 Agents</div>
-                <div class="font-body-sm text-body-sm text-on-surface-variant font-medium">LangGraph Coordinated</div>
+                <div class="font-headline-lg text-headline-lg text-on-surface font-bold">Smart Match</div>
+                <div class="font-body-sm text-body-sm text-on-surface-variant font-medium">Find roles you qualify for</div>
               </div>
             </div>
             <div class="bg-surface-container-lowest p-space-5 rounded-xl shadow-sm flex items-center gap-space-4 group hover:shadow-md transition-shadow">
@@ -215,8 +215,8 @@
                 <span class="material-symbols-outlined text-2xl">verified</span>
               </div>
               <div>
-                <div class="font-headline-lg text-headline-lg text-on-surface font-bold">100%</div>
-                <div class="font-body-sm text-body-sm text-on-surface-variant font-medium">Zero-Hallucination Critic</div>
+                <div class="font-headline-lg text-headline-lg text-on-surface font-bold">Honest</div>
+                <div class="font-body-sm text-body-sm text-on-surface-variant font-medium">Never invents skills</div>
               </div>
             </div>
             <div class="bg-surface-container-lowest p-space-5 rounded-xl shadow-sm flex items-center gap-space-4 group hover:shadow-md transition-shadow">
@@ -224,8 +224,8 @@
                 <span class="material-symbols-outlined text-2xl">psychology</span>
               </div>
               <div>
-                <div class="font-headline-lg text-headline-lg text-on-surface font-bold">RAG Match</div>
-                <div class="font-body-sm text-body-sm text-on-surface-variant font-medium">MiniLM Semantic Vector Fit</div>
+                <div class="font-headline-lg text-headline-lg text-on-surface font-bold">Insights</div>
+                <div class="font-body-sm text-body-sm text-on-surface-variant font-medium">Know why you fit</div>
               </div>
             </div>
             <div class="bg-surface-container-lowest p-space-5 rounded-xl shadow-sm flex items-center gap-space-4 group hover:shadow-md transition-shadow">
@@ -233,8 +233,8 @@
                 <span class="material-symbols-outlined text-2xl">query_stats</span>
               </div>
               <div>
-                <div class="font-headline-lg text-headline-lg text-on-surface font-bold">LangSmith</div>
-                <div class="font-body-sm text-body-sm text-on-surface-variant font-medium">Traceable Agent Steps</div>
+                <div class="font-headline-lg text-headline-lg text-on-surface font-bold">Prep Tools</div>
+                <div class="font-body-sm text-body-sm text-on-surface-variant font-medium">Custom interview Q&A</div>
               </div>
             </div>
           </div>
@@ -243,34 +243,34 @@
         <!-- HOW IT WORKS SECTION (4 STEPS) -->
         <section class="py-space-12 px-space-8 rounded-xl bg-surface-container-low mb-space-16 relative overflow-hidden">
           <div class="text-center max-w-2xl mx-auto mb-space-12">
-            <span class="font-label-sm text-label-sm text-primary uppercase font-bold tracking-widest">Supervisor Pipeline</span>
-            <h2 class="font-display-lg text-display-lg text-on-surface font-bold mt-space-2 mb-space-3">How the Multi-Agent System Works</h2>
-            <p class="font-body-md text-body-md text-on-surface-variant">An autonomous supervisor coordinates specialists at each stage with human approval gates.</p>
+            <span class="font-label-sm text-label-sm text-primary uppercase font-bold tracking-widest">Seamless Experience</span>
+            <h2 class="font-display-lg text-display-lg text-on-surface font-bold mt-space-2 mb-space-3">How it works</h2>
+            <p class="font-body-md text-body-md text-on-surface-variant">Everything you need to go from an initial search to a successfully tracked application.</p>
           </div>
           <div class="grid grid-cols-1 md:grid-cols-4 gap-space-6 relative z-10">
             <!-- Step 1 -->
             <div class="bg-surface-container-lowest p-space-6 rounded-xl shadow-sm hover:shadow-md transition-shadow">
               <div class="w-10 h-10 rounded-xl bg-primary-fixed text-primary flex items-center justify-center font-headline-md font-bold mb-space-4">01</div>
-              <h3 class="font-headline-sm text-headline-sm text-on-surface font-bold mb-2">Profile Agent</h3>
-              <p class="font-body-sm text-body-sm text-on-surface-variant">Parses your resume PDF/text into structured skills, experience, and target roles.</p>
+              <h3 class="font-headline-sm text-headline-sm text-on-surface font-bold mb-2">Build Your Profile</h3>
+              <p class="font-body-sm text-body-sm text-on-surface-variant">Upload your resume and let us instantly extract your true skills and experience.</p>
             </div>
             <!-- Step 2 -->
             <div class="bg-surface-container-lowest p-space-6 rounded-xl shadow-sm hover:shadow-md transition-shadow">
               <div class="w-10 h-10 rounded-xl bg-secondary-container text-primary flex items-center justify-center font-headline-md font-bold mb-space-4">02</div>
-              <h3 class="font-headline-sm text-headline-sm text-on-surface font-bold mb-2">Discovery & Match</h3>
-              <p class="font-body-sm text-body-sm text-on-surface-variant">Searches official APIs and calculates semantic fit scores (0-100) + honest skill gap notes.</p>
+              <h3 class="font-headline-sm text-headline-sm text-on-surface font-bold mb-2">Discover & Match</h3>
+              <p class="font-body-sm text-body-sm text-on-surface-variant">We scan top job boards and calculate how well you fit based on your actual experience.</p>
             </div>
             <!-- Step 3 -->
             <div class="bg-surface-container-lowest p-space-6 rounded-xl shadow-sm hover:shadow-md transition-shadow">
               <div class="w-10 h-10 rounded-xl bg-tertiary-fixed text-on-tertiary-fixed flex items-center justify-center font-headline-md font-bold mb-space-4">03</div>
-              <h3 class="font-headline-sm text-headline-sm text-on-surface font-bold mb-2">Tailor & Critic</h3>
-              <p class="font-body-sm text-body-sm text-on-surface-variant">Rewrites resume bullets and cover letters with a self-correcting critic enforcing zero fabrication.</p>
+              <h3 class="font-headline-sm text-headline-sm text-on-surface font-bold mb-2">Apply with Confidence</h3>
+              <p class="font-body-sm text-body-sm text-on-surface-variant">Get custom-tailored resumes and cover letters—without ever fabricating skills.</p>
             </div>
             <!-- Step 4 -->
             <div class="bg-surface-container-lowest p-space-6 rounded-xl shadow-sm hover:shadow-md transition-shadow">
               <div class="w-10 h-10 rounded-xl bg-surface-container-high text-primary flex items-center justify-center font-headline-md font-bold mb-space-4">04</div>
-              <h3 class="font-headline-sm text-headline-sm text-on-surface font-bold mb-2">Prep & Track</h3>
-              <p class="font-body-sm text-body-sm text-on-surface-variant">Company web research, grounded interview Q&A guides, and a 5-stage Kanban application tracker.</p>
+              <h3 class="font-headline-sm text-headline-sm text-on-surface font-bold mb-2">Land the Interview</h3>
+              <p class="font-body-sm text-body-sm text-on-surface-variant">Track your application pipeline and prepare using personalized company research.</p>
             </div>
           </div>
         </section>
@@ -281,7 +281,7 @@
             <div class="max-w-xl space-y-space-3 text-left relative z-10">
               <span class="px-space-3 py-1 bg-surface-container-lowest/20 rounded-full font-label-xs text-label-xs tracking-wider uppercase backdrop-blur-sm">Empowering Your Job Hunt</span>
               <h2 class="font-display-lg text-display-lg font-bold tracking-tight text-on-primary">Ready to accelerate your job search?</h2>
-              <p class="font-body-lg text-body-lg text-on-primary-container leading-relaxed">Experience the multi-agent difference with honest tailoring, grounded interview preparation, and real-time tracking.</p>
+              <p class="font-body-lg text-body-lg text-on-primary-container leading-relaxed">Experience a smarter way to hunt for jobs with honest tailoring, grounded interview preparation, and real-time tracking.</p>
             </div>
             <div class="shrink-0 relative z-10">
               <a href="/jobs" class="px-space-8 py-4 bg-surface-container-lowest text-primary hover:bg-surface-container-low font-label-md text-label-md font-bold rounded-lg shadow-lg hover:shadow-xl transition-all flex items-center gap-space-2">
@@ -300,7 +300,7 @@
       <div class="flex items-center gap-2">
         <span>🎯 <strong>JobHunt AI</strong></span>
         <span>·</span>
-        <span>Built for GenAI & Backend Placements</span>
+        <span>Made for Career Growth</span>
       </div>
       <div class="flex items-center gap-6">
         <a href="/jobs" class="hover:text-primary transition-colors">Jobs</a>
