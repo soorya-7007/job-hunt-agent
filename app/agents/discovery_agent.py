@@ -8,9 +8,20 @@ from app.tools import job_boards
 
 
 def discover_jobs(profile: CandidateProfile, limit: int = 20) -> List[JobPosting]:
-    query = _build_query(profile)
+    roles = profile.target_roles if profile.target_roles else [_build_query(profile)]
     location = profile.locations[0] if profile.locations else ""
-    return job_boards.search_jobs(query, location=location, limit=limit)
+    
+    all_jobs: List[JobPosting] = []
+    seen_ids = set()
+    
+    for role in roles[:3]:
+        postings = job_boards.search_jobs(role, location=location, limit=limit)
+        for p in postings:
+            if p.id not in seen_ids:
+                seen_ids.add(p.id)
+                all_jobs.append(p)
+                
+    return all_jobs[:limit] if all_jobs else job_boards.search_jobs(_build_query(profile), location=location, limit=limit)
 
 
 def _build_query(profile: CandidateProfile) -> str:

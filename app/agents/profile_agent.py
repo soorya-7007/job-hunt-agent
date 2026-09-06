@@ -26,9 +26,18 @@ SKILL_HINTS = [
 ]
 
 
+from functools import lru_cache
+
+@lru_cache(maxsize=32)
+def _cached_base_profile(resume_text: str) -> CandidateProfile:
+    return _build_with_llm(resume_text) if settings.has_llm() else _build_heuristic(resume_text)
+
+
 def build_profile(resume_text: str, preferences: Optional[dict] = None) -> CandidateProfile:
     preferences = preferences or {}
-    profile = _build_with_llm(resume_text) if settings.has_llm() else _build_heuristic(resume_text)
+    base = _cached_base_profile(resume_text)
+    # Return a clean copy with preferences applied
+    profile = base.model_copy(deep=True)
 
     # User-supplied preferences override / augment what we parsed.
     if preferences.get("target_roles"):

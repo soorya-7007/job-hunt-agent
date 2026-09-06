@@ -29,7 +29,7 @@ def run(
     resume_text: str,
     preferences: Optional[dict] = None,
     limit: int = 20,
-    use_graph: bool = True,
+    use_graph: bool = False,
 ) -> Tuple[CandidateProfile, List[MatchResult]]:
     """Execute the Profile -> Discovery -> Matching pipeline.
 

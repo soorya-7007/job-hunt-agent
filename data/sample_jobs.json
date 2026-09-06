@@ -6,7 +6,7 @@
     "company": "Nimbus AI",
     "location": "Remote (India)",
     "description": "Build LLM-powered features using Python, RAG pipelines, and vector databases (Chroma). Experience with LangChain, prompt engineering, and FastAPI preferred.",
-    "url": "https://example.com/jobs/sample-1",
+    "url": "https://www.linkedin.com/jobs/search/?keywords=GenAI+Engineer+Python+Remote",
     "salary": "8,00,000 - 14,00,000",
     "created": "2026-08-20"
   },
@@ -17,7 +17,7 @@
     "company": "DataForge",
     "location": "Bengaluru, India",
     "description": "Train and deploy ML models with PyTorch. Strong Python, SQL, Docker and AWS skills. MLOps and model monitoring experience is a plus.",
-    "url": "https://example.com/jobs/sample-2",
+    "url": "https://www.linkedin.com/jobs/search/?keywords=Machine+Learning+Engineer+Bengaluru",
     "salary": "12,00,000 - 20,00,000",
     "created": "2026-08-18"
   },
@@ -28,8 +28,8 @@
     "company": "Corteza Labs",
     "location": "Remote",
     "description": "Develop agentic AI applications using LangGraph and function-calling. Integrate external tools and APIs, build multi-agent workflows, and add guardrails and evaluation.",
-    "url": "https://example.com/jobs/sample-3",
-    "salary": null,
+    "url": "https://www.linkedin.com/jobs/search/?keywords=AI+Application+Developer+Agents",
+    "salary": "15,00,000 - 25,00,000",
     "created": "2026-08-22"
   },
   {
@@ -39,7 +39,7 @@
     "company": "PayRails",
     "location": "Hyderabad, India",
     "description": "Design REST APIs with FastAPI and PostgreSQL. Docker, Kubernetes and cloud (GCP) experience required. Interest in LLM integrations welcome.",
-    "url": "https://example.com/jobs/sample-4",
+    "url": "https://www.payrails.com/careers",
     "salary": "10,00,000 - 18,00,000",
     "created": "2026-08-15"
   },
@@ -47,10 +47,10 @@
     "id": "sample-5",
     "source": "sample",
     "title": "Data Scientist",
-    "company": "InsightWorks",
+    "company": "Thoughtworks",
     "location": "Pune, India",
     "description": "Analyze data with Python, pandas, and SQL. Build predictive models and dashboards, and communicate insights to stakeholders. NLP experience a bonus.",
-    "url": "https://example.com/jobs/sample-5",
+    "url": "https://www.thoughtworks.com/careers/jobs",
     "salary": "9,00,000 - 16,00,000",
     "created": "2026-08-10"
   },
@@ -58,11 +58,55 @@
     "id": "sample-6",
     "source": "sample",
     "title": "NLP Engineer",
-    "company": "Lingua Systems",
+    "company": "Hugging Face",
     "location": "Remote (India)",
     "description": "Work on text classification, embeddings, and retrieval-augmented generation. Python, Hugging Face Transformers, and vector search (FAISS) required.",
-    "url": "https://example.com/jobs/sample-6",
-    "salary": "11,00,000 - 19,00,000",
+    "url": "https://huggingface.co/join-us",
+    "salary": "14,00,000 - 24,00,000",
     "created": "2026-08-21"
+  },
+  {
+    "id": "sample-7",
+    "source": "sample",
+    "title": "Senior Backend Developer (FastAPI / Go)",
+    "company": "Razorpay",
+    "location": "Bengaluru, India",
+    "description": "Architect high-throughput payment gateways and distributed backend services. Expertise in Python, Go, Docker, PostgreSQL, and high availability systems.",
+    "url": "https://razorpay.com/jobs/",
+    "salary": "24,00,000 - 36,00,000",
+    "created": "2026-08-24"
+  },
+  {
+    "id": "sample-8",
+    "source": "sample",
+    "title": "Full Stack Engineer (Next.js & Python)",
+    "company": "Swiggy",
+    "location": "Remote (India)",
+    "description": "Build modern web applications using React, Next.js, and TypeScript on the frontend with Python and FastAPI microservices backend.",
+    "url": "https://careers.swiggy.com/",
+    "salary": "18,00,000 - 28,00,000",
+    "created": "2026-08-25"
+  },
+  {
+    "id": "sample-9",
+    "source": "sample",
+    "title": "Staff AI Systems Engineer",
+    "company": "Postman",
+    "location": "Bengaluru, India",
+    "description": "Lead the integration of generative AI tools and agent workflows into the Postman API platform. Experience with vector embeddings, RAG, and LLM evaluation.",
+    "url": "https://www.postman.com/company/careers/",
+    "salary": "35,00,000 - 50,00,000",
+    "created": "2026-08-26"
+  },
+  {
+    "id": "sample-10",
+    "source": "sample",
+    "title": "DevOps & Cloud Infrastructure Engineer",
+    "company": "BrowserStack",
+    "location": "Mumbai, India",
+    "description": "Manage Kubernetes clusters, AWS infrastructure, CI/CD pipelines, and observability metrics. Experience with Terraform, Docker, and Linux internals.",
+    "url": "https://www.browserstack.com/careers",
+    "salary": "16,00,000 - 26,00,000",
+    "created": "2026-08-27"
   }
 ]

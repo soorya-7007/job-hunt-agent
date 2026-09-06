@@ -27,6 +27,9 @@ class Settings:
     # Phase 3: Web search provider keys (optional)
     TAVILY_API_KEY = os.getenv("TAVILY_API_KEY", "")
 
+    # RapidAPI / JSearch
+    RAPIDAPI_KEY = os.getenv("RAPIDAPI_KEY", "")
+
     def has_llm(self) -> bool:
         """True if some LLM provider is configured (else we use a heuristic fallback)."""
         return bool(
@@ -35,6 +38,10 @@ class Settings:
             or os.getenv("ANTHROPIC_API_KEY")
             or self.LLM_MODEL.startswith("ollama/")
         )
+
+    def has_jsearch(self) -> bool:
+        """True if RapidAPI key exists for JSearch."""
+        return bool(self.RAPIDAPI_KEY)
 
     def has_adzuna(self) -> bool:
         """True if Adzuna keys exist (else we use bundled sample jobs)."""
