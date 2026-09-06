@@ -23,16 +23,14 @@ from app.config import settings
 from app.schemas import CandidateProfile, CoverLetter, JobPosting, TailoredResume
 
 TAILOR_SYSTEM = (
-    "You are an expert technical resume writer. Rewrite a candidate's professional "
-    "summary and a few achievement bullet points so they target ONE specific job.\n"
+    "You are an expert technical resume writer. Rewrite a candidate's ENTIRE resume "
+    "so it targets ONE specific job. Keep all existing jobs, dates, education, and formatting intact.\n"
     "ABSOLUTE RULES:\n"
-    "1. Use ONLY facts, skills, tools, and experience found in the candidate's resume.\n"
+    "1. Use ONLY facts, skills, tools, and experience found in the candidate's original resume.\n"
     "2. Never invent employers, projects, metrics, degrees, or skills.\n"
-    "3. You MAY rephrase, reorder, and emphasise real experience to match the job.\n"
-    "4. Prefer the job description's wording when the candidate has the equivalent "
-    "experience.\n"
-    "Keep the summary to 2-3 sentences and write 3-5 bullets, each starting with a "
-    "strong action verb."
+    "3. You MUST retain ALL original work history, dates, and education details.\n"
+    "4. You MAY rephrase, reorder, and emphasise real experience to match the job description's keywords.\n"
+    "5. Output the FULL rewritten resume in clean, structured Markdown.\n"
 )
 
 
@@ -78,7 +76,7 @@ def _tailor_with_llm(
         f"JOB DESCRIPTION:\n{job.description[:2500]}\n\n"
         f"JOB KEYWORDS TO MIRROR (only if the candidate truly has them): "
         f"{', '.join(keywords) or 'n/a'}\n\n"
-        "Return JSON with keys: summary (string), bullets (list of 3-5 strings), "
+        "Return JSON with keys: full_markdown (string containing the entire rewritten resume), "
         "keywords_covered (list of strings actually reflected from the resume)."
     )
     if feedback:
@@ -93,8 +91,7 @@ def _tailor_with_llm(
         job_id=job.id,
         job_title=job.title,
         company=job.company,
-        summary=(data.get("summary") or "").strip()[:800],
-        bullets=[str(b).strip() for b in data.get("bullets", []) if str(b).strip()][:5],
+        full_markdown=(data.get("full_markdown") or "").strip(),
         keywords_covered=[str(k).strip() for k in data.get("keywords_covered", []) if str(k).strip()],
     )
 
@@ -125,8 +122,7 @@ def _tailor_heuristic(
         job_id=job.id,
         job_title=job.title,
         company=job.company,
-        summary=summary,
-        bullets=bullets,
+        full_markdown=f"{summary}\n\n" + "\n".join([f"- {b}" for b in bullets]),
         keywords_covered=overlap,
     )
 

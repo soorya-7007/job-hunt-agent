@@ -74,8 +74,7 @@ def _mentions(text: str, skill: str) -> bool:
 def _llm_flags(tailored: TailoredResume, resume_text: str) -> List[str]:
     user = (
         f"ORIGINAL RESUME:\n{resume_text[:6000]}\n\n"
-        f"TAILORED DRAFT:\nSummary: {tailored.summary}\n"
-        f"Bullets:\n- " + "\n- ".join(tailored.bullets)
+        f"TAILORED DRAFT:\n{tailored.full_markdown[:6000]}"
     )
     data = llm.chat_json(CRITIC_SYSTEM, user)
     return [str(f).strip() for f in data.get("fabrications", []) if str(f).strip()]

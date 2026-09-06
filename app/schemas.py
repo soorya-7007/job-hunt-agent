@@ -32,6 +32,10 @@ class JobPosting(BaseModel):
     description: str = ""
     url: str = ""
     salary: Optional[str] = None
+    min_salary: Optional[float] = None
+    job_type: Optional[str] = None
+    experience_level: Optional[str] = None
+    is_remote: bool = False
     created: Optional[str] = None
 
     def to_text(self) -> str:
@@ -60,7 +64,7 @@ class CritiqueResult(BaseModel):
 
 
 class TailoredResume(BaseModel):
-    """A job-specific rewrite of the candidate's summary + key bullets.
+    """A job-specific rewrite of the candidate's entire resume.
 
     IMPORTANT: every statement here must be grounded in the real resume. The
     critic re-reads this object against the source resume to enforce that rule.
@@ -68,15 +72,14 @@ class TailoredResume(BaseModel):
     job_id: str
     job_title: str = ""
     company: str = ""
-    summary: str = ""
-    bullets: List[str] = Field(default_factory=list)
+    full_markdown: str = ""
     keywords_covered: List[str] = Field(default_factory=list)  # JD terms reflected
     revised: bool = False  # True if the critic triggered an automatic rewrite
     critique: Optional[CritiqueResult] = None
 
     def to_text(self) -> str:
         """All human-readable text, used by the critic for fact-checking."""
-        return self.summary + "\n" + "\n".join(self.bullets)
+        return self.full_markdown
 
 
 class Application(BaseModel):

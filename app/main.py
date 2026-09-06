@@ -1,6 +1,11 @@
 """FastAPI entrypoint exposing REST endpoints and serving the Stitch web frontend."""
 from __future__ import annotations
 
+import os
+os.environ["TOKENIZERS_PARALLELISM"] = "false"
+os.environ["OMP_NUM_THREADS"] = "1"
+os.environ["OBJC_DISABLE_INITIALIZE_FORK_SAFETY"] = "YES"
+
 from pathlib import Path
 from typing import Any, Dict, List, Optional
 
@@ -49,7 +54,7 @@ class SearchRequest(BaseModel):
     target_roles: List[str] = Field(default_factory=lambda: ["GenAI Engineer", "Backend Developer"])
     locations: List[str] = Field(default_factory=lambda: ["Remote"])
     work_mode: str = "any"
-    limit: int = 20
+    limit: int = 100
 
 
 class SearchResponse(BaseModel):
@@ -86,6 +91,7 @@ class ApplyRequest(BaseModel):
     resume_text: str = ""
     profile: Optional[CandidateProfile] = None
     job: Optional[JobPosting] = None
+    tailored_resume: Optional[TailoredResume] = None
 
 
 class ApplyResponse(BaseModel):
@@ -239,6 +245,11 @@ def prep_endpoint(req: PrepRequest) -> PrepResponse:
 @app.post("/api/jobs/apply", response_model=ApplyResponse)
 def apply_endpoint(req: ApplyRequest) -> ApplyResponse:
     profile = req.profile or CandidateProfile(summary=req.resume_text)
+    
+    if req.tailored_resume:
+        profile.summary = req.tailored_resume.summary
+        profile.skills = req.tailored_resume.bullets
+        
     job = req.job
 
     if not job:
