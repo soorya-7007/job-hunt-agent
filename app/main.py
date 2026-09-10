@@ -43,8 +43,6 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-FRONTEND_DIR = Path(__file__).resolve().parents[1] / "frontend"
-
 
 # --------------------------------------------------------------------------- #
 # Request / Response Models
@@ -323,32 +321,3 @@ def chat_endpoint(req: ChatRequest) -> ChatResponse:
     return ChatResponse(reply=reply)
 
 
-# --------------------------------------------------------------------------- #
-# Static Frontend Serving
-# --------------------------------------------------------------------------- #
-if FRONTEND_DIR.exists():
-    app.mount("/static", StaticFiles(directory=str(FRONTEND_DIR)), name="static")
-
-    @app.get("/")
-    def index_page():
-        return FileResponse(FRONTEND_DIR / "index.html")
-
-    @app.get("/jobs")
-    def jobs_page():
-        return FileResponse(FRONTEND_DIR / "jobs.html")
-
-    @app.get("/dashboard")
-    def dashboard_page():
-        return FileResponse(FRONTEND_DIR / "dashboard.html")
-
-    @app.get("/profile")
-    def profile_page():
-        return FileResponse(FRONTEND_DIR / "profile.html")
-
-    @app.get("/chat")
-    def chat_page():
-        return FileResponse(FRONTEND_DIR / "chat.html")
-
-    @app.get("/apply-dummy")
-    def apply_dummy_page():
-        return FileResponse(FRONTEND_DIR / "apply-dummy.html")

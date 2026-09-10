@@ -92,7 +92,7 @@ flowchart LR
 | **Pydantic v2** | Validation | Defines strict data schemas to validate all LLM outputs and agent boundary contracts. |
 | **pdfplumber** | Parsing | Reliable text extraction from raw resume PDFs. |
 | **SQLite & SQLAlchemy** | Database | Persists candidate profiles and tracks application lifecycle states (Saved → Applied → Offer). |
-| **Streamlit & HTML/JS** | Frontend | Streamlit for visualizing agent internals; HTML/JS for the polished user-facing dashboard. |
+| **HTML/JS** | Frontend | HTML/JS for the polished user-facing dashboard. |
 | **MCP (Model Context Protocol)** | Interop | Exposes the agent's job search capabilities directly to tools like Claude Desktop or Cursor. |
 | **Playwright** | Automation | Headless browser automation for the experimental form autofill agent. |
 | **DuckDuckGo Search (Web RAG)** | Tooling | Live web research used by the Company-Prep agent to fetch real-time context for interview prep generation. |
@@ -113,11 +113,6 @@ flowchart LR
 Run the FastAPI backend + web UI:
 ```bash
 uvicorn app.main:app --port 8000
-```
-
-Run the Streamlit interactive demo:
-```bash
-streamlit run ui/streamlit_app.py
 ```
 
 Run via Docker:
